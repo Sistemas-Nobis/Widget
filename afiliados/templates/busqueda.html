@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nobis API</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #008000; /* Color de fondo verde oscuro */
+            font-family: Arial, sans-serif; /* Fuente más legible */
+        }
+        
+        .content {
+            text-align: center;
+            color: #008000; /* Color de texto verde oscuro */
+            background-color: #ffffff; /* Color de fondo blanco */
+            padding: 20px; /* Espaciado interno del recuadro blanco */
+            border-radius: 10px; /* Bordes redondeados para el recuadro blanco */
+            width: 90%;
+            max-width: 1200px; /* Ancho máximo para pantallas grandes */
+        }
+
+        h1 {
+            color: #000000; /* Color de texto negro */
+            font-weight: bold; /* Texto en negrita */
+            margin-bottom: 20px; /* Espacio debajo del encabezado */
+        }
+
+        table {
+            width: 100%; /* Ancho del 100% de la tabla */
+            border-collapse: collapse; /* Borra los bordes entre celdas */
+            margin-top: 10px; /* Margen superior de la tabla */
+        }
+
+        th, td {
+            padding: 5px; /* Espaciado interno de las celdas */
+            text-align: center; /* Alineación del texto en el centro */
+            border: 2px solid #000000; /* Bordes negros */
+            position: relative; /* Necesario para posicionar el botón en el fondo */
+        }
+
+        td {
+            max-width: 250px; /* Limitar el ancho máximo de las celdas */
+            overflow: hidden; /* Oculta el contenido que se desborda */
+            text-overflow: ellipsis; /* Muestra puntos suspensivos (...) para texto desbordado */
+            white-space: nowrap; /* Evita el salto de línea */
+        }
+
+        .expand-button {
+            background-color: #008000; /* Botón verde oscuro */
+            color: #ffffff; /* Texto blanco */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .expanded {
+            white-space: normal; /* Permitir múltiples líneas */
+            max-width: none; /* Sin límite en el ancho */
+        }
+
+        .row-content {
+            display: none; /* Ocultar el contenido adicional por defecto */
+        }
+
+        .row-content.expanded {
+            display: table-row;
+        }
+
+        th {
+            background-color: #008000; /* Color de fondo verde oscuro para el encabezado */
+            color: #ffffff; /* Color de texto blanco para el encabezado */
+        }
+
+        @media (max-width: 768px) {
+            th, td {
+                padding: 4px; /* Reducir el espaciado interno en pantallas pequeñas */
+            }
+
+            .content {
+                padding: 10px; /* Reducir el espaciado interno del recuadro en pantallas pequeñas */
+                width: 95%; /* Ancho del contenido en pantallas pequeñas */
+            }
+
+            h1 {
+                font-size: 1.5em; /* Reducir tamaño del texto del encabezado en pantallas pequeñas */
+            }
+        }
+
+        @media (max-width: 480px) {
+            /* Ajustes para pantallas más pequeñas */
+            th, td {
+                padding: 2px; /* Reducir más el espaciado interno en pantallas más pequeñas */
+            }
+
+            h1 {
+                font-size: 1.2em; /* Reducir aún más el tamaño del texto del encabezado en pantallas muy pequeñas */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>NOBIS MEDICAL</h1>
+
+        <!-- Respuesta de la API -->
+        <div>
+            {% if data %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="4" style="background-color: #008000; color: #ffffff;">Información del grupo familiar</th>
+                        </tr>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>DNI</th>
+                            <th>Parentesco</th>
+                            <th>Deuda</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in data %}
+                            <tr>
+                                <td>{{ item.Nombre }}</td>
+                                <td>{{ item.DNI }}</td>
+                                <td>{{ item.Parentesco }}</td>
+                                <td>{{ item.Deuda }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% elif error %}
+                <div style="color: red; font-weight: bold;">Error: {{ error }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Segunda tabla: Tablero 2 -->
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="8" style="background-color: #008000; color: #ffffff;">Casos</th>
+                    </tr>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Número de caso</th>
+                        <th>Nombre</th>
+                        <th>Estado</th>
+                        <th>Asesor</th>
+                        <th>Canal</th>
+                        <th>Tipo</th>
+                        <th>Etiqueta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if data_casos %}
+                        {% for caso in data_casos %}
+                            <tr class="row">
+                                <td class="show-more-trigger">{{ caso.created_at }}</td>
+                                <td class="show-more-trigger">{{ caso.number }}</td>
+                                <td class="show-more-trigger">{{ caso.channel_account }}</td>
+                                <td class="show-more-trigger">{{ caso.status }}</td>
+                                <td class="show-more-trigger">{{ caso.user_id }}</td>
+                                <td class="show-more-trigger">{{ caso.source_channel }}</td>
+                                <td class="show-more-trigger">{{ caso.type_id }}</td>
+                                <td class="show-more-trigger">{{ caso.tags }}</td>
+                                <td><button class="expand-button" onclick="toggleExpand(this)">+</button></td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="8" style="color: red; font-weight: bold;">No se encontraron casos.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function toggleExpand(button) {
+            var row = button.parentElement.parentElement;
+            var cells = row.querySelectorAll('.show-more-trigger');
+            var expanded = row.classList.toggle('expanded');
+
+            cells.forEach(function(cell) {
+                if (expanded) {
+                    cell.classList.add('expanded');
+                } else {
+                    cell.classList.remove('expanded');
+                }
+            });
+
+            button.textContent = expanded ? '-' : '+';
+        }
+    </script>
+</body>
+</html>
