@@ -20,19 +20,19 @@ def actualizar_token_wise():
         token = response_json.get('token', None)
         
         if token:
-            print(f"Nuevo token obtenido y guardado: {token}")
+            print(f"Nuevo token obtenido y guardado de WISE: {token}")
             return token
         else:
             raise Exception("No se encontró el token en la respuesta.")
     except requests.exceptions.RequestException as e:
-        print(f"Error al obtener el token: {e}")
+        print(f"Error al obtener el token WISE: {e}")
 
 
 def actualizar_token_gecros():
     url = "https://appmobile.nobissalud.com.ar/connect/token"
     payload = {
-        'userName': '2|24588999',
-        'password': 'wiseapi',
+        'userName': '2|45899788',
+        'password': 'widgetapi',
         'grant_type': 'password',
         'client_id': 'gecrosAppAfiliado'
     }
@@ -51,10 +51,10 @@ def actualizar_token_gecros():
         token = response_json.get('access_token', None)
         
         if token:
-            print(f"Nuevo token obtenido y guardado: {token}")
+            print(f"Nuevo token obtenido y guardado para GECROS: {token}")
             return token
         else:
             raise Exception("No se encontró el token en la respuesta.")
     except requests.exceptions.RequestException as e:
-        print(f"Error al obtener el token: {e}")
+        print(f"Error al obtener el token GECROS: {e}")
         return None
