@@ -8,7 +8,7 @@ from .utils import actualizar_token_wise, actualizar_token_gecros
 from django.core.cache import cache
 
 class BuscarAfiliadoView(View):
-    template_name = 'busqueda.html'
+    template_name = 'busqueda2.html'
 
     def obtener_token_wise(self):
         """

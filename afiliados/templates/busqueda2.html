@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nobis API</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #008000; /* Color de fondo verde oscuro */
+            font-family: Arial, sans-serif; /* Fuente más legible */
+        }
+
+        .content {
+            text-align: center;
+            color: #008000; /* Color de texto verde oscuro */
+            background-color: #ffffff; /* Color de fondo blanco */
+            padding: 5px; /* Espaciado interno */
+            border-radius: 10px; /* Bordes redondeados */
+            width: 100%; /* Ancho completo */
+            max-width: 375px; /* Máximo ancho */
+            max-height: 332px; /* Máxima altura */
+            overflow-y: auto; /* Scroll vertical si es necesario */
+        }
+
+        table {
+            width: 100%; /* Ocupa todo el ancho del contenedor */
+            border-collapse: collapse; /* Bordes entre celdas */
+            margin-top: 2px;
+        }
+
+        th, td {
+            padding: 3px;
+            text-align: center;
+            border: 1px solid #000000;
+            font-size: 0.8em;
+        }
+
+        th {
+            background-color: #008000; /* Fondo del encabezado */
+            color: #ffffff; /* Texto blanco */
+        }
+
+        td {
+            max-width: 150px; /* Limitar ancho máximo de celdas */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Estilo para botón */
+        .expand-button {
+            background-color: #008000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.7em;
+            padding: 2px 4px;
+        }
+
+        /* Estilos para el modal */
+        .modal {
+            display: none; /* Oculto por defecto */
+            position: fixed; /* Fijo en la pantalla */
+            top: 50%; /* Centrado verticalmente */
+            left: 50%; /* Centrado horizontalmente */
+            transform: translate(-50%, -50%); /* Asegura que el modal esté completamente centrado */
+            width: 300px; /* Ancho del modal */
+            height: 270px; /* Alto del modal */
+            background-color: #ffffff; /* Fondo blanco */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra alrededor */
+            border-radius: 10px; /* Bordes redondeados */
+            overflow-y: auto; /* Scroll si es necesario */
+            padding: 10px; /* Espaciado interno */
+            z-index: 1000; /* Por encima del resto del contenido */
+        }
+
+        .modal-content {
+            display: flex;
+            flex-direction: column;
+            max-width: 300px;
+        }
+
+        .modal-row {
+            display: flex;
+            margin-bottom: 5px; /* Espaciado entre las filas */
+        }
+
+        .modal-label {
+            flex: 1; /* Ocupa el espacio disponible */
+            text-align: center; /* Alinea el texto a la izquierda */
+        }
+
+        .modal-value {
+            flex: 1; /* Ocupa el espacio disponible */
+            text-align: center; /* Centra el texto */
+        }
+        .modal-content table {
+            width: 100%; /* Ancho completo */
+        }
+
+        .modal-content td {
+            word-wrap: break-word; /* Permitir que el texto se ajuste */
+            overflow-wrap: break-word; /* Para compatibilidad adicional */
+            white-space: normal;
+            max-width: 100px; /* Limitar ancho máximo si es necesario */
+            padding: 5px; /* Espaciado interno */
+        }
+
+        /* Fondo oscuro detrás del modal */
+        .modal-overlay {
+            display: none; /* Oculto por defecto */
+            position: fixed; /* Fijo en la pantalla */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+            z-index: 999; /* Detrás del modal pero encima del contenido principal */
+        }
+
+        /* Botón para cerrar el modal */
+        .close-button {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background-color: #ff0000;
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            text-align: center;
+            line-height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <!-- Información del grupo familiar -->
+        <div>
+            {% if data %}
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="4" style="background-color: #008000; color: white;">Información del grupo familiar</th>
+                    </tr>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>DNI</th>
+                        <th>Parentesco</th>
+                        <th>Deuda</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in data %}
+                        <tr>
+                            <td>{{ item.Nombre }}</td>
+                            <td>{{ item.DNI }}</td>
+                            <td>{{ item.Parentesco }}</td>
+                            <td>{{ item.Deuda }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% elif error %}
+                <div style="color: red; font-weight: bold;">Error: {{ error }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Tabla de Casos -->
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Nombre</th>
+                        <th>Estado</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if data_casos %}
+                        {% for caso in data_casos %}
+                            <tr class="row">
+                                <td>{{ caso.created_at }}</td>
+                                <td>{{ caso.channel_account }}</td>
+                                <td>{{ caso.status }}</td>
+                                <td><button class="expand-button" onclick="openModal('{{ caso.number }}', '{{ caso.created_at }}', '{{ caso.channel_account }}', '{{ caso.status }}', '{{ caso.user_id }}', '{{ caso.source_channel }}', '{{ caso.type_id }}', '{{ caso.tags|join:', '|escapejs }}')">Ver detalles</button></td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="8" style="color: red; font-weight: bold;">No se encontraron casos.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modal-overlay"></div>
+    <div class="modal" id="modal">
+        <button class="close-button" onclick="closeModal()">X</button>
+        <div id="modal-content">
+            <!-- Contenido del modal generado dinámicamente -->
+        </div>
+    </div>
+
+    <script>
+        // Función para abrir el modal
+        function openModal(caso, fecha, nombre, estado, asesor, canal, tipo, etiqueta) {
+            console.log('Caso:', caso);
+            console.log('Etiqueta:', etiqueta);
+            var etiquetas;
+            if (typeof etiqueta === 'string' && etiqueta.trim() !== '') {
+                etiquetas = etiqueta; // Es una cadena válida
+            } else if (Array.isArray(etiqueta)) {
+                etiquetas = etiqueta.length > 0 ? etiqueta.join(', ') : 'Sin etiquetas';
+            } else {
+                etiquetas = 'Sin etiquetas'; // Caso donde no hay etiquetas
+            }
+
+            var modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <div class="modal-content">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <td style="font-size: 1.2em; font-weight: bold;">Caso ${caso}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fecha y hora:</strong> ${fecha}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Nombre:</strong> ${nombre}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Estado:</strong> ${estado}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Asesor:</strong> ${asesor}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Canal:</strong> ${canal}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tipo:</strong> ${tipo}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Etiquetas</strong><br><span style="word-wrap: break-word; overflow-wrap: break-word;">${etiquetas}</span></td>
+                        </tr>
+                    </table>
+                </div>
+
+            `;
+
+            document.getElementById('modal').style.display = 'block';
+            document.getElementById('modal-overlay').style.display = 'block';
+        }
+
+        // Función para cerrar el modal
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('modal-overlay').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
