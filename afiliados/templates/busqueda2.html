@@ -86,6 +86,8 @@
             display: flex;
             flex-direction: column;
             max-width: 300px;
+            position: relative;
+            padding-bottom: 40px; /* Espacio extra para el botón */
         }
 
         .modal-row {
@@ -129,19 +131,45 @@
         /* Botón para cerrar el modal */
         .close-button {
             position: absolute;
-            top: 5px;
-            right: 10px;
+            top: 15px;
+            right: 15px;
             background-color: #ff0000;
             color: #ffffff;
             border: none;
             border-radius: 50%;
             cursor: pointer;
-            width: 20px;
-            height: 20px;
-            font-size: 12px;
+            width: 25px;
+            height: 25px;
+            font-size: 18px;
             text-align: center;
-            line-height: 20px;
+            line-height: 25px;
+            z-index: 1001;
         }
+
+        a{
+            background-color: #008000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.7em;
+            padding: 2px 4px;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .modal .btn {
+            position: relative;
+            margin: 4px auto 0 auto; /* Centrar el botón y darle margen superior */
+            background-color: #008000; /* Color distintivo del botón */
+            color: white;
+            font-size: 0.8em; /* Tamaño de fuente más pequeño */
+            border-radius: 25px;
+            padding: 5px 50px; /* Padding más pequeño */
+            border: none;
+        }
+
+
     </style>
 </head>
 <body>
@@ -184,8 +212,8 @@
                     <tr>
                         <th>Fecha</th>
                         <th>Nombre</th>
-                        <th>Estado</th>
-                        <th>Acción</th>
+                        <th>Tipo</th>
+                        <th>Más</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -195,7 +223,7 @@
                                 <td>{{ caso.created_at }}</td>
                                 <td>{{ caso.channel_account }}</td>
                                 <td>{{ caso.status }}</td>
-                                <td><button class="expand-button" onclick="openModal('{{ caso.number }}', '{{ caso.created_at }}', '{{ caso.channel_account }}', '{{ caso.status }}', '{{ caso.user_id }}', '{{ caso.source_channel }}', '{{ caso.type_id }}', '{{ caso.tags|join:', '|escapejs }}')">Ver detalles</button></td>
+                                <td><button class="expand-button" onclick="openModal('{{ caso.number }}', '{{ caso.created_at_full }}', '{{ caso.channel_account }}', '{{ caso.status }}', '{{ caso.user_id }}', '{{ caso.source_channel }}', '{{ caso.type_id }}', '{{ caso.tags|join:', '|escapejs }}', '{{ caso.id }}')">+</button></td>
                             </tr>
                         {% endfor %}
                     {% else %}
@@ -219,7 +247,7 @@
 
     <script>
         // Función para abrir el modal
-        function openModal(caso, fecha, nombre, estado, asesor, canal, tipo, etiqueta) {
+        function openModal(caso, fecha, nombre, estado, asesor, canal, tipo, etiqueta, id) {
             console.log('Caso:', caso);
             console.log('Etiqueta:', etiqueta);
             var etiquetas;
@@ -260,6 +288,7 @@
                             <td><strong>Etiquetas</strong><br><span style="word-wrap: break-word; overflow-wrap: break-word;">${etiquetas}</span></td>
                         </tr>
                     </table>
+                    <a href="https://wcentrix.net/app/#/tickets/${id}" target="_blank" class="btn">Ir al caso</a>
                 </div>
 
             `;

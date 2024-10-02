@@ -127,7 +127,7 @@ class BuscarAfiliadoView(View):
                         print(f"Contacto_ID: {contact_id}")
 
                         # Consulta de casos
-                        url_casos = f'https://api.wcx.cloud/core/v1/cases?sort=asc&sort_field=last_update&limit=10&page=1&filtering=[{{"field":"case.contact_id","operator":"EQUAL","value":"{contact_id}"}}]&fields=number,user_id,status,created_at,user_id,source_channel,type_id,tags,channel_account'
+                        url_casos = f'https://api.wcx.cloud/core/v1/cases?sort=asc&sort_field=last_update&limit=10&page=1&filtering=[{{"field":"case.contact_id","operator":"EQUAL","value":"{contact_id}"}}]&fields=id,number,user_id,status,created_at,user_id,source_channel,type_id,tags,channel_account'
                         response_casos = requests.get(url_casos, headers=headers_wise)
 
                         if response_casos.status_code == 200:
@@ -148,9 +148,15 @@ class BuscarAfiliadoView(View):
                                 if fecha_str:
                                     # Convertir y reformatear la fecha
                                     fecha_obj = datetime.strptime(fecha_str, '%Y-%m-%d %H:%M:%S')
-                                    caso['created_at'] = fecha_obj.strftime('%d-%m | %H:%M')
+
+                                    # Formato corto: solo día y mes
+                                    caso['created_at'] = fecha_obj.strftime('%d-%m')
+
+                                    # Formato largo: dia, mes, hora y minutos
+                                    caso['created_at_full'] = fecha_obj.strftime('%d-%m | %H:%M')
                                 else:
                                     caso['created_at'] = "Fecha no disponible"
+                                    caso['created_at_full'] = "Fecha no disponible"
                                 
                                 # Traducción de estados.
                                 status_str = caso.get('status')
@@ -227,7 +233,7 @@ class BuscarAfiliadoView(View):
                             pass
                         
                         # Ordenar los casos por la fecha 'created_at'
-                        all_cases = sorted(all_cases, key=lambda x: datetime.strptime(x['created_at'], '%d-%m | %H:%M'), reverse=True)
+                        all_cases = sorted(all_cases, key=lambda x: datetime.strptime(x['created_at_full'], '%d-%m | %H:%M'), reverse=True)
 
                     else:
                         print(f"No se encontraron datos de contacto para {nro_afi}.")
