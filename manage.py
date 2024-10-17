@@ -12,7 +12,7 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
 
-    # Obtener el puerto de la variable de entorno PORT o usar 8000 por defecto
+    # Obtener el puerto de la variable de entorno PORT o usar 80 por defecto
     port = os.environ.get('PORT', '8000')
 
     # Iniciar el servidor en 0.0.0.0 y el puerto obtenido
