@@ -24,8 +24,8 @@
             padding: 5px; /* Espaciado interno */
             border-radius: 10px; /* Bordes redondeados */
             width: 100%; /* Ancho completo */
-            max-width: 375px; /* Máximo ancho */
-            max-height: 332px; /* Máxima altura */
+            max-width: 332px; /* Máximo ancho */
+            max-height: 375px; /* Máxima altura */
             overflow-y: auto; /* Scroll vertical si es necesario */
         }
 
@@ -48,7 +48,7 @@
         }
 
         td {
-            max-width: 150px; /* Limitar ancho máximo de celdas */
+            max-width: 120px; /* Limitar ancho máximo de celdas */
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -169,7 +169,55 @@
             border: none;
         }
 
+        .deuda-roja {
+            color: red;
+            font-weight: bold;
+            border: 2px solid red;
+            background-color: #ffffff; /* Fondo rojo claro */
+        }
 
+        @media (max-width: 332px) and (max-height: 375px) {
+            body {
+                height: 100%; /* Ajusta para adaptarse a la altura disponible */
+                padding: 0;
+                margin: 0;
+            }
+
+            .content {
+                max-width: 100%; /* Asegura que el ancho sea responsivo */
+                max-height: 100%; /* Asegura que la altura sea responsiva */
+                border-radius: 5px; /* Bordes menos pronunciados para pantallas pequeñas */
+                padding: 5px; /* Reduce el padding interno */
+                overflow: auto; /* Habilita el scroll si es necesario */
+            }
+
+            table {
+                font-size: 0.7em; /* Reduce el tamaño de texto en tablas */
+            }
+
+            th, td {
+                padding: 2px; /* Reduce el espacio interno */
+            }
+
+            .modal {
+                width: 90%; /* Ajusta el ancho del modal */
+                height: auto; /* Altura automática */
+                max-height: 80%; /* No exceder el 80% de la pantalla */
+                overflow-y: auto; /* Scroll si es necesario */
+            }
+
+            .expand-button, .modal .btn {
+                font-size: 0.6em; /* Reduce el tamaño del texto en botones */
+                padding: 4px; /* Ajusta el padding del botón */
+            }
+
+            .close-button {
+                width: 20px;
+                height: 20px;
+                font-size: 14px;
+                line-height: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -183,19 +231,19 @@
                         <th colspan="4" style="background-color: #008000; color: white;">Información del grupo familiar</th>
                     </tr>
                     <tr>
+                        <th>Deuda</th>
                         <th>Nombre</th>
                         <th>DNI</th>
                         <th>Parentesco</th>
-                        <th>Deuda</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for item in data %}
                         <tr>
+                            <td>{{ item.Deuda }}</td>
                             <td>{{ item.Nombre }}</td>
                             <td>{{ item.DNI }}</td>
                             <td>{{ item.Parentesco }}</td>
-                            <td>{{ item.Deuda }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -302,6 +350,15 @@
             document.getElementById('modal').style.display = 'none';
             document.getElementById('modal-overlay').style.display = 'none';
         }
+
+        document.querySelectorAll("table tbody tr").forEach(row => {
+            // Obtiene la celda de la columna "Deuda" (asumiendo que es la primera celda de cada fila)
+            const deudaCell = row.cells[0];
+            if (deudaCell && deudaCell.textContent.trim() === "SI") {
+                // Aplica la clase CSS
+                deudaCell.classList.add("deuda-roja");
+            }
+        });
     </script>
 </body>
 </html>
