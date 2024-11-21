@@ -41,10 +41,9 @@ class BuscarAfiliadoView(View):
  
     def get(self, request, dni, *args, **kwargs):
         fecha_actual = datetime.now().strftime("%Y-%m-%d")
-        print(f"La fecha actual es {fecha_actual} y el DNI {dni}")
+        #print(f"La fecha actual es {fecha_actual} y el DNI {dni}")
  
         url_afiliado = "https://appmobile.nobissalud.com.ar/api/afiliados/gestionAfiliados"
-        url_deuda = f"https://appmobile.nobissalud.com.ar/api/AgentesCuenta/Deuda/{dni}"
        
         payload_afiliado = {
             "numero": None,
@@ -72,7 +71,7 @@ class BuscarAfiliadoView(View):
        
         # Solicitud a la API de afiliados
         response_afiliado = requests.post(url_afiliado, data=payload_json_afiliado, headers=headers)
-        print(response_afiliado.text)
+        #print(response_afiliado.text)
  
         if response_afiliado.status_code == 200:
             data_afiliado = response_afiliado.json().get('data', [])
@@ -80,15 +79,28 @@ class BuscarAfiliadoView(View):
                 df_afiliado = json_normalize(data_afiliado)
                 df_selected = df_afiliado[["nombre", "nroAfi", "parentesco"]]
                 df_selected.columns = ["Nombre", "DNI", "Parentesco"]
- 
+
+                dni_aux = 0
                 # Solicitud a la API de deuda
-                response_deuda = requests.get(url_deuda, headers=headers)
-                if response_deuda.status_code == 200:
-                    data_deuda = response_deuda.json()
-                    total_deuda = sum(float(item.get("monto", 0)) for item in data_deuda)
-                    total_deuda = "SI" if total_deuda > 0 else "NO"
+                for x in data_afiliado:
+                    if x.get("esTitular") == True:
+                        dni_aux = x.get("nroAfi")
+                        print(f"Titular detectado: {dni_aux}")
+                        break
+                    else:
+                        pass
+                
+                if dni_aux != 0:
+                    url_deuda = f"https://appmobile.nobissalud.com.ar/api/AgentesCuenta/Deuda/{dni_aux}"
+                    response_deuda = requests.get(url_deuda, headers=headers)
+                    if response_deuda.status_code == 200:
+                        data_deuda = response_deuda.json()
+                        total_deuda = sum(float(item.get("monto", 0)) for item in data_deuda)
+                        total_deuda = "SI" if total_deuda > 0 else "NO"
+                    else:
+                        total_deuda = "Sin dato"
                 else:
-                    total_deuda = "Sin dato"
+                    print("GRUPO FAMILIAR SIN TITULAR, REVISAR!")
  
                 df_selected = df_selected.copy()
                 df_selected["Deuda"] = total_deuda
