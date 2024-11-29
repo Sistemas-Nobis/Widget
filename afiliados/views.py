@@ -10,7 +10,7 @@ import pytz
 from dateutil.relativedelta import relativedelta
  
 class BuscarAfiliadoView(View):
-    template_name = 'busqueda2.html'
+    template_name = 'ate_produccion.html'
  
     def obtener_token_wise(self):
         """
@@ -93,14 +93,24 @@ class BuscarAfiliadoView(View):
                 if dni_aux != 0:
                     url_deuda = f"https://appmobile.nobissalud.com.ar/api/AgentesCuenta/Deuda/{dni_aux}"
                     response_deuda = requests.get(url_deuda, headers=headers)
+                    data_deuda = response_deuda.json()
+
+                    hoy = datetime.today()
+
                     if response_deuda.status_code == 200:
-                        data_deuda = response_deuda.json()
-                        total_deuda = sum(float(item.get("monto", 0)) for item in data_deuda)
-                        total_deuda = "SI" if total_deuda > 0 else "NO"
+                        for deuda in data_deuda:
+                            fecven_dt = datetime.strptime(deuda.get("fecven"), "%d/%m/%Y")
+                            if fecven_dt < hoy:
+                                total_deuda = sum(float(item.get("monto", 0)) for item in data_deuda)
+                                total_deuda = "SI" if total_deuda > 0 else "NO"
+                                break
+                            else:
+                                total_deuda = "NO"
                     else:
                         total_deuda = "Sin dato"
                 else:
                     print("GRUPO FAMILIAR SIN TITULAR, REVISAR!")
+                    total_deuda = "Sin titular"
  
                 df_selected = df_selected.copy()
                 df_selected["Deuda"] = total_deuda
@@ -278,7 +288,7 @@ class BuscarAfiliadoView(View):
        
  
 class BuscarRetencionView(View):
-    template_name = 'reteprueba.html'
+    template_name = 'rete_produccion.html'
  
     def obtener_token_wise(self):
         """
@@ -309,10 +319,9 @@ class BuscarRetencionView(View):
  
     def get(self, request, dni, *args, **kwargs):
         fecha_actual = datetime.now().strftime("%Y-%m-%d")
-        print(f"La fecha actual es {fecha_actual} y el DNI {dni}")
+        #print(f"La fecha actual es {fecha_actual} y el DNI {dni}")
  
         url_afiliado = "https://appmobile.nobissalud.com.ar/api/afiliados/gestionAfiliados"
-        url_deuda = f"https://appmobile.nobissalud.com.ar/api/AgentesCuenta/Deuda/{dni}"
        
         payload_afiliado = {
             "numero": None,
@@ -331,6 +340,10 @@ class BuscarRetencionView(View):
             "Content-Type": "application/json",
             "Authorization": f"Bearer {token_gecros}"
             }
+        
+        headers_interno = {
+            "Content-Type": "application/json"
+            }
  
         # Validación del DNI
         if len(dni) == 0:
@@ -340,7 +353,7 @@ class BuscarRetencionView(View):
        
         # Solicitud a la API de afiliados
         response_afiliado = requests.post(url_afiliado, data=payload_json_afiliado, headers=headers)
-        print(response_afiliado.text)
+        #print(response_afiliado.text)
  
         if response_afiliado.status_code == 200:
             data_afiliado = response_afiliado.json().get('data', [])
@@ -348,16 +361,37 @@ class BuscarRetencionView(View):
                 df_afiliado = json_normalize(data_afiliado)
                 df_selected = df_afiliado[["nombre", "nroAfi", "parentesco", "estadoBenef"]]
                 df_selected.columns = ["Nombre", "DNI", "Parentesco", "Estado"]
- 
+
+                dni_aux = 0
                 # Solicitud a la API de deuda
-                response_deuda = requests.get(url_deuda, headers=headers)
-                if response_deuda.status_code == 200:
-                    data_deuda = response_deuda.json()
-                    total_deuda = sum(float(item.get("monto", 0)) for item in data_deuda)
-                    print(total_deuda)
-                    total_deuda = total_deuda if total_deuda > 0 else "Sin deuda"
+                for x in data_afiliado:
+                    if x.get("esTitular") == True:
+                        dni_aux = x.get("nroAfi")
+                        #print(f"Titular detectado: {dni_aux}")
+                        break
+                    else:
+                        pass
+                
+                hoy = datetime.today()
+
+                if dni_aux != 0:
+                    url_deuda = f"https://appmobile.nobissalud.com.ar/api/AgentesCuenta/Deuda/{dni_aux}"
+                    response_deuda = requests.get(url_deuda, headers=headers)
+                    if response_deuda.status_code == 200:
+                        data_deuda = response_deuda.json()
+                        total_deuda = 0
+                        for deuda in data_deuda:
+                            fecvenc_dt = datetime.strptime(deuda.get("fecven"), "%d/%m/%Y")
+                            if fecvenc_dt < hoy:
+                                total_deuda += float(deuda.get("monto"))
+                            else:
+                                pass
+                        total_deuda = total_deuda if total_deuda > 0 else "Sin deuda"
+                    else:
+                        total_deuda = "Sin dato"
                 else:
-                    total_deuda = "Sin dato"
+                    print("GRUPO FAMILIAR SIN TITULAR, REVISAR!")
+                    total_deuda = "Sin titular"
  
                 # Crear lista de resultados combinados
                 resultados_combinados = []
@@ -397,9 +431,67 @@ class BuscarRetencionView(View):
                             afiliado_info['Edad'] = edad
                         else:
                             afiliado_info['Edad'] = "Sin fecha de nacimiento"
- 
+
+                    # Solicitud a la API interna para obtener fecha de alta y patologia
+                    url_patologias = f"https://api.nobis.com.ar/fecha_alta_y_patologias/{nro_afi}"
+                    response_p = requests.get(url_patologias, headers=headers_interno)
+                    data_p = response_p.json()
+
+                    if data_p:
+                        
+                        # Fecha de alta
+                        fecha_alta = data_p[0].get('fecha_alta')
+                        fecha_alta_format = datetime.strptime(fecha_alta, '%Y-%m-%dT%H:%M:%S.000')
+
+                        fecha_formateada = fecha_alta_format.strftime('%d-%m-%Y')
+
+                        afiliado_info['Fecha_alta'] = fecha_formateada
+
+                        patologia = data_p[0].get('cobertura_especial')
+                        if patologia != None:
+                            afiliado_info['Cobertura_especial'] = patologia
+                            #print(patologia)
+                        else:
+                            afiliado_info['Cobertura_especial'] = 'Sin cobertura especial'
+                            #print("SIN COBERTURA ESPECIAL")
+                    else:
+                        print("Error. Fecha de alta no encontrada.")
+
                     resultados_combinados.append(afiliado_info)
- 
+
+                # Aportes
+                all_aportes = []
+
+                url_aportes = f"https://api.nobis.com.ar/ultimos_aportes_ctacte/{dni_aux}"
+                response_a = requests.get(url_aportes, headers=headers_interno)
+                data_a = response_a.json()
+
+                cont = 0
+
+                if data_a:
+                    for aporte in data_a:
+                        if cont != 5:
+                            #periodo = aporte.get('comp_peri')
+                            #print(periodo)
+
+                            monto = aporte.get('comp_total')
+                            #print(monto)
+
+                            #dni = aporte.get('numero').replace(' ', '')
+                            #aporte['numero'] == dni
+                            #print(dni)
+
+                            if monto > 1:
+                                all_aportes.append(aporte)
+                                cont+=1
+                            else:
+                                pass
+                        else:
+                            break
+                else:
+                    pass
+
+
                 # Ordenar por parentesco
                 orden_parentesco = {"TITULAR": 1, "CONYUGE": 2, "HIJO/A": 3, "FAMILIAR A CARGO": 4}
                 for afiliado in resultados_combinados:
@@ -410,7 +502,7 @@ class BuscarRetencionView(View):
                     del afiliado['Parentesco_Orden']  # Eliminar el campo de ordenamiento antes de renderizar
  
                 # Renderiza la plantilla con ambos conjuntos de datos
-                return render(request, self.template_name, {'data': resultados_combinados})
+                return render(request, self.template_name, {'data': resultados_combinados, 'data_aportes': all_aportes})
  
             else:
                 return render(request, self.template_name, {'error': 'No se encontraron datos para el DNI proporcionado.'}, status=404)

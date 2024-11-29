@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
     <title>Nobis Medical - Widget</title>
     <style>
         body {
@@ -22,8 +24,8 @@
             padding: 5px; /* Espaciado interno */
             border-radius: 10px; /* Bordes redondeados */
             width: 100%; /* Ancho completo */
-            max-width: 375px; /* Máximo ancho */
-            max-height: 332px; /* Máxima altura */
+            max-width: 332px; /* Máximo ancho */
+            max-height: 375px; /* Máxima altura */
             overflow-y: auto; /* Scroll vertical si es necesario */
         }
 
@@ -46,7 +48,7 @@
         }
 
         td {
-            max-width: 150px; /* Limitar ancho máximo de celdas */
+            max-width: 120px; /* Limitar ancho máximo de celdas */
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -167,7 +169,70 @@
             border: none;
         }
 
+        .deuda-roja {
+            color: red;
+            font-weight: bold;
+            border: 2px solid red;
+            background-color: #ffffff; /* Fondo rojo claro */
+        }
 
+        /* Estilo para el botón a atención */
+        .top-right-button {
+            position: static;
+            background-color: #ffffff;
+            color: #008000;
+            border: none;
+            border-radius: 5px;
+            padding: 0px 10px;
+            cursor: pointer;
+            font-size: 1em;
+            float: right;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        @media (max-height: 375px) {
+            body {
+                height: 100%; /* Ajusta para adaptarse a la altura disponible */
+                padding: 0;
+                margin: 0;
+            }
+
+            .content {
+                max-width: 100%; /* Asegura que el ancho sea responsivo */
+                max-height: 100%; /* Asegura que la altura sea responsiva */
+                border-radius: 5px; /* Bordes menos pronunciados para pantallas pequeñas */
+                padding: 5px; /* Reduce el padding interno */
+                overflow: auto; /* Habilita el scroll si es necesario */
+            }
+
+            table {
+                font-size: 1em; /* Reduce el tamaño de texto en tablas */
+            }
+
+            th, td {
+                padding: 2px; /* Reduce el espacio interno */
+            }
+
+            .modal {
+                width: 90%; /* Ajusta el ancho del modal */
+                height: auto; /* Altura automática */
+                max-height: 80%; /* No exceder el 80% de la pantalla */
+                overflow-y: auto; /* Scroll si es necesario */
+            }
+
+            .expand-button, .modal .btn {
+                font-size: 0.6em; /* Reduce el tamaño del texto en botones */
+                padding: 4px; /* Ajusta el padding del botón */
+            }
+
+            .close-button {
+                width: 25px;
+                height: 25px;
+                font-size: 15px;
+                line-height: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -178,24 +243,23 @@
             <table>
                 <thead>
                     <tr>
-                        <th colspan="5" style="background-color: #008000; color: white;">Información del grupo familiar</th>
+                        <th colspan="4" style="background-color: #008000; color: white;">Información del grupo familiar
+                        <button id="redirect-button" class="top-right-button">→ Retención</button></th>
                     </tr>
                     <tr>
+                        <th>Deuda</th>
                         <th>Nombre</th>
                         <th>DNI</th>
                         <th>Parentesco</th>
-                        <th>Edad</th>
-                        <th>Más</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for item in data %}
                         <tr>
+                            <td>{{ item.Deuda }}</td>
                             <td>{{ item.Nombre }}</td>
                             <td>{{ item.DNI }}</td>
                             <td>{{ item.Parentesco }}</td>
-                            <td>{{ item.Edad }}</td>
-                            <td><button class="expand-button" onclick="openModal('{{ item.Provincia }}', '28/10/2024', '{{ item.Estado }}','FALSEO_PMI-RANDOM')">+</button></td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -205,35 +269,32 @@
             {% endif %}
         </div>
 
-        <div>
-            <table>
-                {% for item in data %}
-                    {% if forloop.first %}
-                        <tr>
-                            <th>Deuda</th>
-                            <th style="background-color: white; color: black;">${{ item.Deuda }}</th>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-            </table>
-        </div>
-
-        <!-- Tabla de Aportes -->
+        <!-- Tabla de Casos -->
         <div>
             <table>
                 <thead>
                     <tr>
-                        <th>DNI</th>
-                        <th>Periodo</th>
-                        <th>Aporte</th>
+                        <th>Fecha</th>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Más</th>
                     </tr>
                 </thead>
                 <tbody>
-                        <tr class="row">
-                            <td>38407571</td>
-                            <td>202410</td>
-                            <td>$8.000</td>
+                    {% if data_casos %}
+                        {% for caso in data_casos %}
+                            <tr class="row">
+                                <td>{{ caso.created_at }}</td>
+                                <td>{{ caso.channel_account }}</td>
+                                <td>{{ caso.status }}</td>
+                                <td><button class="expand-button" onclick="openModal('{{ caso.number }}', '{{ caso.created_at_full }}', '{{ caso.channel_account }}', '{{ caso.status }}', '{{ caso.user_id }}', '{{ caso.source_channel }}', '{{ caso.type_id }}', '{{ caso.tags|join:', '|escapejs }}', '{{ caso.id }}')">+</button></td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="8" style="color: red; font-weight: bold;">No se encontraron casos.</td>
                         </tr>
+                    {% endif %}
                 </tbody>
             </table>
         </div>
@@ -248,17 +309,38 @@
         </div>
     </div>
 
+    <!-- Script para pasar de pestaña -->
+    <script>
+        // Obtener el DNI desde la URL actual
+        const currentUrl = window.location.href;
+        const dniMatch = currentUrl.match(/\/atencion\/(\d+)/);
+
+        if (dniMatch && dniMatch[1]) {
+            const dni = dniMatch[1];
+
+            // Configurar el redireccionamiento del botón
+            const button = document.getElementById('redirect-button');
+            button.addEventListener('click', () => {
+                window.location.href = `https://widget.nobis.com.ar/retencion/${dni}`;
+            });
+        } else {
+            console.error("No se pudo encontrar el DNI en la URL actual.");
+        }
+    </script>
+
+
     <script>
         // Función para abrir el modal
-        function openModal(provincia, fecha_alta, estado, patologias) {
-            console.log('OK:', provincia, fecha_alta, estado, patologias);
+        function openModal(caso, fecha, nombre, estado, asesor, canal, tipo, etiqueta, id) {
+            console.log('Caso:', caso);
+            console.log('Etiqueta:', etiqueta);
             var etiquetas;
-            if (typeof patologias === 'string' && patologias.trim() !== '') {
-                etiquetas = patologias; // Es una cadena válida
-            } else if (Array.isArray(patologias)) {
-                etiquetas = patologias.length > 0 ? patologias.join(', ') : 'Sin patologias';
+            if (typeof etiqueta === 'string' && etiqueta.trim() !== '') {
+                etiquetas = etiqueta; // Es una cadena válida
+            } else if (Array.isArray(etiqueta)) {
+                etiquetas = etiqueta.length > 0 ? etiqueta.join(', ') : 'Sin etiquetas';
             } else {
-                etiquetas = 'Sin patologias'; // Caso donde no hay etiquetas
+                etiquetas = 'Sin etiquetas'; // Caso donde no hay etiquetas
             }
 
             var modalContent = document.getElementById('modal-content');
@@ -266,19 +348,33 @@
                 <div class="modal-content">
                     <table style="width: 100%; border-collapse: collapse;">
                         <tr>
-                            <td><strong>Provincia:</strong> ${provincia}</td>
+                            <td style="font-size: 1.2em; font-weight: bold;">Caso ${caso}</td>
                         </tr>
                         <tr>
-                            <td><strong>Fecha de alta:</strong> ${fecha_alta}</td>
+                            <td><strong>Fecha y hora:</strong> ${fecha}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Nombre:</strong> ${nombre}</td>
                         </tr>
                         <tr>
                             <td><strong>Estado:</strong> ${estado}</td>
                         </tr>
                         <tr>
-                            <td><strong>Patologias</strong><br><span style="word-wrap: break-word; overflow-wrap: break-word;">${etiquetas}</span></td>
+                            <td><strong>Asesor:</strong> ${asesor}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Canal:</strong> ${canal}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tipo:</strong> ${tipo}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Etiquetas</strong><br><span style="word-wrap: break-word; overflow-wrap: break-word;">${etiquetas}</span></td>
                         </tr>
                     </table>
+                    <a href="https://wcentrix.net/app/#/tickets/${id}" target="_blank" class="btn">Ir al caso</a>
                 </div>
+
             `;
 
             document.getElementById('modal').style.display = 'block';
@@ -290,6 +386,15 @@
             document.getElementById('modal').style.display = 'none';
             document.getElementById('modal-overlay').style.display = 'none';
         }
+
+        document.querySelectorAll("table tbody tr").forEach(row => {
+            // Obtiene la celda de la columna "Deuda" (asumiendo que es la primera celda de cada fila)
+            const deudaCell = row.cells[0];
+            if (deudaCell && deudaCell.textContent.trim() === "SI") {
+                // Aplica la clase CSS
+                deudaCell.classList.add("deuda-roja");
+            }
+        });
     </script>
 </body>
 </html>
