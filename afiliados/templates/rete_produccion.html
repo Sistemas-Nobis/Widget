@@ -408,11 +408,11 @@
             monto = parseFloat(deudaTexto) || 0;
 
             // Aplicar clases de color según el rango de deuda
-            if (monto >= 1 && monto <= 5000) {
+            if (monto >= 1 && monto <= 30000) {
                 deudaElemento.className = "deuda-baja";
-            } else if (monto >= 5001 && monto <= 15000) {
+            } else if (monto >= 30001 && monto <= 59999) {
                 deudaElemento.className = "deuda-media";
-            } else if (monto > 15000) {
+            } else if (monto > 60000) {
                 deudaElemento.className = "deuda-alta";
             }
         }
