@@ -392,7 +392,7 @@ class BuscarRetencionView(View):
                 else:
                     print("GRUPO FAMILIAR SIN TITULAR, REVISAR!")
                     total_deuda = "Sin titular"
- 
+
                 # Crear lista de resultados combinados
                 resultados_combinados = []
  

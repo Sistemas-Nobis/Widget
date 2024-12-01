@@ -48,7 +48,7 @@
         }
 
         td {
-            max-width: 150px; /* Limitar ancho máximo de celdas */
+            max-width: 100px; /* Limitar ancho máximo de celdas */
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -189,17 +189,31 @@
         }
 
         .deuda-baja {
-            color: yellow;
+            color: orange;
         }
 
         .deuda-media {
-            color: orange;
+            color: orangered;
         }
 
         .deuda-alta {
             color: red;
         }
 
+        .cot_button{
+            background-color: #A2C617;
+            position: static;
+            color: #ffffff;
+            border: none;
+            padding: 0px 0px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        td select, td input {
+            width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
+            box-sizing: border-box; /* Incluye padding y borde dentro del ancho total */
+        }
 
         @media (max-height: 375px) {
             body {
@@ -288,9 +302,10 @@
                         <tr>
                             <th>Deuda</th>
                             <th style="background-color: white; font-weight: bold;" id='deuda-monto' class="">${{ item.Deuda }}</th>
-                        </tr>
                     {% endif %}
                 {% endfor %}
+                        <!--<th style="background-color: #A2C617;"><button id="Cotizar" class="cot_button" onclick="openSecondaryModal()">Cotizar</button></th>!-->
+                        </tr>
             </table>
         </div>
 
@@ -395,7 +410,7 @@
         // Cambiar colores de deuda basado en su monto
         function actualizarColorDeuda() {
             const deudaElemento = document.getElementById('deuda-monto');
-            const deudaTexto = deudaElemento.textContent.replace('$', '').replace(',', '').trim();
+            const deudaTexto = deudaElemento.textContent.replace('$', '').trim();
             let monto = 0;
 
             // Determinar el valor de la deuda
@@ -419,6 +434,78 @@
 
         // Llamar la función de colores en deuda al cargar la pestaña
         actualizarColorDeuda();
+    </script>
+
+    <!-- Modal para cotizar -->
+    <div class="modal-overlay" id="secondary-modal-overlay"></div>
+    <div class="modal" id="secondary-modal">
+        <button class="close-button" onclick="closeSecondaryModal()">X</button>
+        <div id="secondary-modal-content">
+            <div class="modal-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parentesco</th>
+                            <th>Edad</th>
+                            <th>Provincia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in data %}
+                            <tr>
+                                <td>{{ item.Parentesco }}</td>
+                                <td><input type="number" min="1" max="99" value="{{item.Edad }}" required oninput="this.value = Math.min(Math.max(this.value, 1), 99)"/></td>
+                                <td><select id="provincias" name="provincias">
+                                    <option value="Cordoba" {% if item.Provincia == "CORDOBA" %}selected{% endif %}>Cordoba</option>
+                                    <option value="San Luis" {% if item.Provincia == "SAN LUIS" %}selected{% endif %}>San Luis</option>
+                                    <option value="Salta" {% if item.Provincia == "SALTA" %}selected{% endif %}>Salta</option>
+                                    <option value="Jujuy" {% if item.Provincia == "JUJUY" %}selected{% endif %}>Jujuy</option>
+                                    <option value="Tucuman" {% if item.Provincia == "TUCUMAN" %}selected{% endif %}>Tucuman</option>
+                                    <option value="Mendoza" {% if item.Provincia == "MENDOZA" %}selected{% endif %}>Mendoza</option>
+                                    <option value="San Juan" {% if item.Provincia == "SAN JUAN" %}selected{% endif %}>San Juan</option>
+                                    <option value="Santiago" {% if item.Provincia == "SANTIAGO DEL ESTERO" %}selected{% endif %}>Santiago del Estero</option>
+                                    <option value="Catamarca" {% if item.Provincia == "CATAMARCA" %}selected{% endif %}>Catamarca</option>
+                                    <option value="La Rioja" {% if item.Provincia == "LA RIOJA" %}selected{% endif %}>La Rioja</option>
+                                </select></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="color: #008000; background-color: #ffffff;">Plan:</th>
+                            <th><select id="plan" name="plan">
+                                <option value="B200">B200</option>
+                                <option value="B300">B300</option>
+                                <option value="N200">N200</option>
+                                <option value="N400">N400</option>
+                                <option value="N500">N500</option>
+                            </select></th>
+                        </tr>
+                    </thead>
+                </table>
+                <button onclick="guardarDatos()" class="btn">Cotizar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        // Mostrar el segundo modal
+        function openSecondaryModal() {
+            document.getElementById('secondary-modal').style.display = 'block';
+            document.getElementById('secondary-modal-overlay').style.display = 'block';
+        }
+
+        // Cerrar el segundo modal
+        function closeSecondaryModal() {
+            document.getElementById('secondary-modal').style.display = 'none';
+            document.getElementById('secondary-modal-overlay').style.display = 'none';
+        }
+
+        document.getElementById('Cotizar').addEventListener('click', openSecondaryModal);
+
     </script>
 </body>
 </html>
