@@ -90,6 +90,7 @@ class BuscarAfiliadoView(View):
                     else:
                         pass
                 
+                total_deuda = 0
                 if dni_aux != 0:
                     url_deuda = f"https://appmobile.nobissalud.com.ar/api/AgentesCuenta/Deuda/{dni_aux}"
                     response_deuda = requests.get(url_deuda, headers=headers)
@@ -97,7 +98,7 @@ class BuscarAfiliadoView(View):
 
                     hoy = datetime.today()
 
-                    if response_deuda.status_code == 200:
+                    if response_deuda.status_code == 200 and data_deuda != []:
                         for deuda in data_deuda:
                             fecven_dt = datetime.strptime(deuda.get("fecven"), "%d/%m/%Y")
                             if fecven_dt < hoy:
@@ -106,8 +107,12 @@ class BuscarAfiliadoView(View):
                                 break
                             else:
                                 total_deuda = "NO"
-                    else:
+                    
+                    elif response_deuda.status_code != 200:
                         total_deuda = "Sin dato"
+
+                    else:
+                        total_deuda = "NO"
                 else:
                     print("GRUPO FAMILIAR SIN TITULAR, REVISAR!")
                     total_deuda = "Sin titular"
@@ -259,11 +264,12 @@ class BuscarAfiliadoView(View):
  
                                 # Comparar fechas
                                 if tres_meses_antes <= fecha_obj <= fecha_actual:
-                                    print("Fecha OK.")
+                                    #print("Fecha OK.")
                                     # Añadir el caso reformateado a la lista
                                     all_cases.append(caso)
                                 else:
-                                    print("Fecha INVALIDA.")
+                                    pass
+                                    #print("Fecha INVALIDA.")
  
                         else:
                             pass
