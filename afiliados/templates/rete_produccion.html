@@ -3,9 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     {% load static %}
     <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
     <title>Nobis Medical - Widget</title>
+
     <style>
         body {
             display: flex;
@@ -72,7 +84,7 @@
             top: 50%; /* Centrado verticalmente */
             left: 50%; /* Centrado horizontalmente */
             transform: translate(-50%, -50%); /* Asegura que el modal esté completamente centrado */
-            width: 300px; /* Ancho del modal */
+            width: 350px; /* Ancho del modal */
             height: 270px; /* Alto del modal */
             background-color: #ffffff; /* Fondo blanco */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra alrededor */
@@ -85,7 +97,7 @@
         .modal-content {
             display: flex;
             flex-direction: column;
-            max-width: 300px;
+            max-width: 350px;
             position: relative;
             padding-bottom: 40px; /* Espacio extra para el botón */
         }
@@ -131,8 +143,8 @@
         /* Botón para cerrar el modal */
         .close-button {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 10px;
+            right: 10px;
             background-color: #ff0000;
             color: #ffffff;
             border: none;
@@ -140,7 +152,7 @@
             cursor: pointer;
             width: 25px;
             height: 25px;
-            font-size: 18px;
+            font-size: 20px;
             text-align: center;
             line-height: 25px;
             z-index: 1001;
@@ -199,6 +211,14 @@
         .deuda-alta {
             color: red;
         }
+        
+        .bonif-activa {
+            color: #008000;
+        }
+
+        .bonif-inactiva {
+            color: red;
+        }
 
         .cot_button{
             background-color: #A2C617;
@@ -210,9 +230,48 @@
             font-weight: bold;
         }
 
+        .cot_button2 {
+            background-color: #13aa52;
+            border: 1px solid #13aa52;
+            border-radius: 4px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 10px 25px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
         td select, td input {
             width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
             box-sizing: border-box; /* Incluye padding y borde dentro del ancho total */
+            margin: auto;
+        }
+
+        .table_2 {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .estado-icono {
+            width: 13px;
+            height: 13px;
+        }
+
+        .select2-container .select2-selection--multiple {
+            flex-wrap: wrap; /* Permitir que las etiquetas bajen a la siguiente línea */
+            gap: 2px; /* Espacio entre las etiquetas */
+            max-height: 30px; /* Altura máxima para habilitar scroll */
+            overflow-y: auto; /* Scroll vertical */
+            overflow-x: hidden; /* Evitar desbordamiento horizontal */
+            text-align: left;
+        }
+
+        .select2-container .select2-selection__choice {
+            white-space: nowrap; /* Evitar que el texto dentro de las etiquetas se corte */
+            overflow: hidden;
+            text-overflow: ellipsis; /* Mostrar puntos suspensivos si el texto es muy largo */
+            max-width: 50%; /* Asegurar que las etiquetas no desborden */
         }
 
         @media (max-height: 375px) {
@@ -304,7 +363,7 @@
                             <th style="background-color: white; font-weight: bold;" id='deuda-monto' class="">${{ item.Deuda }}</th>
                     {% endif %}
                 {% endfor %}
-                        <!--<th style="background-color: #A2C617;"><button id="Cotizar" class="cot_button" onclick="openSecondaryModal()">Cotizar</button></th>!-->
+                        <th style="background-color: #A2C617;"><button id="Cotizar" class="cot_button" onclick="openSecondaryModal()">Cotizar</button></th>
                         </tr>
             </table>
         </div>
@@ -314,21 +373,42 @@
             <table>
                 <thead>
                     <tr>
+                        <th style="width: 50px;">-</th>
                         <th>Periodo</th>
                         <th>Aporte</th>
+                        <th style="width: 50px;">Estado</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% if data_aportes %}
                         {% for aporte in data_aportes %}
                             <tr class="row">
+                                <td>
+                                    <input 
+                                        type="checkbox" 
+                                        class="aporte-checkbox" 
+                                        data-valor="{{ aporte.comp_total }}" 
+                                        onchange="actualizarSeleccion()"
+                                    />
+                                </td>
                                 <td>{{ aporte.comp_peri }}</td>
                                 <td>${{ aporte.comp_total }}</td>
+                                <td>
+                                    {% if aporte.ap_estado == 'C' %}
+                                        <img src="{% static 'images/rojo.png' %}" title="Ya fue utilizado." alt="C" class="estado-icono">
+                                    {% elif aporte.ap_estado == 'U' %}
+                                        <img src="{% static 'images/verde.png' %}" title="Disponible." alt="U" class="estado-icono">
+                                    {% elif aporte.ap_estado == 'P' %}
+                                        <img src="{% static 'images/naranja.png' %}" title="Parcialmente utilizado" alt="P" class="estado-icono">
+                                    {% else %}
+                                        <img src="{% static 'images/desconocido.png' %}" title="Desconocido." alt="?" class="estado-icono">
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                     {% else %}
                         <tr class="row">
-                            <td colspan="2">Sin aportes</td>
+                            <td colspan="4">Sin aportes</td>
                         </tr>
                     {% endif %}
                 </tbody>
@@ -361,6 +441,29 @@
             });
         } else {
             console.error("No se pudo encontrar el DNI en la URL actual.");
+        }
+    </script>
+
+    <script>
+        let aportesSeleccionados = [];
+
+        function actualizarSeleccion() {
+            // Reiniciar la lista de seleccionados
+            aportesSeleccionados = [];
+            let total = 0;
+
+            // Seleccionar todos los checkboxes
+            document.querySelectorAll(".aporte-checkbox").forEach(checkbox => {
+                if (checkbox.checked) {
+                    const valor = parseFloat(checkbox.dataset.valor);
+                    aportesSeleccionados.push(valor);
+                    total += valor;
+                }
+            });
+
+            // Redondear hacia abajo y actualizar el campo de entrada
+            const totalRedondeado = Math.floor(total);
+            document.getElementById("aportes").value = totalRedondeado;
         }
     </script>
 
@@ -447,7 +550,7 @@
                         <tr>
                             <th>Parentesco</th>
                             <th>Edad</th>
-                            <th>Provincia</th>
+                            <th>Patologias</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -455,47 +558,145 @@
                             <tr>
                                 <td>{{ item.Parentesco }}</td>
                                 <td><input type="number" min="1" max="99" value="{{item.Edad }}" required oninput="this.value = Math.min(Math.max(this.value, 1), 99)"/></td>
-                                <td><select id="provincias" name="provincias">
-                                    <option value="Cordoba" {% if item.Provincia == "CORDOBA" %}selected{% endif %}>Cordoba</option>
-                                    <option value="San Luis" {% if item.Provincia == "SAN LUIS" %}selected{% endif %}>San Luis</option>
-                                    <option value="Salta" {% if item.Provincia == "SALTA" %}selected{% endif %}>Salta</option>
-                                    <option value="Jujuy" {% if item.Provincia == "JUJUY" %}selected{% endif %}>Jujuy</option>
-                                    <option value="Tucuman" {% if item.Provincia == "TUCUMAN" %}selected{% endif %}>Tucuman</option>
-                                    <option value="Mendoza" {% if item.Provincia == "MENDOZA" %}selected{% endif %}>Mendoza</option>
-                                    <option value="San Juan" {% if item.Provincia == "SAN JUAN" %}selected{% endif %}>San Juan</option>
-                                    <option value="Santiago" {% if item.Provincia == "SANTIAGO DEL ESTERO" %}selected{% endif %}>Santiago del Estero</option>
-                                    <option value="Catamarca" {% if item.Provincia == "CATAMARCA" %}selected{% endif %}>Catamarca</option>
-                                    <option value="La Rioja" {% if item.Provincia == "LA RIOJA" %}selected{% endif %}>La Rioja</option>
-                                </select></td>
+                                <td><select class="mi-select" style="width: 100%;" name="patologias[]" multiple="multiple"></select></td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-                <table>
+                <div class="table_2">
+                    <table>
+                        <thead>
+                            {% for x in data_fpago %}
+
+                                <tr>
+                                    <th>Forma de pago:</th>
+                                    <th style="background-color: #ffffff; color: black;" id='fpago' class="" colspan="2">{{ x.fpago_nombre }}</th>
+                                </tr>
+
+                            {% endfor %}
+                            {% for item in data %}
+                                {% if forloop.first %}
+                                    <tr>
+                                        <th>Provincia:</th>
+                                        <td><select id="provincias" name="provincias" onchange="actualizarPlanes()">
+                                        <option value="Cordoba" {% if item.Provincia == "CORDOBA" %}selected{% endif %}>Cordoba</option>
+                                        <option value="San_luis" {% if item.Provincia == "SAN LUIS" %}selected{% endif %}>San Luis</option>
+                                        <option value="Salta" {% if item.Provincia == "SALTA" %}selected{% endif %}>Salta</option>
+                                        <option value="Jujuy" {% if item.Provincia == "JUJUY" %}selected{% endif %}>Jujuy</option>
+                                        <option value="Tucuman" {% if item.Provincia == "TUCUMAN" %}selected{% endif %}>Tucuman</option>
+                                        <option value="Mendoza" {% if item.Provincia == "MENDOZA" %}selected{% endif %}>Mendoza</option>
+                                        <option value="San_Juan" {% if item.Provincia == "SAN JUAN" %}selected{% endif %}>San Juan</option>
+                                        <option value="Santiago" {% if item.Provincia == "SANTIAGO DEL ESTERO" %}selected{% endif %}>Santiago del Estero</option>
+                                        <option value="Catamarca" {% if item.Provincia == "CATAMARCA" %}selected{% endif %}>Catamarca</option>
+                                        <option value="LaRioja" {% if item.Provincia == "LA RIOJA" %}selected{% endif %}>La Rioja</option>
+                                    </select></td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                            <tr>
+                                <th>Condición:</th>
+                                <th style="background-color: #ffffff; color: black;"><select id="convenio" name="convenio" onchange="actualizarPlanes()">
+                                    <option value="1">Relación de dependencia</option>
+                                    <option value="2">Monotributo</option>
+                                    <option value="3">Prepago</option>
+                                </select></th>
+                            </tr>
+    
+                            <tr>
+                                <th>Plan:</th>
+                                <th style="background-color: #ffffff; color: black;"><select id="plan" name="plan">
+                                    <option value="B150">B150</option>
+                                    <option value="B200">B200</option>
+                                    <option value="B300">B300</option>
+                                    <option value="N200">N200</option>
+                                    <option value="N400">N400</option>
+                                    <option value="N500">N500</option>
+                                </select></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                
+                <table style="margin-top: 5px; text-align: center;">
                     <thead>
+                        {% for x in data_fpago %}
+
+                            <tr><th colspan="2">Bonificaciones</th></tr>
+                                
+                            <tr>
+                                <th>Último registro</th>
+                                <th>Manual (Cotizar)</th>
+                            </tr>
+                            
+                            {% if x.peri_hasta == 0 %}
+                                <tr>
+                                    <th style="background-color: #ffffff; color: black; font-size: 0.7em;" id="sin_bonif">
+                                        - Sin registros -
+                                    </th>
+                                    <th style="background-color: #ffffff; color: black;"><input type="number" min="0" id="bonif_manual" name="bonif_manual" value="0" oninput="this.value = Math.min(Math.max(this.value, 0), 100)"></th>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <!-- Mostrar valores de porcentaje y periodo -->
+                                    <th style="background-color: #ffffff; color: black;" id="bonif_porc">{{ x.porcentaje }} | <span style="font-weight: bold;" id="bonif_peri" class="">{{ x.peri_hasta }}</span>
+                                        <span 
+                                            style="color: #007bff; font-weight: bold; margin-left: 5px;" 
+                                            title="Detalles:&#10;Origen: {{ x.BonficaRec_obs }}">
+                                            ⓘ
+                                        </span>
+                                    </th>
+                                    <th style="background-color: #ffffff; color: black;"><input type="number" min="0" id="bonif_manual" name="bonif_manual" value="0" oninput="this.value = Math.min(Math.max(this.value, 0), 100)"></th>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+
                         <tr>
-                            <th style="color: #008000; background-color: #ffffff;">Plan:</th>
-                            <th><select id="plan" name="plan">
-                                <option value="B200">B200</option>
-                                <option value="B300">B300</option>
-                                <option value="N200">N200</option>
-                                <option value="N400">N400</option>
-                                <option value="N500">N500</option>
-                            </select></th>
+                            <th>Aporte: </th>
+                            <td><input type="number" min="0" step="1" id="aportes" name="aportes" value="0" oninput="validarEntrada(this); actualizarDesdeCampo()"></td>
                         </tr>
+
                     </thead>
                 </table>
-                <button onclick="guardarDatos()" class="btn">Cotizar</button>
+
+                <table id="resultados-cotizacion">
+                    <thead>
+                        <tr>
+                            <th>Cuota final</th>
+                            <th>Cuota pura</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <th colspan="2" style="color: black; background-color: #ffffff;"> --------------- </th>
+                        <!-- Aquí se insertarán las filas dinámicamente -->
+                    </tbody>
+                </table>
+
+                <button onclick="cotizar_actual()" class="cot_button2">Cotizar</button>
+
             </div>
         </div>
     </div>
 
     <script>
-        
+
+        function validarEntrada(input) {
+            // Eliminar caracteres no numéricos
+            input.value = input.value.replace(/[^0-9]/g, '');
+        }
+
+        function actualizarDesdeCampo() {
+            const valorManual = parseInt(document.getElementById("aportes").value) || 0;
+
+            // Si el valor ingresado manualmente no coincide con la suma, puedes decidir cómo manejarlo.
+            console.log("Valor ingresado manualmente:", valorManual);
+            // Actualizar lógica aquí si es necesario
+        }
+
         // Mostrar el segundo modal
         function openSecondaryModal() {
             document.getElementById('secondary-modal').style.display = 'block';
             document.getElementById('secondary-modal-overlay').style.display = 'block';
+            actualizarColorBonif()
         }
 
         // Cerrar el segundo modal
@@ -505,6 +706,319 @@
         }
 
         document.getElementById('Cotizar').addEventListener('click', openSecondaryModal);
+
+
+        const csrfToken = '{{ csrf_token }}';
+
+        function getCSRFToken() {
+            return csrfToken;
+        }
+        
+
+        // Cotizacion
+        function cotizar_actual() {
+            
+            // Datos fijos
+            const mes = new Date().getMonth(); // Mes actual
+
+            let edades = "";
+
+            // Recopilar los datos de la tabla
+            const rows = document.querySelectorAll("#secondary-modal tbody tr");
+            
+            edades = Array.from(rows).map(row => {
+                const input = row.querySelector('input[type="number"]');
+                return input ? input.value : ''; // Si no hay input, devuelve una cadena vacía
+            });
+
+            edades = edades.filter(ed => !isNaN(ed) && ed !== '');
+
+
+            const ubicacion = document.querySelector('#provincias').value; // Tomar la provincia de la primera fila
+            const plan = document.querySelector('#plan').value; // Plan seleccionado
+            const gestion = document.querySelector('#convenio').value; // Condición (seleccionada)
+
+            let aporte = document.querySelector('#aportes').value; // Aportes (ingresado)
+
+            if (aporte === ""){
+                //console.log("Aporte vacio")
+                aporte = 0
+            }
+            const bonificacion = document.querySelector('#bonif_manual').value; // Bonificación de agente de retención (ingresado)
+
+            //console.log(totalGrupal) // Valor de patologias en el grupo familiar
+
+            // Obtener el valor de bonif_porc, que contiene el porcentaje y otro contenido
+            const bonificacion_vigente = document.querySelector('#bonif_porc')?.textContent;
+            console.log(bonificacion_vigente); // Verifica el contenido de bonificacion_vigente
+
+            if (bonificacion_vigente) {
+                // Extrae solo la parte numérica antes del símbolo '|'
+                const bonificacion_v = bonificacion_vigente.split('|')[0].trim().replace(/[^0-9]/g, "");
+                console.log(bonificacion_v); // Verifica el valor numérico limpio
+                
+                const numericValue = parseInt(bonificacion_v, 10);
+                const numericValu = parseInt(bonificacion, 10);
+                
+                if ((numericValu + numericValue) > 100) { // Renombrar variables si es que se va a usar.
+                        console.error("Ha llegado a 100");
+                }
+                else {
+                    console.log("Valor permitido. <= 100");
+                }
+            } else {
+                console.error("No se encontró el valor de bonificacion_vigente.");
+            }
+
+
+            // Crear el objeto de datos para enviar al backend
+            const requestData = {
+                mes: mes,
+                plan: plan,
+                gestion: gestion,
+                ubicacion: ubicacion,
+                edades: edades,
+                aportes: aporte,
+                bonificaciones: bonificacion,
+                patologias: totalGrupal
+            };
+
+            // Enviar datos al backend mediante fetch
+            fetch('/api/cotizar/', { // Ajusta esta URL según tu configuración de Django
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken() // Incluye el token CSRF
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+
+                // Extraer los resultados de la cotización
+                const resultado = data.resultado || "Sin resultados";
+
+                // Insertar los resultados en la tabla
+                const tablaResultados = document.getElementById('resultados-cotizacion').querySelector('tbody');
+
+                // Limpiar filas existentes (opcional)
+                tablaResultados.innerHTML = '';
+
+                // Crear una nueva fila con los datos
+                const fila = document.createElement('tr');
+                
+                // Formatear los valores con separadores de miles
+                const formatter = new Intl.NumberFormat('es-AR', {
+                    style: 'currency',
+                    currency: 'ARS',
+                    minimumFractionDigits: 0
+                });
+
+                const primeraCuota = document.createElement('td');
+                primeraCuota.textContent = formatter.format(data.primera_cuota); // Valor de la primera cuota
+
+                const valorPlan = document.createElement('td');
+                valorPlan.textContent = formatter.format(data.valor_plan); // Valor del plan
+
+                // Agregar celdas a la fila
+                fila.appendChild(primeraCuota);
+                fila.appendChild(valorPlan);
+
+                // Agregar fila a la tabla
+                tablaResultados.appendChild(fila);
+                })
+                .catch(error => {
+                    console.error('Error al cotizar:', error);
+                });
+
+                //console.log(document.querySelector("#secondary-modal tbody tr")); // Verificar si las filas existen
+
+        }
+
+        // Función para obtener el token CSRF
+        function getCSRFToken() {
+            return document.querySelector('[name=csrfmiddlewaretoken]').value;
+        }
+
+
+        // Función para filtrar planes según provincia y condición
+        function actualizarPlanes() {
+            // Obtener los valores seleccionados
+            const provincia = document.getElementById('provincias').value;
+            const convenio = document.getElementById('convenio').value;
+            const planSelect = document.getElementById('plan');
+            
+            // Opciones de planes disponibles
+            const planesDisponibles = {
+                'Cordoba': {
+                    '1': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
+                    '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
+                    '3': ['B200', 'N200', 'N400', 'N500']
+                },
+                'San_luis': {
+                    '1': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
+                    '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
+                    '3': ['B200', 'N200', 'N400', 'N500']
+                },
+                'Salta': {
+                    '1': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
+                    '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
+                    '3': ['B200', 'N200', 'N400', 'N500']
+                },
+                'Jujuy': {
+                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
+                    '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
+                    '3': ['B200', 'N200', 'N400', 'N500']
+                },
+                'Tucuman': {
+                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
+                    '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
+                    '3': ['B200', 'N200', 'N400', 'N500']
+                },
+                'Mendoza': {
+                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
+                    '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
+                    '3': ['B200', 'N200', 'N400', 'N500']
+                },
+                'San_Juan': {
+                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
+                    '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
+                    '3': ['B200', 'N200', 'N400', 'N500']
+                },
+                'Santiago': {
+                    '1': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
+                    '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
+                    '3': ['B200', 'N200', 'N400', 'N500']
+                },
+                'Catamarca': {
+                    '1': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
+                    '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
+                    '3': ['B200', 'N200', 'N400', 'N500']
+                },
+                'LaRioja': {
+                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
+                    '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
+                    '3': ['B200', 'N200', 'N400', 'N500']
+                },
+                // Agrega más provincias y sus respectivas opciones de planes aquí
+            };
+
+            // Limpiar las opciones existentes
+            planSelect.innerHTML = '';
+
+            // Agregar las opciones de planes disponibles según la provincia y condición
+            if (planesDisponibles[provincia] && planesDisponibles[provincia][convenio]) {
+                const planes = planesDisponibles[provincia][convenio];
+                planes.forEach(function(plan) {
+                    const option = document.createElement('option');
+                    option.value = plan;
+                    option.textContent = plan;
+                    planSelect.appendChild(option);
+                });
+            } else {
+                // Si no hay planes disponibles, agregar un mensaje de error o una opción por defecto
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = 'No hay planes disponibles';
+                planSelect.appendChild(option);
+            }
+        }
+
+
+        // Cambiar colores del periodo de bonificación basado en su estado (Activo - Inactivo)
+        function actualizarColorBonif() {
+            const periElemento = document.getElementById('bonif_peri');
+            
+            if (!periElemento) {
+                console.error('El elemento "bonif_peri" (Periodo de bonificacion) no existe o no está disponible.');
+                return;
+            }
+
+            const periodo = periElemento.textContent.trim();
+
+            console.log('Elemento:', periElemento);
+            console.log('Valor obtenido (textContent):', periodo);
+
+            // Validar que el período esté presente y tenga un formato correcto (MM/YYYY)
+            if (!periodo || !/^\d{2}\/\d{4}$/.test(periodo)) {
+                periElemento.className = "bonif-inactiva"; // Clase predeterminada si el valor no es válido
+                console.error("El período ingresado no es válido. Debe estar en formato MM/YYYY.");
+                return;
+            }
+
+            // Obtener el período actual en formato %m/%Y
+            const ahora = new Date();
+            const mesActual = ahora.getMonth() + 1; // Los meses en JavaScript comienzan desde 0
+            const añoActual = ahora.getFullYear();
+            const periodoActual = new Date(`${añoActual}-${mesActual.toString().padStart(2, '0')}-01`);
+
+            // Convertir el período ingresado en un objeto Date
+            const [mes, año] = periodo.split('/').map((valor) => parseInt(valor, 10)); // Asegúrate de convertir a número
+            const periodoIngresado = new Date(`${año}-${mes.toString().padStart(2, '0')}-01`);
+
+            // Comparar los períodos
+            if (periodoActual < periodoIngresado) {
+                periElemento.className = "bonif-activa";
+                console.log('El período actual es menor al período ingresado.');
+            } else if (periodoActual > periodoIngresado) {
+                periElemento.className = "bonif-inactiva";
+                console.log('El período actual es mayor al período ingresado.');
+            } else {
+                periElemento.className = "bonif-activa";
+                console.log('El período actual es igual al período ingresado.');
+            }
+        }
+
+    </script>
+
+    <script>
+        let totalGrupal = 0; // Variable global
+
+        $(document).ready(function () {
+            $('.mi-select').select2({
+                placeholder: "Selecciona una opción...",
+                allowClear: true,
+                ajax: {
+                    url: '/home/static/preexistencias.json',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return { search: params.term };
+                    },
+                    processResults: function (data, params) {
+                        var filteredData = data.filter(function (item) {
+                            return item.Patologia.toLowerCase().includes((params.term || '').toLowerCase());
+                        });
+                        return {
+                            results: filteredData.map(item => ({
+                                id: item.ID,
+                                text: item.Patologia,
+                                costo_mensual: item.Costo_mensual
+                            }))
+                        };
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error("Error al cargar el archivo JSON:", textStatus, errorThrown);
+                    }
+                }
+            });
+
+            // Calcular el total grupal
+            $(document).on('select2:select select2:unselect', '.mi-select', function () {
+                totalGrupal = 0; // Reiniciar el total
+
+                // Iterar sobre todos los selects y sumar los costos seleccionados
+                $('.mi-select').each(function () {
+                    const selectedData = $(this).select2('data');
+                    const costos = selectedData.map(option => option.costo_mensual || 0);
+                    totalGrupal += costos.reduce((acc, costo) => acc + costo, 0);
+                });
+
+                // Actualizar el total grupal en el pie de tabla
+                $('#total-grupal').text(totalGrupal.toFixed(2));
+                console.log("Costo mensual total:", totalGrupal);
+            });
+        });
 
     </script>
 </body>

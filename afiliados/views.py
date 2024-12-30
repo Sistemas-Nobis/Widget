@@ -4,10 +4,11 @@ from datetime import datetime
 import requests
 import json
 from pandas import json_normalize
-from .utils import actualizar_token_wise, actualizar_token_gecros
+from .utils import actualizar_token_wise, actualizar_token_gecros, actualizar_preexistencias
 from django.core.cache import cache
 import pytz
 from dateutil.relativedelta import relativedelta
+from django.http import HttpResponseBadRequest
  
 class BuscarAfiliadoView(View):
     template_name = 'ate_produccion.html'
@@ -39,7 +40,14 @@ class BuscarAfiliadoView(View):
  
         return token
  
-    def get(self, request, dni, *args, **kwargs):
+    def get(self, request, dni=None, *args, **kwargs):
+
+        # Validación de entrada de DNI
+        if not dni:
+            return HttpResponseBadRequest("Debe proporcionar un DNI.")
+        elif len(dni) != 8:
+            return render(request, self.template_name, {'error': 'Verifique el número de DNI, debe ser de 8 dígitos.'}, status=400)
+        
         fecha_actual = datetime.now().strftime("%Y-%m-%d")
         #print(f"La fecha actual es {fecha_actual} y el DNI {dni}")
  
@@ -62,12 +70,6 @@ class BuscarAfiliadoView(View):
             "Content-Type": "application/json",
             "Authorization": f"Bearer {token_gecros}"
             }
- 
-        # Validación del DNI
-        if len(dni) == 0:
-            return render(request, self.template_name, {'error': 'Debe ingresar un número de DNI para continuar.'}, status=400)
-        elif len(dni) != 8:
-            return render(request, self.template_name, {'error': 'Verifique el número de DNI, debe ser de 8 dígitos.'}, status=400)
        
         # Solicitud a la API de afiliados
         response_afiliado = requests.post(url_afiliado, data=payload_json_afiliado, headers=headers)
@@ -292,7 +294,9 @@ class BuscarAfiliadoView(View):
         else:
             return render(request, self.template_name, {'error': f'Error en la solicitud. Código de estado: {response_afiliado.status_code}'}, status=500)
        
- 
+from django.shortcuts import render
+from django.utils.safestring import mark_safe
+
 class BuscarRetencionView(View):
     template_name = 'rete_produccion.html'
  
@@ -322,8 +326,62 @@ class BuscarRetencionView(View):
             cache.set('gecros_token', token, timeout=1296000)
  
         return token
+
+    def obtener_preex(self):
+        # Endpoint y configuración
+        url_api = "https://cotizador.nobis.com.ar/api/preex"
+        headers = {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer 496ae7b9-0787-482e-bbe2-235279237940'
+        }
+
+        # Obtener la clave dinámica almacenada en caché
+        clave_dinamica_cache = cache.get('clave_dinamica_preex')
+        verificacion_diaria = cache.get('verificacion_diaria_preex')
+
+        # Si no se realizó la verificación diaria
+        if not verificacion_diaria:
+            try:
+                # Obtener la clave dinámica actual desde la API
+                response = requests.get(url_api, headers=headers)
+                response.raise_for_status()
+                response_json = response.json()
+                clave_dinamica_actual = next(iter(response_json.keys()))
+
+                # Si no hay clave almacenada o si cambió, actualizar el archivo
+                if clave_dinamica_cache != clave_dinamica_actual:
+                    print("La clave dinámica ha cambiado. Actualizando archivo...")
+                    actualizar_preexistencias()
+                    cache.set('clave_dinamica_preex', clave_dinamica_actual, timeout=30 * 24 * 3600)  # 30 días
+
+                # Registrar que se realizó la verificación diaria
+                cache.set('verificacion_diaria_preex', True, timeout=24 * 3600)  # 24 horas
+
+            except requests.exceptions.RequestException as e:
+                print(f"Error al consultar la clave dinámica: {e}")
+                return None
+
+        # Leer y devolver el contenido del archivo actualizado
+        try:
+            with open('home/static/preexistencias.json', 'r', encoding='utf-8') as archivo:
+                return json.load(archivo)
+        except FileNotFoundError:
+            print("Archivo local no encontrado. Ejecutando actualización...")
+            actualizar_preexistencias()
+            with open('home/static/preexistencias.json', 'r', encoding='utf-8') as archivo:
+                return json.load(archivo)
+
  
-    def get(self, request, dni, *args, **kwargs):
+    def get(self, request, dni=None, *args, **kwargs):
+
+        self.obtener_preex() # Verificar lista de patologias
+
+        # Validación de entrada de DNI
+        if not dni:
+            return HttpResponseBadRequest("Debe proporcionar un DNI.")
+        elif len(dni) != 8:
+            return render(request, self.template_name, {'error': 'Verifique el número de DNI, debe ser de 8 dígitos.'}, status=400)
+
         fecha_actual = datetime.now().strftime("%Y-%m-%d")
         #print(f"La fecha actual es {fecha_actual} y el DNI {dni}")
  
@@ -350,12 +408,6 @@ class BuscarRetencionView(View):
         headers_interno = {
             "Content-Type": "application/json"
             }
- 
-        # Validación del DNI
-        if len(dni) == 0:
-            return render(request, self.template_name, {'error': 'Debe ingresar un número de DNI para continuar.'}, status=400)
-        elif len(dni) != 8:
-            return render(request, self.template_name, {'error': 'Verifique el número de DNI, debe ser de 8 dígitos.'}, status=400)
        
         # Solicitud a la API de afiliados
         response_afiliado = requests.post(url_afiliado, data=payload_json_afiliado, headers=headers)
@@ -367,6 +419,12 @@ class BuscarRetencionView(View):
                 df_afiliado = json_normalize(data_afiliado)
                 df_selected = df_afiliado[["nombre", "nroAfi", "parentesco", "estadoBenef"]]
                 df_selected.columns = ["Nombre", "DNI", "Parentesco", "Estado"]
+
+                # Crear lista de resultados combinados
+                resultados_combinados = []
+
+                # Crear lista de resultado bonificacion y forma de pago
+                forma_de_pago_bonif = []
 
                 dni_aux = 0
                 # Solicitud a la API de deuda
@@ -395,13 +453,56 @@ class BuscarRetencionView(View):
                         total_deuda = total_deuda if total_deuda > 0 else "Sin deuda"
                     else:
                         total_deuda = "Sin dato"
+                    
+                    # Forma de pago y Bonificacion/Recargo
+                    url_bf = f"https://api.nobis.com.ar/fpago_bonif/{dni_aux}"
+                    response_bf = requests.get(url_bf, headers=headers_interno)
+
+                    if response_deuda.status_code == 200:
+                        data_bf = response_bf.json()
+                        
+                        #print(data_bf[0])
+
+                        fpago = data_bf[0].get("fpago_nombre").replace("  ","")
+                        #print(fpago)
+                        data_bf[0]["fpago_nombre"] = fpago
+                        #print(data_bf[0]["fpago_nombre"])
+
+                        # Bonificacion / Recargo
+                        porcentaje = data_bf[0].get("porcentaje")
+                        if porcentaje is not None:
+                            #print(porcentaje)
+                            porcentaje = f"{porcentaje / 100:.0%}"
+                            #print(porcentaje.replace("-",""))
+                            data_bf[0]["porcentaje"] = porcentaje
+
+                            periodo_hasta = data_bf[0].get("peri_hasta")
+                            #print(periodo_hasta)
+                            periodo_hasta = datetime.strptime(periodo_hasta, '%Y%m') # Formato en el que viene el dato
+                            periodo_hasta_format = periodo_hasta.strftime("%m/%Y") # Formato a mostrar
+                            #print(periodo_hasta_format)
+                            data_bf[0]["peri_hasta"] = periodo_hasta_format
+
+                            # Detalles
+                            if data_bf[0]["rg_id"] is not None:
+                                data_bf[0]["BonficaRec_obs"] = data_bf[0]["rg_nombre"]
+                            elif data_bf[0]["BonficaRec_obs"] is None:
+                                data_bf[0]["BonficaRec_obs"] = "Manual - Sin observación"
+                            else:
+                                pass
+
+                        else:
+                            data_bf[0]["peri_hasta"] = 0
+
+                        forma_de_pago_bonif.append(data_bf[0])
+                        #print(data_bf[0])
+                    else:
+                        pass
+
                 else:
                     print("GRUPO FAMILIAR SIN TITULAR, REVISAR!")
                     total_deuda = "Sin titular"
 
-                # Crear lista de resultados combinados
-                resultados_combinados = []
- 
                 # DESARROLLAR INFO FALTANTE
                 for afiliado in data_afiliado:
                     nro_afi = afiliado.get("nroAfi")
@@ -487,6 +588,24 @@ class BuscarRetencionView(View):
                             #aporte['numero'] == dni
                             #print(dni)
 
+                            aporte_id = aporte.get('comp_id')
+
+                            url_aportes_rel = f"https://api.nobis.com.ar/desglose_aportes/{aporte_id}"
+                            response_arel = requests.get(url_aportes_rel, headers=headers_interno)
+                            data_arel = response_arel.json()
+
+                            #print(data_arel)
+                            ap_total = data_arel[0]['Aporte_total']
+                            ap_ext = data_arel[0]['AporteExtraido']
+                            #print(f"{ap_total} - {ap_ext}")
+
+                            if ap_total == ap_ext:
+                                aporte['ap_estado'] = 'C'
+                            elif ap_ext is None:
+                                aporte['ap_estado'] = 'U'
+                            else:
+                                aporte['ap_estado'] = 'P'
+
                             if monto > 1:
                                 all_aportes.append(aporte)
                                 cont+=1
@@ -508,13 +627,69 @@ class BuscarRetencionView(View):
                     del afiliado['Parentesco_Orden']  # Eliminar el campo de ordenamiento antes de renderizar
  
                 # Renderiza la plantilla con ambos conjuntos de datos
-                return render(request, self.template_name, {'data': resultados_combinados, 'data_aportes': all_aportes})
- 
+                return render(request, self.template_name, {'data': resultados_combinados, 'data_aportes': all_aportes, 'data_fpago': forma_de_pago_bonif})
+            
             else:
                 return render(request, self.template_name, {'error': 'No se encontraron datos para el DNI proporcionado.'}, status=404)
-       
+            
         elif response_afiliado.status_code == 400:
             return render(request, self.template_name, {'error': f'El servidor retornó un error 400. Comprueba los parámetros de la solicitud.'}, status=400)
        
         else:
             return render(request, self.template_name, {'error': f'Error en la solicitud. Código de estado: {response_afiliado.status_code}'}, status=500)
+        
+
+# COTIZADOR
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def cotizar_actual(request):
+    if request.method == 'POST':
+        # Leer datos enviados desde el frontend
+        data = json.loads(request.body)
+        mes = data.get('mes')
+        plan = data.get('plan')
+        gestion = data.get('gestion')
+        ubicacion = data.get('ubicacion')
+        aporte = data.get('aportes')
+        bonificacion = data.get('bonificaciones')
+        patologias = data.get('patologias')
+        edades = ','.join(data.get('edades', []))  # Convertir lista de edades en cadena separada por comas
+
+        # Verificar si todos los parámetros necesarios están presentes
+        if not all([mes, plan, gestion, ubicacion, edades]):
+            return JsonResponse({"error": "Faltan parámetros"}, status=400)
+        
+        #print("Datos recibidos:", data)
+
+        # Token fijo
+        token = "496ae7b9-0787-482e-bbe2-235279237940"
+
+        # Construir URL de la API externa
+        url_api = f"https://cotizador.nobis.com.ar/api?mes={mes}&planes={plan}&gestion={gestion}&ubicacion={ubicacion}&ages={edades}&directo={aporte}&descuento={bonificacion}&preexistencia={patologias}"
+
+        # Consultar la API externa
+        try:
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {token}"
+                }
+
+            response = requests.get(url_api, headers=headers)
+            response_data = response.json()
+
+            # Extraer los valores necesarios
+            valor_pc = response_data['resultado']['cotizacion']['planes'][0]['primera_cuota']
+            valor_p = response_data['resultado']['cotizacion']['planes'][0]['valor_plan']
+
+            # Enviar respuesta al frontend
+            return JsonResponse({
+                "primera_cuota": valor_pc,
+                "valor_plan": valor_p
+            })
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Método no permitido"}, status=405)
