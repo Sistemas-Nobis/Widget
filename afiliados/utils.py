@@ -1,6 +1,11 @@
 import requests
 import json
- 
+import os
+
+# Calcula la ruta relativa a partir de utils.py
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+json_path = os.path.join(base_dir, 'home', 'static', 'preexistencias.json')
+
 def actualizar_token_wise():
     """Obtiene un nuevo token desde la API y lo guarda."""
     url_token = 'https://api.wcx.cloud/core/v1/authenticate'
@@ -63,7 +68,6 @@ def actualizar_token_gecros():
 
 def actualizar_preexistencias():
     url = "https://cotizador.nobis.com.ar/api/preex"
-
     headers = {
         "Content-Type": "application/json",
         'Authorization': 'Bearer 496ae7b9-0787-482e-bbe2-235279237940'
@@ -76,11 +80,11 @@ def actualizar_preexistencias():
 
         if response_json:
             # Obtén la clave dinámica
-            dynamic_key = next(iter(response_json.keys()))  # Obtiene la primera clave
-            data_to_save = response_json[dynamic_key]  # Extrae el contenido asociado a la clave
+            dynamic_key = next(iter(response_json.keys()))
+            data_to_save = response_json[dynamic_key]
 
-            # Guardar en un archivo JSON
-            with open('home/static/preexistencias.json', 'w', encoding='utf-8') as json_file:
+            # Guarda los datos en un archivo JSON
+            with open(json_path, 'w', encoding='utf-8') as json_file:
                 json.dump(data_to_save, json_file, ensure_ascii=False, indent=4)
 
             print("Datos guardados en 'preexistencias.json'")
@@ -90,3 +94,31 @@ def actualizar_preexistencias():
     except requests.exceptions.RequestException as e:
         print(f"Error al renovar preexistencias: {e}")
         return None
+
+import unicodedata
+# Función para normalizar texto (remover acentos)
+def normalizar_texto(texto):
+    texto = unicodedata.normalize("NFKD", texto).encode("ascii", "ignore").decode("utf-8")
+    return texto
+
+
+# Función para buscar coincidencias parciales en el archivo JSON
+def buscar_cobertura(coberturas):
+    with open(json_path, "r", encoding="utf-8") as file:
+        preexistencias = json.load(file)
+
+    resultados = []
+    lista_coberturas = [c.strip().upper() for c in coberturas.split(",")]
+
+    for cobertura in lista_coberturas:
+        for registro in preexistencias:
+            patologia = registro["Patologia"].upper()
+
+            # Limpieza de la cobertura buscada
+            cobertura_limpia = normalizar_texto(cobertura.replace("  ", "").replace(" B", "").replace("FALSEO","").replace("- ","").replace("-","").replace("NO USAR","").replace("_",""))
+
+            if cobertura_limpia in patologia:
+                #print(f"Coincidencia para '{cobertura}':", registro)
+                resultados.append(registro)
+
+    return resultados

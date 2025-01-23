@@ -4,11 +4,12 @@ from datetime import datetime
 import requests
 import json
 from pandas import json_normalize
-from .utils import actualizar_token_wise, actualizar_token_gecros, actualizar_preexistencias
+from .utils import actualizar_token_wise, actualizar_token_gecros, actualizar_preexistencias, buscar_cobertura
 from django.core.cache import cache
 import pytz
 from dateutil.relativedelta import relativedelta
 from django.http import HttpResponseBadRequest
+import os
  
 class BuscarAfiliadoView(View):
     template_name = 'ate_produccion.html'
@@ -361,15 +362,19 @@ class BuscarRetencionView(View):
                 print(f"Error al consultar la clave dinámica: {e}")
                 return None
 
-        # Leer y devolver el contenido del archivo actualizado
+        # Ruta absoluta al archivo preexistencias.json
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        json_path = os.path.join(base_dir, 'home', 'static', 'preexistencias.json')
+
+        # Leer y devolver el contenido del archivo actualizad
         try:
-            with open('home/static/preexistencias.json', 'r', encoding='utf-8') as archivo:
-                return json.load(archivo)
+           with open(json_path, 'r', encoding='utf-8') as archivo:
+              return json.load(archivo)
         except FileNotFoundError:
-            print("Archivo local no encontrado. Ejecutando actualización...")
-            actualizar_preexistencias()
-            with open('home/static/preexistencias.json', 'r', encoding='utf-8') as archivo:
-                return json.load(archivo)
+           print("Archivo local no encontrado. Ejecutando actualización...")
+           actualizar_preexistencias()
+           with open(json_path, 'r', encoding='utf-8') as archivo:
+              return json.load(archivo)
 
  
     def get(self, request, dni=None, *args, **kwargs):
@@ -417,8 +422,8 @@ class BuscarRetencionView(View):
             data_afiliado = response_afiliado.json().get('data', [])
             if data_afiliado:
                 df_afiliado = json_normalize(data_afiliado)
-                df_selected = df_afiliado[["nombre", "nroAfi", "parentesco", "estadoBenef"]]
-                df_selected.columns = ["Nombre", "DNI", "Parentesco", "Estado"]
+                df_selected = df_afiliado[["nombre", "nroAfi", "parentesco", "estadoBenef", "benGrId"]]
+                df_selected.columns = ["Nombre", "DNI", "Parentesco", "Estado", "Grupo"]
 
                 # Crear lista de resultados combinados
                 resultados_combinados = []
@@ -426,16 +431,19 @@ class BuscarRetencionView(View):
                 # Crear lista de resultado bonificacion y forma de pago
                 forma_de_pago_bonif = []
 
+                grupo = data_afiliado[0].get("benGrId")
+                url_dniage = f"https://api.nobis.com.ar/dni_agecta/{grupo}"
+                response_dniage = requests.get(url_dniage, headers=headers_interno)
                 dni_aux = 0
-                # Solicitud a la API de deuda
-                for x in data_afiliado:
-                    if x.get("esTitular") == True:
-                        dni_aux = x.get("nroAfi")
-                        #print(f"Titular detectado: {dni_aux}")
-                        break
-                    else:
-                        pass
-                
+
+                if response_dniage.status_code == 200:
+                    data_dniage = response_dniage.json()
+
+                    dni_aux = data_dniage[0].get("doc_id") #DNI de agente de cuenta
+
+                else:
+                    print("No hay dni de agente de cuenta.")
+
                 hoy = datetime.today()
 
                 if dni_aux != 0:
@@ -458,44 +466,46 @@ class BuscarRetencionView(View):
                     url_bf = f"https://api.nobis.com.ar/fpago_bonif/{dni_aux}"
                     response_bf = requests.get(url_bf, headers=headers_interno)
 
-                    if response_deuda.status_code == 200:
+                    if response_bf.status_code == 200:
                         data_bf = response_bf.json()
-                        
-                        #print(data_bf[0])
 
-                        fpago = data_bf[0].get("fpago_nombre").replace("  ","")
-                        #print(fpago)
-                        data_bf[0]["fpago_nombre"] = fpago
-                        #print(data_bf[0]["fpago_nombre"])
+                        if data_bf:
 
-                        # Bonificacion / Recargo
-                        porcentaje = data_bf[0].get("porcentaje")
-                        if porcentaje is not None:
-                            #print(porcentaje)
-                            porcentaje = f"{porcentaje / 100:.0%}"
-                            #print(porcentaje.replace("-",""))
-                            data_bf[0]["porcentaje"] = porcentaje
+                            fpago = data_bf[0].get("fpago_nombre").replace("  ","")
+                            #print(fpago)
+                            data_bf[0]["fpago_nombre"] = fpago
+                            #print(data_bf[0]["fpago_nombre"])
 
-                            periodo_hasta = data_bf[0].get("peri_hasta")
-                            #print(periodo_hasta)
-                            periodo_hasta = datetime.strptime(periodo_hasta, '%Y%m') # Formato en el que viene el dato
-                            periodo_hasta_format = periodo_hasta.strftime("%m/%Y") # Formato a mostrar
-                            #print(periodo_hasta_format)
-                            data_bf[0]["peri_hasta"] = periodo_hasta_format
+                            # Bonificacion / Recargo
+                            porcentaje = data_bf[0].get("porcentaje")
+                            if porcentaje is not None:
+                                #print(porcentaje)
+                                porcentaje = f"{porcentaje / 100:.0%}"
+                                #print(porcentaje.replace("-",""))
+                                data_bf[0]["porcentaje"] = porcentaje
 
-                            # Detalles
-                            if data_bf[0]["rg_id"] is not None:
-                                data_bf[0]["BonficaRec_obs"] = data_bf[0]["rg_nombre"]
-                            elif data_bf[0]["BonficaRec_obs"] is None:
-                                data_bf[0]["BonficaRec_obs"] = "Manual - Sin observación"
+                                periodo_hasta = data_bf[0].get("peri_hasta")
+                                #print(periodo_hasta)
+                                periodo_hasta = datetime.strptime(periodo_hasta, '%Y%m') # Formato en el que viene el dato
+                                periodo_hasta_format = periodo_hasta.strftime("%m/%Y") # Formato a mostrar
+                                #print(periodo_hasta_format)
+                                data_bf[0]["peri_hasta"] = periodo_hasta_format
+
+                                # Detalles
+                                if data_bf[0]["rg_id"] is not None:
+                                    data_bf[0]["BonficaRec_obs"] = data_bf[0]["rg_nombre"]
+                                elif data_bf[0]["BonficaRec_obs"] is None:
+                                    data_bf[0]["BonficaRec_obs"] = "Manual - Sin observación"
+                                else:
+                                    pass
+
                             else:
-                                pass
+                                data_bf[0]["peri_hasta"] = 0
 
+                            forma_de_pago_bonif.append(data_bf[0])
+                            #print(data_bf[0])
                         else:
-                            data_bf[0]["peri_hasta"] = 0
-
-                        forma_de_pago_bonif.append(data_bf[0])
-                        #print(data_bf[0])
+                            print("La API devolvió una lista vacía.")
                     else:
                         pass
 
@@ -511,7 +521,8 @@ class BuscarRetencionView(View):
                         "DNI": nro_afi,
                         "Parentesco": afiliado.get("parentesco"),
                         "Estado": afiliado.get("estadoBenef"),
-                        "Deuda": total_deuda
+                        "Deuda": total_deuda,
+                        "Patologias": []
                     }
  
                     # Solicitud a la API de afiliados para obtener edad y provincia
@@ -555,9 +566,13 @@ class BuscarRetencionView(View):
                         afiliado_info['Fecha_alta'] = fecha_formateada
 
                         patologia = data_p[0].get('cobertura_especial')
+                        
                         if patologia != None:
-                            afiliado_info['Cobertura_especial'] = patologia
                             #print(patologia)
+                            busqueda = buscar_cobertura(patologia)
+                            #print(busqueda)
+                            afiliado_info['Patologias'] = busqueda
+                            #print("Encontrado.")
                         else:
                             afiliado_info['Cobertura_especial'] = 'Sin cobertura especial'
                             #print("SIN COBERTURA ESPECIAL")
@@ -569,7 +584,7 @@ class BuscarRetencionView(View):
                 # Aportes
                 all_aportes = []
 
-                url_aportes = f"https://api.nobis.com.ar/ultimos_aportes_ctacte/{dni_aux}"
+                url_aportes = f"https://api.nobis.com.ar/ultimos_aportes/{dni_aux}"
                 response_a = requests.get(url_aportes, headers=headers_interno)
                 data_a = response_a.json()
 
@@ -578,33 +593,26 @@ class BuscarRetencionView(View):
                 if data_a:
                     for aporte in data_a:
                         if cont != 5:
-                            #periodo = aporte.get('comp_peri')
-                            #print(periodo)
+                            # Supongamos que `periodo` es una cadena como '202410'
+                            periodo = aporte.get('Periodo')
 
-                            monto = aporte.get('comp_total')
+                            # Convertir el período a un objeto datetime
+                            fecha = datetime.strptime(periodo, '%Y%m')
+
+                            # Sumar 3 meses usando relativedelta
+                            nueva_fecha = fecha + relativedelta(months=3)
+
+                            # Convertir de nuevo a formato 'YYYYMM'
+                            nuevo_periodo = nueva_fecha.strftime('%Y%m')
+
+                            aporte['Periodo'] = nuevo_periodo
+
+                            monto = aporte.get('aporte')
                             #print(monto)
 
                             #dni = aporte.get('numero').replace(' ', '')
                             #aporte['numero'] == dni
                             #print(dni)
-
-                            aporte_id = aporte.get('comp_id')
-
-                            url_aportes_rel = f"https://api.nobis.com.ar/desglose_aportes/{aporte_id}"
-                            response_arel = requests.get(url_aportes_rel, headers=headers_interno)
-                            data_arel = response_arel.json()
-
-                            #print(data_arel)
-                            ap_total = data_arel[0]['Aporte_total']
-                            ap_ext = data_arel[0]['AporteExtraido']
-                            #print(f"{ap_total} - {ap_ext}")
-
-                            if ap_total == ap_ext:
-                                aporte['ap_estado'] = 'C'
-                            elif ap_ext is None:
-                                aporte['ap_estado'] = 'U'
-                            else:
-                                aporte['ap_estado'] = 'P'
 
                             if monto > 1:
                                 all_aportes.append(aporte)
@@ -616,7 +624,6 @@ class BuscarRetencionView(View):
                 else:
                     pass
 
-
                 # Ordenar por parentesco
                 orden_parentesco = {"TITULAR": 1, "CONYUGE": 2, "HIJO/A": 3, "FAMILIAR A CARGO": 4}
                 for afiliado in resultados_combinados:
@@ -625,7 +632,9 @@ class BuscarRetencionView(View):
                 resultados_combinados.sort(key=lambda x: x['Parentesco_Orden'])
                 for afiliado in resultados_combinados:
                     del afiliado['Parentesco_Orden']  # Eliminar el campo de ordenamiento antes de renderizar
- 
+                
+                #print(resultados_combinados)
+
                 # Renderiza la plantilla con ambos conjuntos de datos
                 return render(request, self.template_name, {'data': resultados_combinados, 'data_aportes': all_aportes, 'data_fpago': forma_de_pago_bonif})
             

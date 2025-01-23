@@ -253,11 +253,6 @@
             margin-bottom: 5px;
         }
 
-        .estado-icono {
-            width: 13px;
-            height: 13px;
-        }
-
         .select2-container .select2-selection--multiple {
             flex-wrap: wrap; /* Permitir que las etiquetas bajen a la siguiente línea */
             gap: 2px; /* Espacio entre las etiquetas */
@@ -376,7 +371,6 @@
                         <th style="width: 50px;">-</th>
                         <th>Periodo</th>
                         <th>Aporte</th>
-                        <th style="width: 50px;">Estado</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -391,24 +385,13 @@
                                         onchange="actualizarSeleccion()"
                                     />
                                 </td>
-                                <td>{{ aporte.comp_peri }}</td>
-                                <td>${{ aporte.comp_total }}</td>
-                                <td>
-                                    {% if aporte.ap_estado == 'C' %}
-                                        <img src="{% static 'images/rojo.png' %}" title="Ya fue utilizado." alt="C" class="estado-icono">
-                                    {% elif aporte.ap_estado == 'U' %}
-                                        <img src="{% static 'images/verde.png' %}" title="Disponible." alt="U" class="estado-icono">
-                                    {% elif aporte.ap_estado == 'P' %}
-                                        <img src="{% static 'images/naranja.png' %}" title="Parcialmente utilizado" alt="P" class="estado-icono">
-                                    {% else %}
-                                        <img src="{% static 'images/desconocido.png' %}" title="Desconocido." alt="?" class="estado-icono">
-                                    {% endif %}
-                                </td>
+                                <td>{{ aporte.Periodo }}</td>
+                                <td>${{ aporte.aporte }}</td>
                             </tr>
                         {% endfor %}
                     {% else %}
                         <tr class="row">
-                            <td colspan="4">Sin aportes</td>
+                            <td colspan="3">Sin aportes</td>
                         </tr>
                     {% endif %}
                 </tbody>
@@ -558,7 +541,12 @@
                             <tr>
                                 <td>{{ item.Parentesco }}</td>
                                 <td><input type="number" min="1" max="99" value="{{item.Edad }}" required oninput="this.value = Math.min(Math.max(this.value, 1), 99)"/></td>
-                                <td><select class="mi-select" style="width: 100%;" name="patologias[]" multiple="multiple"></select></td>
+                                <td><select class="mi-select" style="width: 100%;" name="patologias[]" multiple="multiple">
+                                    {% for patologia in item.Patologias %}
+                                        <option value="{{ patologia.ID }}" selected>{{ patologia.Patologia }}</option>
+                                    {% endfor %}
+                                    </select>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -595,7 +583,7 @@
                             {% endfor %}
                             <tr>
                                 <th>Condición:</th>
-                                <th style="background-color: #ffffff; color: black;"><select id="convenio" name="convenio" onchange="actualizarPlanes()">
+                                <th style="background-color: #ffffff; color: black;"><select id="convenio" name="convenio" onchange="actualizarPlanes()" onmousedown="return false;">
                                     <option value="1">Relación de dependencia</option>
                                     <option value="2">Monotributo</option>
                                     <option value="3">Prepago</option>
@@ -719,7 +707,8 @@
         function cotizar_actual() {
             
             // Datos fijos
-            const mes = new Date().getMonth(); // Mes actual
+            const mes = new Date().getMonth() + 1; // Mes actual
+            //console.log(mes)
 
             let edades = "";
 
@@ -750,25 +739,25 @@
 
             // Obtener el valor de bonif_porc, que contiene el porcentaje y otro contenido
             const bonificacion_vigente = document.querySelector('#bonif_porc')?.textContent;
-            console.log(bonificacion_vigente); // Verifica el contenido de bonificacion_vigente
+            //console.log(bonificacion_vigente); // Verifica el contenido de bonificacion_vigente
 
-            if (bonificacion_vigente) {
+            //if (bonificacion_vigente) {
                 // Extrae solo la parte numérica antes del símbolo '|'
-                const bonificacion_v = bonificacion_vigente.split('|')[0].trim().replace(/[^0-9]/g, "");
-                console.log(bonificacion_v); // Verifica el valor numérico limpio
+                //const bonificacion_v = bonificacion_vigente.split('|')[0].trim().replace(/[^0-9]/g, "");
+                //console.log(bonificacion_v); // Verifica el valor numérico limpio
                 
-                const numericValue = parseInt(bonificacion_v, 10);
-                const numericValu = parseInt(bonificacion, 10);
+                //const numericValue = parseInt(bonificacion_v, 10);
+                //const numericValu = parseInt(bonificacion, 10);
                 
-                if ((numericValu + numericValue) > 100) { // Renombrar variables si es que se va a usar.
-                        console.error("Ha llegado a 100");
-                }
-                else {
-                    console.log("Valor permitido. <= 100");
-                }
-            } else {
-                console.error("No se encontró el valor de bonificacion_vigente.");
-            }
+                //if ((numericValu + numericValue) > 100) { // Renombrar variables si es que se va a usar.
+                        //console.error("Ha llegado a 100");
+                //}
+                //else {
+                    //console.log("Valor permitido. <= 100");
+                //}
+            //} else {
+                //console.error("No se encontró el valor de bonificacion_vigente.");
+            //}
 
 
             // Crear el objeto de datos para enviar al backend
@@ -973,51 +962,71 @@
 
     <script>
         let totalGrupal = 0; // Variable global
+        let preexistenciasData = {}; // Variable para almacenar los datos de preexistencias
 
         $(document).ready(function () {
-            $('.mi-select').select2({
-                placeholder: "Selecciona una opción...",
-                allowClear: true,
-                ajax: {
-                    url: '/home/static/preexistencias.json',
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return { search: params.term };
-                    },
-                    processResults: function (data, params) {
-                        var filteredData = data.filter(function (item) {
-                            return item.Patologia.toLowerCase().includes((params.term || '').toLowerCase());
-                        });
-                        return {
-                            results: filteredData.map(item => ({
-                                id: item.ID,
-                                text: item.Patologia,
-                                costo_mensual: item.Costo_mensual
-                            }))
-                        };
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.error("Error al cargar el archivo JSON:", textStatus, errorThrown);
+            // Cargar los datos de preexistencias.json
+            $.getJSON('/static/preexistencias.json', function(data) {
+                preexistenciasData = data.reduce((acc, item) => {
+                    acc[item.ID] = item.Costo_mensual;
+                    return acc;
+                }, {});
+                // console.log("Datos de preexistencias cargados:", preexistenciasData); // Depuración
+
+                // Inicializar select2 después de cargar los datos
+                $('.mi-select').select2({
+                    placeholder: "Selecciona una opción...",
+                    allowClear: true,
+                    ajax: {
+                        url: '/static/preexistencias.json',
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return { search: params.term };
+                        },
+                        processResults: function (data, params) {
+                            var filteredData = data.filter(function (item) {
+                                return item.Patologia.toLowerCase().includes((params.term || '').toLowerCase());
+                            });
+                            return {
+                                results: filteredData.map(item => ({
+                                    id: item.ID,
+                                    text: item.Patologia,
+                                    costo_mensual: item.Costo_mensual
+                                }))
+                            };
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.error("Error al cargar el archivo JSON:", textStatus, errorThrown);
+                        }
                     }
-                }
+                });
+
+                // Calcular el total grupal al cargar la página
+                calcularTotalGrupal();
+
+                // Calcular el total grupal al seleccionar o deseleccionar opciones
+                $(document).on('select2:select select2:unselect', '.mi-select', function () {
+                    calcularTotalGrupal();
+                });
             });
 
-            // Calcular el total grupal
-            $(document).on('select2:select select2:unselect', '.mi-select', function () {
+            // Función para calcular el total grupal
+            function calcularTotalGrupal() {
                 totalGrupal = 0; // Reiniciar el total
 
                 // Iterar sobre todos los selects y sumar los costos seleccionados
                 $('.mi-select').each(function () {
                     const selectedData = $(this).select2('data');
-                    const costos = selectedData.map(option => option.costo_mensual || 0);
+                    // console.log("Datos seleccionados:", selectedData); // Depuración
+                    const costos = selectedData.map(option => preexistenciasData[option.id] || 0);
                     totalGrupal += costos.reduce((acc, costo) => acc + costo, 0);
                 });
 
                 // Actualizar el total grupal en el pie de tabla
                 $('#total-grupal').text(totalGrupal.toFixed(2));
                 console.log("Costo mensual total:", totalGrupal);
-            });
+            }
         });
 
     </script>
