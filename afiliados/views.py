@@ -572,6 +572,7 @@ class BuscarRetencionView(View):
                             busqueda = buscar_cobertura(patologia)
                             #print(busqueda)
                             afiliado_info['Patologias'] = busqueda
+                            afiliado_info['Cobertura_especial'] = patologia
                             #print("Encontrado.")
                         else:
                             afiliado_info['Cobertura_especial'] = 'Sin cobertura especial'

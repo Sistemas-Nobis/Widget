@@ -381,7 +381,7 @@
                                     <input 
                                         type="checkbox" 
                                         class="aporte-checkbox" 
-                                        data-valor="{{ aporte.comp_total }}" 
+                                        data-valor="{{ aporte.aporte }}" 
                                         onchange="actualizarSeleccion()"
                                     />
                                 </td>
@@ -447,6 +447,7 @@
             // Redondear hacia abajo y actualizar el campo de entrada
             const totalRedondeado = Math.floor(total);
             document.getElementById("aportes").value = totalRedondeado;
+            //console.log(totalRedondeado)
         }
     </script>
 
