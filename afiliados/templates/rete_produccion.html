@@ -584,11 +584,13 @@
                             {% endfor %}
                             <tr>
                                 <th>Condición:</th>
-                                <th style="background-color: #ffffff; color: black;"><select id="convenio" name="convenio" onchange="actualizarPlanes()" onmousedown="return false;">
-                                    <option value="1">Relación de dependencia</option>
-                                    <option value="2">Monotributo</option>
-                                    <option value="3">Prepago</option>
-                                </select></th>
+                                <th style="background-color: #ffffff; color: black;">
+                                    <select id="convenio" name="convenio" onchange="actualizarPlanes()" onmousedown="return false;">
+                                        <option value="1" {% if convenio_id == "1" %}selected{% endif %}>Relación de dependencia</option>
+                                        <option value="2" {% if convenio_id == "2" %}selected{% endif %}>Monotributo</option>
+                                        <option value="3" {% if convenio_id == "3" %}selected{% endif %}>Prepago</option>
+                                    </select>
+                                </th>
                             </tr>
     
                             <tr>

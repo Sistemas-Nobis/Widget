@@ -4,7 +4,7 @@ from datetime import datetime
 import requests
 import json
 from pandas import json_normalize
-from .utils import actualizar_token_wise, actualizar_token_gecros, actualizar_preexistencias, buscar_cobertura
+from .utils import actualizar_token_wise, actualizar_token_gecros, actualizar_preexistencias, buscar_cobertura, condicion_grupal
 from django.core.cache import cache
 import pytz
 from dateutil.relativedelta import relativedelta
@@ -422,8 +422,9 @@ class BuscarRetencionView(View):
             data_afiliado = response_afiliado.json().get('data', [])
             if data_afiliado:
                 df_afiliado = json_normalize(data_afiliado)
-                df_selected = df_afiliado[["nombre", "nroAfi", "parentesco", "estadoBenef", "benGrId"]]
-                df_selected.columns = ["Nombre", "DNI", "Parentesco", "Estado", "Grupo"]
+                #print(df_afiliado)
+                df_selected = df_afiliado[["nombre", "nroAfi", "parentesco", "estadoBenef", "benGrId", "convenio.value"]]
+                df_selected.columns = ["Nombre", "DNI", "Parentesco", "Estado", "Grupo", "Condicion"]
 
                 # Crear lista de resultados combinados
                 resultados_combinados = []
@@ -432,6 +433,11 @@ class BuscarRetencionView(View):
                 forma_de_pago_bonif = []
 
                 grupo = data_afiliado[0].get("benGrId")
+
+                convenio_entry = df_afiliado.iloc[0]["convenio.value"] # Tomar convenio de Gecros
+
+                convenio_id = condicion_grupal(convenio_entry) # Reevaluar convenio y matchear con el ID del html
+                
                 url_dniage = f"https://api.nobis.com.ar/dni_agecta/{grupo}"
                 response_dniage = requests.get(url_dniage, headers=headers_interno)
                 dni_aux = 0
@@ -637,7 +643,7 @@ class BuscarRetencionView(View):
                 #print(resultados_combinados)
 
                 # Renderiza la plantilla con ambos conjuntos de datos
-                return render(request, self.template_name, {'data': resultados_combinados, 'data_aportes': all_aportes, 'data_fpago': forma_de_pago_bonif})
+                return render(request, self.template_name, {'data': resultados_combinados, 'data_aportes': all_aportes, 'data_fpago': forma_de_pago_bonif, "convenio_id": convenio_id})
             
             else:
                 return render(request, self.template_name, {'error': 'No se encontraron datos para el DNI proporcionado.'}, status=404)

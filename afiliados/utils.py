@@ -123,3 +123,20 @@ def buscar_cobertura(coberturas):
                 resultados.append(registro)
 
     return resultados
+
+
+# Filtrar condición del grupo familiar
+def condicion_grupal(convenio):
+    if convenio:
+        #print("Entrante " + convenio)
+        if 'PREPAGO' in convenio.upper():
+            #print("Prepago")
+            return "3"
+        elif 'MONOTRIBUTO' in convenio.upper():
+            #print("MO")
+            return "2"
+        else:
+            #print("RD")
+            return "1" # Relacion de dependencia
+    #print(convenio)
+    return "1"
