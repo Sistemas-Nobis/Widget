@@ -129,10 +129,10 @@ def buscar_cobertura(coberturas):
 def condicion_grupal(convenio):
     if convenio:
         #print("Entrante " + convenio)
-        if 'PREPAGO' in convenio.upper():
+        if 'PREPAGO' in convenio.upper() or 'CLIENTE PP' in convenio.upper():
             #print("Prepago")
             return "3"
-        elif 'MONOTRIBUTO' in convenio.upper():
+        elif 'MONOTRIBUTO' in convenio.upper() or 'CLIENTE MO' in convenio.upper():
             #print("MO")
             return "2"
         else:

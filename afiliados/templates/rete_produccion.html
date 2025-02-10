@@ -269,6 +269,36 @@
             max-width: 50%; /* Asegurar que las etiquetas no desborden */
         }
 
+        .td-eliminar {
+            position: relative;
+            width: 1px;
+            overflow: visible;
+            border: none !important; /* Elimina el borde de la celda */
+        }
+
+        .btn-eliminar {
+            font-size: 8px; /* Tamaño del ícono */
+            width: 15px; /* Ancho del botón */
+            height: 15px; /* Alto del botón */
+            padding: 0;
+            line-height: 1;
+            text-align: center;
+            color: white;
+            cursor: pointer;
+            position: absolute;
+            top: 18%;
+            right: 12px; /* Ajusta para que no quede cortado */
+            transform: translateY(-50%);
+            z-index: 10; /* Asegura que el botón esté por encima de otros elementos */
+            /* background-color: transparent; /* Fondo transparente */
+            /* border: none; /* Sin borde */
+        }
+
+        .btn-eliminar:hover {
+            background: #cc0000;
+        }
+
+
         @media (max-height: 375px) {
             body {
                 height: 100%; /* Ajusta para adaptarse a la altura disponible */
@@ -334,12 +364,13 @@
                 </thead>
                 <tbody>
                     {% for item in data %}
-                        <tr>
+                        <tr> <!-- {% if "sin cobertura" in item.Estado|lower %} style="background-color: rgba(255, 0, 0, 0.648); color: white;" 
+                            {% elif item.Estado == "Con Cobertura" %} style="background-color: #008000a5; color: white;" {% endif %} -->
                             <td>{{ item.Nombre }}</td>
                             <td>{{ item.DNI }}</td>
                             <td>{{ item.Parentesco }}</td>
                             <td>{{ item.Edad }}</td>
-                            <td><button class="expand-button" onclick="openModal('{{ item.Provincia }}', '{{ item.Fecha_alta }}', '{{ item.Estado }}','{{ item.Cobertura_especial }}')">+</button></td>
+                            <td style="background-color: white;"><button class="expand-button" onclick="openModal('{{ item.Provincia }}', '{{ item.Fecha_alta }}', '{{ item.Estado }}','{{ item.Cobertura_especial }}')">+</button></td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -523,13 +554,70 @@
         actualizarColorDeuda();
     </script>
 
+    <script>
+        function agregarFila() {
+            const tbody = document.querySelector("#secondary-modal tbody");
+
+            // Crear nueva fila con un select para parentesco y un select2 para patologías
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                <td>
+                    <select class="select-parentesco">
+                        <option value="">Seleccione</option>
+                        <option value="TITULAR">TITULAR</option>
+                        <option value="CONYUGE">CONYUGE</option>
+                        <option value="HIJO/A">HIJO/A</option>
+                        <option value="FAMILIAR A CARGO">FAMILIAR A CARGO</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="number" min="1" max="99" value="1" required oninput="this.value = Math.min(Math.max(this.value, 1), 99)">
+                </td>
+                <td>
+                    <select class="mi-select" style="width: 100%;" name="patologias[]" multiple="multiple"></select>
+                </td>
+                <td class="td-eliminar">
+                    <button onclick="eliminarFila(this)" class="btn-eliminar">❌</button>
+                </td>
+            `;
+
+            // Agregar la fila a la tabla
+            tbody.appendChild(newRow);
+
+            // **Reinicializar select2** en el nuevo select
+            $(newRow).find(".mi-select").select2({
+                placeholder: "Selecciona una opción...",
+                allowClear: true,
+                ajax: {
+                    url: '/static/preexistencias.json',
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function (data) {
+                        return {
+                            results: data.map(item => ({
+                                id: item.ID,
+                                text: item.Patologia
+                            }))
+                        };
+                    }
+                }
+            });
+        }
+
+        function eliminarFila(button) {
+            let row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+
+    </script>
+
     <!-- Modal para cotizar -->
     <div class="modal-overlay" id="secondary-modal-overlay"></div>
     <div class="modal" id="secondary-modal">
         <button class="close-button" onclick="closeSecondaryModal()">X</button>
         <div id="secondary-modal-content">
             <div class="modal-content">
-                <table>
+                <table id="cotizacion-table">
                     <thead>
                         <tr>
                             <th>Parentesco</th>
@@ -552,6 +640,7 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                <button type="button" onclick="agregarFila()">➕ Agregar capita</button>
                 <div class="table_2">
                     <table>
                         <thead>
@@ -736,7 +825,9 @@
                 //console.log("Aporte vacio")
                 aporte = 0
             }
-            const bonificacion = document.querySelector('#bonif_manual').value; // Bonificación de agente de retención (ingresado)
+
+            const bonifManualElement = document.querySelector('#bonif_manual');
+            const bonificacion = bonifManualElement ? parseFloat(bonifManualElement.value) || 0 : 0;
 
             //console.log(totalGrupal) // Valor de patologias en el grupo familiar
 
@@ -774,6 +865,8 @@
                 bonificaciones: bonificacion,
                 patologias: totalGrupal
             };
+
+            //console.log(requestData)
 
             // Enviar datos al backend mediante fetch
             fetch('/api/cotizar/', { // Ajusta esta URL según tu configuración de Django

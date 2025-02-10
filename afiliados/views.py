@@ -530,63 +530,69 @@ class BuscarRetencionView(View):
                         "Deuda": total_deuda,
                         "Patologias": []
                     }
- 
-                    # Solicitud a la API de afiliados para obtener edad y provincia
-                    url_afiliado_extra = f"https://appmobile.nobissalud.com.ar/api/afiliados?numero={nro_afi}"
-                    response_afiliado_extra = requests.get(url_afiliado_extra, headers=headers)
-                    data_afiliado_extra = response_afiliado_extra.json().get('data', [])
- 
-                    if data_afiliado_extra:
-                        fecha_nacimiento = data_afiliado_extra[0].get('fechaNacimiento')
-                        df_afiliado_extra = json_normalize(data_afiliado_extra, record_path=['domicilios'], meta=['benId', 'nombreAfiliado', 'fechaNacimiento'])
-                       
-                        # Provincia
-                        if 'provincia' in df_afiliado_extra.columns:
-                            provincia = df_afiliado_extra['provincia'].iloc[0]
-                            afiliado_info['Provincia'] = provincia
-                        else:
-                            afiliado_info['Provincia'] = 'Sin provincia'
- 
-                        # Calcular edad
-                        if fecha_nacimiento:
-                            fecha_nacimiento_dt = datetime.strptime(fecha_nacimiento, "%d/%m/%Y")
-                            hoy = datetime.today()
-                            edad = hoy.year - fecha_nacimiento_dt.year - ((hoy.month, hoy.day) < (fecha_nacimiento_dt.month, fecha_nacimiento_dt.day))
-                            afiliado_info['Edad'] = edad
-                        else:
-                            afiliado_info['Edad'] = "Sin fecha de nacimiento"
 
-                    # Solicitud a la API interna para obtener fecha de alta y patologia
-                    url_patologias = f"https://api.nobis.com.ar/fecha_alta_y_patologias/{nro_afi}"
-                    response_p = requests.get(url_patologias, headers=headers_interno)
-                    data_p = response_p.json()
-
-                    if data_p:
+                    if 'con' in afiliado_info["Estado"].lower():
+                        #print(f"Con cobertura: {afiliado_info["DNI"]}")
+ 
+                        # Solicitud a la API de afiliados para obtener edad y provincia
+                        url_afiliado_extra = f"https://appmobile.nobissalud.com.ar/api/afiliados?numero={nro_afi}"
+                        response_afiliado_extra = requests.get(url_afiliado_extra, headers=headers)
+                        data_afiliado_extra = response_afiliado_extra.json().get('data', [])
+    
+                        if data_afiliado_extra:
+                            fecha_nacimiento = data_afiliado_extra[0].get('fechaNacimiento')
+                            df_afiliado_extra = json_normalize(data_afiliado_extra, record_path=['domicilios'], meta=['benId', 'nombreAfiliado', 'fechaNacimiento'])
                         
-                        # Fecha de alta
-                        fecha_alta = data_p[0].get('fecha_alta')
-                        fecha_alta_format = datetime.strptime(fecha_alta, '%Y-%m-%dT%H:%M:%S.000')
+                            # Provincia
+                            if 'provincia' in df_afiliado_extra.columns:
+                                provincia = df_afiliado_extra['provincia'].iloc[0]
+                                afiliado_info['Provincia'] = provincia
+                            else:
+                                afiliado_info['Provincia'] = 'Sin provincia'
+    
+                            # Calcular edad
+                            if fecha_nacimiento:
+                                fecha_nacimiento_dt = datetime.strptime(fecha_nacimiento, "%d/%m/%Y")
+                                hoy = datetime.today()
+                                edad = hoy.year - fecha_nacimiento_dt.year - ((hoy.month, hoy.day) < (fecha_nacimiento_dt.month, fecha_nacimiento_dt.day))
+                                afiliado_info['Edad'] = edad
+                            else:
+                                afiliado_info['Edad'] = "Sin fecha de nacimiento"
 
-                        fecha_formateada = fecha_alta_format.strftime('%d-%m-%Y')
+                        # Solicitud a la API interna para obtener fecha de alta y patologia
+                        url_patologias = f"https://api.nobis.com.ar/fecha_alta_y_patologias/{nro_afi}"
+                        response_p = requests.get(url_patologias, headers=headers_interno)
+                        data_p = response_p.json()
 
-                        afiliado_info['Fecha_alta'] = fecha_formateada
+                        if data_p:
+                            
+                            # Fecha de alta
+                            fecha_alta = data_p[0].get('fecha_alta')
+                            fecha_alta_format = datetime.strptime(fecha_alta, '%Y-%m-%dT%H:%M:%S.000')
 
-                        patologia = data_p[0].get('cobertura_especial')
-                        
-                        if patologia != None:
-                            #print(patologia)
-                            busqueda = buscar_cobertura(patologia)
-                            #print(busqueda)
-                            afiliado_info['Patologias'] = busqueda
-                            afiliado_info['Cobertura_especial'] = patologia
-                            #print("Encontrado.")
+                            fecha_formateada = fecha_alta_format.strftime('%d-%m-%Y')
+
+                            afiliado_info['Fecha_alta'] = fecha_formateada
+
+                            patologia = data_p[0].get('cobertura_especial')
+                            
+                            if patologia != None:
+                                #print(patologia)
+                                busqueda = buscar_cobertura(patologia)
+                                #print(busqueda)
+                                afiliado_info['Patologias'] = busqueda
+                                afiliado_info['Cobertura_especial'] = patologia
+                                #print("Encontrado.")
+                            else:
+                                afiliado_info['Cobertura_especial'] = 'Sin cobertura especial'
+                                #print("SIN COBERTURA ESPECIAL")
                         else:
-                            afiliado_info['Cobertura_especial'] = 'Sin cobertura especial'
-                            #print("SIN COBERTURA ESPECIAL")
+                            print("Error. Fecha de alta no encontrada.")
+
+                        resultados_combinados.append(afiliado_info)
                     else:
-                        print("Error. Fecha de alta no encontrada.")
-
-                    resultados_combinados.append(afiliado_info)
+                        #print(f"Afiliado sin cobertura: {afiliado_info["DNI"]}")
+                        pass
 
                 # Aportes
                 all_aportes = []
