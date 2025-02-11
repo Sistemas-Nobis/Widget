@@ -4,7 +4,7 @@ from datetime import datetime
 import requests
 import json
 from pandas import json_normalize
-from .utils import actualizar_token_wise, actualizar_token_gecros, actualizar_preexistencias, buscar_cobertura, condicion_grupal
+from .utils import actualizar_token_wise, actualizar_token_gecros, actualizar_preexistencias, buscar_cobertura, condicion_grupal, buscar_preexistencias
 from django.core.cache import cache
 import pytz
 from dateutil.relativedelta import relativedelta
@@ -575,11 +575,17 @@ class BuscarRetencionView(View):
                             afiliado_info['Fecha_alta'] = fecha_formateada
 
                             patologia = data_p[0].get('cobertura_especial')
+                            patologias_id = data_p[0].get('id_cobertura_especial')
                             
                             if patologia != None:
                                 #print(patologia)
                                 busqueda = buscar_cobertura(patologia)
                                 #print(busqueda)
+                                if busqueda == []:
+                                    #print(f"Segunda busqueda: {patologias_id}")
+                                    busqueda = buscar_preexistencias(patologias_id)
+                                    #print(busqueda)
+                                
                                 afiliado_info['Patologias'] = busqueda
                                 afiliado_info['Cobertura_especial'] = patologia
                                 #print("Encontrado.")

@@ -5,6 +5,7 @@ import os
 # Calcula la ruta relativa a partir de utils.py
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 json_path = os.path.join(base_dir, 'home', 'static', 'preexistencias.json')
+homologacion_path = os.path.join(base_dir, 'home', 'static', 'homologacion.xlsx')
 
 def actualizar_token_wise():
     """Obtiene un nuevo token desde la API y lo guarda."""
@@ -140,3 +141,37 @@ def condicion_grupal(convenio):
             return "1" # Relacion de dependencia
     #print(convenio)
     return "1"
+
+import pandas as pd
+
+def buscar_preexistencias(ids_gecros):
+    # Cargar el archivo de homologación
+    df_homologacion = pd.read_excel(homologacion_path)
+    
+    # Convertir la entrada de IDs de Gecros en una lista
+    lista_ids_gecros = [int(id.strip()) for id in ids_gecros.split(",") if id.strip().isdigit()]
+
+    # Cargar el archivo JSON de preexistencias
+    with open(json_path, "r", encoding="utf-8") as f:
+        preexistencias = json.load(f)
+
+    resultados = []
+
+    for id_gecros in lista_ids_gecros:
+        # Filtrar las filas que coinciden con el ID de Gecros
+        filas = df_homologacion[df_homologacion.iloc[:, 0] == id_gecros]
+
+        if filas.empty:
+            continue  # Si no hay coincidencia, pasa al siguiente ID de Gecros
+        
+        for _, fila in filas.iterrows():
+            # Obtener los IDs de cobertura especial y dividirlos en una lista
+            ids_preexistencias = str(fila.iloc[2]).split(",")  # Asume que la 3ra columna contiene los IDs separados por coma
+            ids_preexistencias = [int(id.strip()) for id in ids_preexistencias if id.strip().isdigit()]  # Limpiar y convertir
+
+            # Buscar coincidencias en el JSON
+            coincidencias = [p for p in preexistencias if p["ID"] in ids_preexistencias]
+
+            resultados.extend(coincidencias)  # Agregar los resultados encontrados
+
+    return resultados if resultados else "No se encontraron coincidencias."
