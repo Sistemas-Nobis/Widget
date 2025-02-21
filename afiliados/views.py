@@ -434,9 +434,8 @@ class BuscarRetencionView(View):
 
                 grupo = data_afiliado[0].get("benGrId")
 
+                convenio_id = "1"
                 convenio_entry = df_afiliado.iloc[0]["convenio.value"] # Tomar convenio de Gecros
-
-                convenio_id = condicion_grupal(convenio_entry) # Reevaluar convenio y matchear con el ID del html
                 
                 url_dniage = f"https://api.nobis.com.ar/dni_agecta/{grupo}"
                 response_dniage = requests.get(url_dniage, headers=headers_interno)
@@ -520,6 +519,8 @@ class BuscarRetencionView(View):
                     total_deuda = "Sin titular"
 
                 # DESARROLLAR INFO FALTANTE
+                cobertura = 0
+
                 for afiliado in data_afiliado:
                     nro_afi = afiliado.get("nroAfi")
                     afiliado_info = {
@@ -533,7 +534,30 @@ class BuscarRetencionView(View):
 
                     if 'con' in afiliado_info["Estado"].lower():
                         #print(f"Con cobertura: {afiliado_info["DNI"]}")
+
+                        cobertura += 1
  
+                        if 'TITULAR' in afiliado.get("parentesco"):
+                            # Tomar tipo de beneficiario del titular
+                            url_tipoben = f"https://api.nobis.com.ar/tipo_ben/{nro_afi}"
+                            response_tipoben = requests.get(url_tipoben, headers=headers_interno)
+
+                            if response_tipoben.status_code == 200:
+                                data_tipoben = response_tipoben.json()
+                                #print(nro_afi)
+
+                                tipo_beneficiario = data_tipoben[0].get("tipoBen_nom") #DNI de agente de cuenta
+                                #print(f"Tipo afi: {tipo_beneficiario}")
+
+                                convenio_id = condicion_grupal(tipo_beneficiario) # Reevaluar convenio y matchear con el ID del html
+
+                            else:
+                                #print("No hay dni de agente de cuenta.")
+                                pass
+                            
+                        else:
+                            pass
+
                         # Solicitud a la API de afiliados para obtener edad y provincia
                         url_afiliado_extra = f"https://appmobile.nobissalud.com.ar/api/afiliados?numero={nro_afi}"
                         response_afiliado_extra = requests.get(url_afiliado_extra, headers=headers)
@@ -599,6 +623,9 @@ class BuscarRetencionView(View):
                     else:
                         #print(f"Afiliado sin cobertura: {afiliado_info["DNI"]}")
                         pass
+                
+                if cobertura == 0:
+                    print("⚠️ No hay afiliados con cobertura dentro del grupo familiar ⚠️")
 
                 # Aportes
                 all_aportes = []
@@ -655,7 +682,7 @@ class BuscarRetencionView(View):
                 #print(resultados_combinados)
 
                 # Renderiza la plantilla con ambos conjuntos de datos
-                return render(request, self.template_name, {'data': resultados_combinados, 'data_aportes': all_aportes, 'data_fpago': forma_de_pago_bonif, "convenio_id": convenio_id})
+                return render(request, self.template_name, {'data': resultados_combinados, 'data_aportes': all_aportes, 'data_fpago': forma_de_pago_bonif, "convenio_id": convenio_id, "convenio_nom":convenio_entry, "tipo_nom":tipo_beneficiario})
             
             else:
                 return render(request, self.template_name, {'error': 'No se encontraron datos para el DNI proporcionado.'}, status=404)

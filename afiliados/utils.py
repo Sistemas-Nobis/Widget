@@ -130,12 +130,18 @@ def buscar_cobertura(coberturas):
 def condicion_grupal(convenio):
     if convenio:
         #print("Entrante " + convenio)
-        if 'PREPAGO' in convenio.upper() or 'CLIENTE PP' in convenio.upper():
+        if 'PREPAGO' in convenio.upper() or 'PP -' in convenio.upper():
             #print("Prepago")
             return "3"
-        elif 'MONOTRIBUTO' in convenio.upper() or 'CLIENTE MO' in convenio.upper():
+        elif 'MONOTRIBUTO' in convenio.upper() or 'MT -' in convenio.upper():
             #print("MO")
             return "2"
+        elif 'NO USAR' in convenio.upper():
+            #print("NO USAR")
+            return "4"
+        elif 'SD -' in convenio.upper():
+            #print("MO")
+            return "5"
         else:
             #print("RD")
             return "1" # Relacion de dependencia

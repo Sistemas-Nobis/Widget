@@ -294,6 +294,23 @@
             /* border: none; /* Sin borde */
         }
 
+        .btn-eliminar-2 {
+            font-size: 8px; /* Tamaño del ícono */
+            width: 15px; /* Ancho del botón */
+            height: 15px; /* Alto del botón */
+            padding: 0;
+            line-height: 1;
+            text-align: center;
+            color: white;
+            cursor: pointer;
+            top: 18%;
+            /* position: relative; */
+            right: 12px; /* Ajusta para que no quede cortado */
+            z-index: 10; /* Asegura que el botón esté por encima de otros elementos */
+            /* background-color: transparent; /* Fondo transparente */
+            /* border: none; /* Sin borde */
+        }
+
         .btn-eliminar:hover {
             background: #cc0000;
         }
@@ -628,7 +645,9 @@
                     <tbody>
                         {% for item in data %}
                             <tr>
-                                <td>{{ item.Parentesco }}</td>
+                                <td>
+                                    <button onclick="eliminarFila(this)" class="btn-eliminar-2">❌</button>
+                                    {{ item.Parentesco }}</td>
                                 <td><input type="number" min="1" max="99" value="{{item.Edad }}" required oninput="this.value = Math.min(Math.max(this.value, 1), 99)"/></td>
                                 <td><select class="mi-select" style="width: 100%;" name="patologias[]" multiple="multiple">
                                     {% for patologia in item.Patologias %}
@@ -678,7 +697,14 @@
                                         <option value="1" {% if convenio_id == "1" %}selected{% endif %}>Relación de dependencia</option>
                                         <option value="2" {% if convenio_id == "2" %}selected{% endif %}>Monotributo</option>
                                         <option value="3" {% if convenio_id == "3" %}selected{% endif %}>Prepago</option>
+                                        <option value="1" {% if convenio_id == "4" %}selected{% endif %}>No usar (RD)</option>
+                                        <option value="1" {% if convenio_id == "5" %}selected{% endif %}>Servicio domestico (RD)</option>
                                     </select>
+                                    <span 
+                                            style="color: #007bff; font-weight: bold; margin-left: 5px;" 
+                                            title="Detalles:&#10;Convenio: {{ convenio_nom }}&#10;Tipo: {{ tipo_nom }}">
+                                            ⓘ
+                                        </span>
                                 </th>
                             </tr>
     
