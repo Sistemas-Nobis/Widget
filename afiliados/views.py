@@ -432,10 +432,22 @@ class BuscarRetencionView(View):
                 # Crear lista de resultado bonificacion y forma de pago
                 forma_de_pago_bonif = []
 
+                # Grupo familiar
                 grupo = data_afiliado[0].get("benGrId")
+                #print(f"Numero de grupo: {grupo}")
 
                 convenio_id = "1"
                 convenio_entry = df_afiliado.iloc[0]["convenio.value"] # Tomar convenio de Gecros
+
+                # Tomar DNI del titular
+                for x in data_afiliado:
+                    if x.get("esTitular"):
+                        dni_titular = x.get("nroAfi")
+                        break
+                        #print(f"Titular encontrado: {dni_titular}")
+                    else:
+                        dni_titular = 0
+
                 
                 url_dniage = f"https://api.nobis.com.ar/dni_agecta/{grupo}"
                 response_dniage = requests.get(url_dniage, headers=headers_interno)
@@ -451,7 +463,7 @@ class BuscarRetencionView(View):
 
                 hoy = datetime.today()
 
-                if dni_aux != 0:
+                if dni_titular != 0:
                     url_deuda = f"https://appmobile.nobissalud.com.ar/api/AgentesCuenta/Deuda/{dni_aux}"
                     response_deuda = requests.get(url_deuda, headers=headers)
                     if response_deuda.status_code == 200:
@@ -468,7 +480,7 @@ class BuscarRetencionView(View):
                         total_deuda = "Sin dato"
                     
                     # Forma de pago y Bonificacion/Recargo
-                    url_bf = f"https://api.nobis.com.ar/fpago_bonif/{dni_aux}"
+                    url_bf = f"https://api.nobis.com.ar/fpago_bonif/{grupo}"
                     response_bf = requests.get(url_bf, headers=headers_interno)
 
                     if response_bf.status_code == 200:
@@ -539,6 +551,7 @@ class BuscarRetencionView(View):
  
                         if 'TITULAR' in afiliado.get("parentesco"):
                             # Tomar tipo de beneficiario del titular
+
                             url_tipoben = f"https://api.nobis.com.ar/tipo_ben/{nro_afi}"
                             response_tipoben = requests.get(url_tipoben, headers=headers_interno)
 
@@ -630,7 +643,7 @@ class BuscarRetencionView(View):
                 # Aportes
                 all_aportes = []
 
-                url_aportes = f"https://api.nobis.com.ar/ultimos_aportes/{dni_aux}"
+                url_aportes = f"https://api.nobis.com.ar/ultimos_aportes/{dni_titular}"
                 response_a = requests.get(url_aportes, headers=headers_interno)
                 data_a = response_a.json()
 
