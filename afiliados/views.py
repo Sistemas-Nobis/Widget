@@ -436,8 +436,13 @@ class BuscarRetencionView(View):
                 grupo = data_afiliado[0].get("benGrId")
                 #print(f"Numero de grupo: {grupo}")
 
-                convenio_id = "1"
-                convenio_entry = df_afiliado.iloc[0]["convenio.value"] # Tomar convenio de Gecros
+                convenio_id = "4"
+                for index, row in df_selected.iterrows():
+                    titular = row["Parentesco"]
+                    if titular == "TITULAR":
+                        condicion_inicial = row["Condicion"]
+                        #print(condicion_inicial)
+                        break
 
                 # Tomar DNI del titular
                 for x in data_afiliado:
@@ -485,6 +490,7 @@ class BuscarRetencionView(View):
 
                     if response_bf.status_code == 200:
                         data_bf = response_bf.json()
+                        #print(data_bf)
 
                         if data_bf:
 
@@ -562,7 +568,10 @@ class BuscarRetencionView(View):
                                 tipo_beneficiario = data_tipoben[0].get("tipoBen_nom") #DNI de agente de cuenta
                                 #print(f"Tipo afi: {tipo_beneficiario}")
 
-                                convenio_id = condicion_grupal(tipo_beneficiario) # Reevaluar convenio y matchear con el ID del html
+                                if tipo_beneficiario:
+                                    convenio_id = condicion_grupal(tipo_beneficiario) # Reevaluar convenio y matchear con el ID del html
+                                else:
+                                    convenio_id = condicion_grupal(condicion_inicial)
 
                             else:
                                 #print("No hay dni de agente de cuenta.")
@@ -695,7 +704,7 @@ class BuscarRetencionView(View):
                 #print(resultados_combinados)
 
                 # Renderiza la plantilla con ambos conjuntos de datos
-                return render(request, self.template_name, {'data': resultados_combinados, 'data_aportes': all_aportes, 'data_fpago': forma_de_pago_bonif, "convenio_id": convenio_id, "convenio_nom":convenio_entry, "tipo_nom":tipo_beneficiario})
+                return render(request, self.template_name, {'data': resultados_combinados, 'data_aportes': all_aportes, 'data_fpago': forma_de_pago_bonif, "convenio_id": convenio_id, "convenio_nom":condicion_inicial, "tipo_nom":tipo_beneficiario})
             
             else:
                 return render(request, self.template_name, {'error': 'No se encontraron datos para el DNI proporcionado.'}, status=404)
