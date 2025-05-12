@@ -48,7 +48,7 @@
         }
 
         td {
-            max-width: 120px; /* Limitar ancho máximo de celdas */
+            max-width: 105px; /* Limitar ancho máximo de celdas */
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -191,6 +191,17 @@
             font-weight: bold;
         }
 
+        .texto-rojo {
+            color: white;
+            font-weight: bold;
+            background-color: red;
+        }
+        .texto-verde {
+            color: white;
+            font-weight: bold;
+            background-color: green;
+        }
+
         @media (max-height: 375px) {
             body {
                 height: 100%; /* Ajusta para adaptarse a la altura disponible */
@@ -243,10 +254,11 @@
             <table>
                 <thead>
                     <tr>
-                        <th colspan="4" style="background-color: #008000; color: white;">Información del grupo familiar
+                        <th colspan="5" style="background-color: #008000; color: white;">Información del grupo familiar
                         <button id="redirect-button" class="top-right-button">→ Retención</button></th>
                     </tr>
                     <tr>
+                        <th>Alta</th>
                         <th>Deuda</th>
                         <th>Nombre</th>
                         <th>DNI</th>
@@ -256,6 +268,7 @@
                 <tbody>
                     {% for item in data %}
                         <tr>
+                            <td class="{{ item.color_class }}" title="Fecha de alta: {{ item.Fecha_alta }}">{{ item.simbolo }}</td>
                             <td>{{ item.Deuda }}</td>
                             <td>{{ item.Nombre }}</td>
                             <td>{{ item.DNI }}</td>

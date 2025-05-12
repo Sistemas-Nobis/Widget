@@ -127,7 +127,7 @@ class BuscarAfiliadoView(View):
                 orden_parentesco = {"TITULAR": 1, "CONYUGE": 2, "HIJO/A": 3, "FAMILIAR A CARGO": 4}
                 df_selected["Parentesco_Orden"] = df_selected["Parentesco"].map(orden_parentesco)
                 df_selected = df_selected.sort_values(by=["Parentesco_Orden"]).drop("Parentesco_Orden", axis=1)
-                data = df_selected.to_dict(orient="records")
+                #data = df_selected.to_dict(orient="records")
                
                 # Obtener el token desde el caché o actualizarlo si ha expirado
                 token = self.obtener_token_wise()
@@ -148,10 +148,29 @@ class BuscarAfiliadoView(View):
  
                 # Restar 3 meses a la fecha actual
                 tres_meses_antes = fecha_actual - relativedelta(months=3)
- 
+
+                fechas_alta_dict = {}
+
                 for afiliado in data_afiliado:
                     nro_afi = afiliado.get("nroAfi")
                     nom_afi = afiliado.get("nombre")
+
+                    headers_interno = {
+                    "Content-Type": "application/json"
+                    }
+
+                    # Solicitud a la API interna para obtener fecha de alta y patologia
+                    url_patologias = f"https://api.nobis.com.ar/fecha_alta_y_patologias/{nro_afi}"
+                    response_p = requests.get(url_patologias, headers=headers_interno)
+                    data_p = response_p.json()
+
+                    if data_p:
+                        fecha_alta = data_p[0].get('fecha_alta')
+                        fecha_alta_format = datetime.strptime(fecha_alta, '%Y-%m-%dT%H:%M:%S.000')
+                        fecha_formateada = fecha_alta_format.strftime('%d-%m-%Y')
+                        fechas_alta_dict[nro_afi] = fecha_formateada
+                    else:
+                        fechas_alta_dict[nro_afi] = "Sin dato"
  
                     url_contacto = f'https://api.wcx.cloud/core/v1/contacts/?filtering=[{{"field":"contacts.personal_id","operator":"EQUAL","value":"{nro_afi}"}}]&fields=id,personal_id&sort=desc&sort_field=id&limit=5&page=1'
  
@@ -273,16 +292,39 @@ class BuscarAfiliadoView(View):
                                 else:
                                     pass
                                     #print("Fecha INVALIDA.")
- 
                         else:
                             pass
                        
                         # Ordenar los casos por la fecha 'created_at'
                         all_cases = sorted(all_cases, key=lambda x: datetime.strptime(x['created_at_full'], '%d-%m | %H:%M'), reverse=True)
- 
+
+
                     else:
                         print(f"No se encontraron datos de contacto para {nro_afi}.")
- 
+                
+                # Asignar columna al DataFrame
+                df_selected["Fecha_alta"] = df_selected["DNI"].map(fechas_alta_dict)
+
+                data = df_selected.to_dict(orient="records")
+
+                for item in data:
+                    try:
+                        fecha_alta_dt = datetime.strptime(item["Fecha_alta"], "%d-%m-%Y")
+                        un_anio_despues = fecha_alta_dt + relativedelta(years=1)
+                        hoy = datetime.now()
+
+                        if hoy >= un_anio_despues:
+                            item["color_class"] = "texto-verde"
+                            item["simbolo"] = "+"
+                        else:
+                            item["color_class"] = "texto-rojo"
+                            item["simbolo"] = "-"
+
+                    except:
+                        # Si la fecha está mal o vacía
+                        item["color_class"] = "texto-verde"
+                        item["simbolo"] = "?"
+
                 # Renderiza la plantilla con ambos conjuntos de datos
                 return render(request, self.template_name, {'data': data, 'data_casos': all_cases})
  
