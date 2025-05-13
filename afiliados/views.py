@@ -597,18 +597,19 @@ class BuscarRetencionView(View):
 
                         cobertura += 1
  
-                        if 'TITULAR' in afiliado.get("parentesco"):
+                        if afiliado.get("esTitular"):
                             # Tomar tipo de beneficiario del titular
+                            print(nro_afi)
 
                             url_tipoben = f"https://api.nobis.com.ar/tipo_ben/{nro_afi}"
                             response_tipoben = requests.get(url_tipoben, headers=headers_interno)
 
                             if response_tipoben.status_code == 200:
                                 data_tipoben = response_tipoben.json()
-                                #print(nro_afi)
+                                print(nro_afi)
 
                                 tipo_beneficiario = data_tipoben[0].get("tipoBen_nom") #DNI de agente de cuenta
-                                #print(f"Tipo afi: {tipo_beneficiario}")
+                                print(f"Tipo afi: {tipo_beneficiario}")
 
                                 if tipo_beneficiario:
                                     convenio_id = condicion_grupal(tipo_beneficiario) # Reevaluar convenio y matchear con el ID del html
@@ -690,6 +691,7 @@ class BuscarRetencionView(View):
                 
                 if cobertura == 0:
                     print("⚠️ No hay afiliados con cobertura dentro del grupo familiar ⚠️")
+                    dni_titular = dni
 
                 # Aportes
                 all_aportes = []
@@ -733,7 +735,11 @@ class BuscarRetencionView(View):
                             break
                 else:
                     pass
+                
 
+                if cobertura == 0:
+                    return render(request, self.template_name, {'data': resultados_combinados, 'data_aportes': all_aportes})
+                
                 # Ordenar por parentesco
                 orden_parentesco = {"TITULAR": 1, "CONYUGE": 2, "HIJO/A": 3, "FAMILIAR A CARGO": 4}
                 for afiliado in resultados_combinados:
