@@ -671,29 +671,47 @@
                                 </tr>
 
                             {% endfor %}
-                            {% for item in data %}
-                                {% if forloop.first %}
-                                    <tr>
-                                        <th>Provincia:</th>
-                                        <td><select id="provincias" name="provincias" onchange="actualizarPlanes()">
-                                        <option value="Cordoba" {% if item.Provincia == "CORDOBA" %}selected{% endif %}>Cordoba</option>
-                                        <option value="San_luis" {% if item.Provincia == "SAN LUIS" %}selected{% endif %}>San Luis</option>
-                                        <option value="Salta" {% if item.Provincia == "SALTA" %}selected{% endif %}>Salta</option>
-                                        <option value="Jujuy" {% if item.Provincia == "JUJUY" %}selected{% endif %}>Jujuy</option>
-                                        <option value="Tucuman" {% if item.Provincia == "TUCUMAN" %}selected{% endif %}>Tucuman</option>
-                                        <option value="Mendoza" {% if item.Provincia == "MENDOZA" %}selected{% endif %}>Mendoza</option>
-                                        <option value="San_Juan" {% if item.Provincia == "SAN JUAN" %}selected{% endif %}>San Juan</option>
-                                        <option value="Santiago" {% if item.Provincia == "SANTIAGO DEL ESTERO" %}selected{% endif %}>Santiago del Estero</option>
-                                        <option value="Catamarca" {% if item.Provincia == "CATAMARCA" %}selected{% endif %}>Catamarca</option>
-                                        <option value="LaRioja" {% if item.Provincia == "LA RIOJA" %}selected{% endif %}>La Rioja</option>
+                            {% if data %}
+                                {% for item in data %}
+                                    {% if forloop.first %}
+                                        <tr>
+                                            <th>Provincia:</th>
+                                            <td><select id="provincias" name="provincias" onchange="actualizarPlanes()">
+                                                <option value="Cordoba" {% if item.Provincia == "CORDOBA" %}selected{% endif %}>Cordoba</option>
+                                                <option value="San_luis" {% if item.Provincia == "SAN LUIS" %}selected{% endif %}>San Luis</option>
+                                                <option value="Salta" {% if item.Provincia == "SALTA" %}selected{% endif %}>Salta</option>
+                                                <option value="Jujuy" {% if item.Provincia == "JUJUY" %}selected{% endif %}>Jujuy</option>
+                                                <option value="Tucuman" {% if item.Provincia == "TUCUMAN" %}selected{% endif %}>Tucuman</option>
+                                                <option value="Mendoza" {% if item.Provincia == "MENDOZA" %}selected{% endif %}>Mendoza</option>
+                                                <option value="San_Juan" {% if item.Provincia == "SAN JUAN" %}selected{% endif %}>San Juan</option>
+                                                <option value="Santiago" {% if item.Provincia == "SANTIAGO DEL ESTERO" %}selected{% endif %}>Santiago del Estero</option>
+                                                <option value="Catamarca" {% if item.Provincia == "CATAMARCA" %}selected{% endif %}>Catamarca</option>
+                                                <option value="LaRioja" {% if item.Provincia == "LA RIOJA" %}selected{% endif %}>La Rioja</option>
+                                            </select></td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <th>Provincia:</th>
+                                    <td><select id="provincias" name="provincias" onchange="actualizarPlanes()">
+                                        <option value="Cordoba">Cordoba</option>
+                                        <option value="San_luis">San Luis</option>
+                                        <option value="Salta">Salta</option>
+                                        <option value="Jujuy">Jujuy</option>
+                                        <option value="Tucuman">Tucuman</option>
+                                        <option value="Mendoza">Mendoza</option>
+                                        <option value="San_Juan">San Juan</option>
+                                        <option value="Santiago">Santiago del Estero</option>
+                                        <option value="Catamarca">Catamarca</option>
+                                        <option value="LaRioja">La Rioja</option>
                                     </select></td>
-                                    </tr>
-                                {% endif %}
-                            {% endfor %}
+                                </tr>
+                            {% endif %}
                             <tr>
                                 <th>Condición:</th>
                                 <th style="background-color: #ffffff; color: black;">
-                                    <select id="convenio" name="convenio" onchange="actualizarPlanes()" onmousedown="return false;">
+                                    <select id="convenio" name="convenio" onchange="actualizarPlanes()" {% if convenio_id %}onmousedown="return false;"{% endif %}>
                                         <option value="1" {% if convenio_id == "1" %}selected{% endif %}>Relación de dependencia</option>
                                         <option value="2" {% if convenio_id == "2" %}selected{% endif %}>Monotributo</option>
                                         <option value="3" {% if convenio_id == "3" %}selected{% endif %}>Prepago</option>
@@ -701,10 +719,10 @@
                                         <option value="1" {% if convenio_id == "5" %}selected{% endif %}>Servicio domestico (RD)</option>
                                     </select>
                                     <span 
-                                            style="color: #007bff; font-weight: bold; margin-left: 5px;" 
-                                            title="Detalles:&#10;Convenio: {{ convenio_nom }}&#10;Tipo: {{ tipo_nom }}">
-                                            ⓘ
-                                        </span>
+                                        style="color: #007bff; font-weight: bold; margin-left: 5px;" 
+                                        title="Detalles:&#10;Convenio: {{ convenio_nom }}&#10;Tipo: {{ tipo_nom }}">
+                                        ⓘ
+                                    </span>
                                 </th>
                             </tr>
     
@@ -725,8 +743,37 @@
                 
                 <table style="margin-top: 5px; text-align: center;">
                     <thead>
-                        {% for x in data_fpago %}
-
+                        {% if data_fpago %}
+                            {% for x in data_fpago %}
+                                <tr><th colspan="2">Bonificaciones</th></tr>
+                                    
+                                <tr>
+                                    <th>Último registro</th>
+                                    <th>Manual (Cotizar)</th>
+                                </tr>
+                                
+                                {% if x.peri_hasta == 0 %}
+                                    <tr>
+                                        <th style="background-color: #ffffff; color: black; font-size: 0.7em;" id="sin_bonif">
+                                            - Sin registros -
+                                        </th>
+                                        <th style="background-color: #ffffff; color: black;"><input type="number" min="0" id="bonif_manual" name="bonif_manual" value="0" oninput="this.value = Math.min(Math.max(this.value, 0), 100)"></th>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <!-- Mostrar valores de porcentaje y periodo -->
+                                        <th style="background-color: #ffffff; color: black;" id="bonif_porc">{{ x.porcentaje }} | <span style="font-weight: bold;" id="bonif_peri" class="">{{ x.peri_hasta }}</span>
+                                            <span 
+                                                style="color: #007bff; font-weight: bold; margin-left: 5px;" 
+                                                title="Detalles:&#10;Origen: {{ x.BonficaRec_obs }}">
+                                                ⓘ
+                                            </span>
+                                        </th>
+                                        <th style="background-color: #ffffff; color: black;"><input type="number" min="0" id="bonif_manual" name="bonif_manual" value="0" oninput="this.value = Math.min(Math.max(this.value, 0), 100)"></th>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
                             <tr><th colspan="2">Bonificaciones</th></tr>
                                 
                             <tr>
@@ -734,27 +781,13 @@
                                 <th>Manual (Cotizar)</th>
                             </tr>
                             
-                            {% if x.peri_hasta == 0 %}
-                                <tr>
-                                    <th style="background-color: #ffffff; color: black; font-size: 0.7em;" id="sin_bonif">
-                                        - Sin registros -
-                                    </th>
-                                    <th style="background-color: #ffffff; color: black;"><input type="number" min="0" id="bonif_manual" name="bonif_manual" value="0" oninput="this.value = Math.min(Math.max(this.value, 0), 100)"></th>
-                                </tr>
-                            {% else %}
-                                <tr>
-                                    <!-- Mostrar valores de porcentaje y periodo -->
-                                    <th style="background-color: #ffffff; color: black;" id="bonif_porc">{{ x.porcentaje }} | <span style="font-weight: bold;" id="bonif_peri" class="">{{ x.peri_hasta }}</span>
-                                        <span 
-                                            style="color: #007bff; font-weight: bold; margin-left: 5px;" 
-                                            title="Detalles:&#10;Origen: {{ x.BonficaRec_obs }}">
-                                            ⓘ
-                                        </span>
-                                    </th>
-                                    <th style="background-color: #ffffff; color: black;"><input type="number" min="0" id="bonif_manual" name="bonif_manual" value="0" oninput="this.value = Math.min(Math.max(this.value, 0), 100)"></th>
-                                </tr>
-                            {% endif %}
-                        {% endfor %}
+                            <tr>
+                                <th style="background-color: #ffffff; color: black; font-size: 0.7em;" id="sin_bonif">
+                                    - Sin registros -
+                                </th>
+                                <th style="background-color: #ffffff; color: black;"><input type="number" min="0" id="bonif_manual" name="bonif_manual" value="0" oninput="this.value = Math.min(Math.max(this.value, 0), 100)"></th>
+                            </tr>
+                        {% endif %}
 
                         <tr>
                             <th>Aporte: </th>
