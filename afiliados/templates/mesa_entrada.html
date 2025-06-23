@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesa de Entrada - Nuevo Expediente</title>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <style>
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #008000;
+        font-family: Arial, sans-serif;
+    }
+    .content {
+        text-align: center;
+        color: #008000;
+        background-color: #fff;
+        padding: 10px;
+        border-radius: 10px;
+        width: 100%;
+        max-width: 600px;
+        max-height: 95vh;
+        overflow-y: auto;
+        box-shadow: 0 0 10px rgba(0,0,0,0.08);
+    }
+    h2 {
+        color: #008000;
+        margin-bottom: 10px;
+    }
+    form {
+        width: 100%;
+    }
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 10px;
+        justify-content: flex-start;
+    }
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        min-width: 160px;
+        flex: 1 1 160px;
+        margin-bottom: 0;
+    }
+
+    select#tipoExpediente {
+        width: 160%;
+    }
+
+    label#periodo_text {
+        align-self: flex-end;
+        margin-right: 70px;
+    }
+
+    input#periodo {
+        align-self: flex-end;
+        width: 40%;
+        margin-right: 5px;
+    }
+
+    label {
+        font-size: 0.95em;
+        margin-bottom: 2px;
+        color: #008000;
+        text-align: left;
+    }
+    input, select, textarea {
+        padding: 4px 6px;
+        border: 1px solid #008000;
+        border-radius: 5px;
+        font-size: 1em;
+        background: #f8fff8;
+        color: #008000;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    input[disabled], textarea[disabled] {
+        background: #e0e0e0;
+        color: #888;
+        border: 1px solid #b0b0b0;
+        cursor: not-allowed;
+    }
+    select:disabled {
+        background: #e0e0e0;
+        color: #888;
+        border: 1px solid #b0b0b0;
+        cursor: not-allowed;
+    }
+    textarea {
+        min-height: 40px;
+        resize: vertical;
+    }
+    .section-title {
+        background: #e0eae0;
+        color: #008000;
+        font-weight: bold;
+        padding: 2px 8px;
+        border-radius: 4px;
+        margin: 8px 0 4px 0;
+        text-align: left;
+        font-size: 1em;
+    }
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 6px;
+        margin-top: 10px;
+    }
+    button, .btn {
+        background-color: #008000;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.95em;
+        padding: 5px 12px;
+        transition: background 0.2s;
+    }
+    button.cancel, .btn.cancel {
+        background-color: #ff0000;
+    }
+    button.secondary, .btn.secondary {
+        background-color: #bdbdbd;
+        color: #008000;
+    }
+    button:disabled,
+    button[disabled] {
+        background: #ccc !important;
+        color: #888 !important;
+        cursor: not-allowed !important;
+        border: 1px solid #aaa !important;
+        opacity: 0.7;
+    }
+    @media (max-width: 700px) {
+        .content { max-width: 99vw; }
+        .form-row { flex-direction: column; }
+        .form-group { min-width: 100%; }
+    }
+
+    /* Select2 deshabilitado igual que los inputs deshabilitados */
+    .select2-container--default.select2-container--disabled .select2-selection--single {
+        background-color: #e0e0e0 !important;
+        color: #888 !important;
+        border: 1px solid #b0b0b0 !important;
+        cursor: not-allowed !important;
+    }
+    .select2-container--default.select2-container--disabled .select2-selection--single .select2-selection__rendered {
+        color: #888 !important;
+    }
+
+    .modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.4);
+    align-items: center; justify-content: center;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .modal.show { display: flex; }
+    .modal-content {
+    background: #fff;
+    padding: 2.5em 2em 2em 2em;
+    border-radius: 12px;
+    min-width: 350px;
+    max-width: 95vw;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2em;
+    }
+    .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5em;
+    }
+    .modal-header h3 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #222;
+    }
+    .expediente-id {
+    font-size: 1em;
+    color: #008000;
+    font-weight: bold;
+    background: #f3f3f3;
+    padding: 0.2em 0.7em;
+    border-radius: 8px;
+    }
+    .modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    }
+    .file-label {
+    font-size: 1em;
+    color: #444;
+    margin-bottom: 0.3em;
+    }
+    #archivoInput {
+    padding: 0.3em;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    }
+    .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.7em;
+    margin-top: 0.5em;
+    }
+    .btn {
+    padding: 0.5em 1.2em;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s;
+    }
+    .btn-primary {
+    background: #008000;
+    color: #fff;
+    }
+    .btn-primary:hover {
+    background: #444;
+    }
+    .btn-cancelar {
+    background: #ff0000;
+    color: #fff;
+    }
+    .btn-cancelar:hover {
+    background: #b71c1c;
+    }
+    .archivo-status {
+    margin-top: 1.2em;
+    min-height: 2em;
+    text-align: center;
+    font-size: 1.15em;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    }
+    .archivo-status.success {
+    color: #ffffff;
+    background: #008000;
+    border-radius: 8px;
+    padding: 10px;
+    padding-bottom: 3px;
+    margin-top: 0px;
+    box-shadow: 0 2px 8px rgba(56,142,60,0.08);
+    }
+    .archivo-status.success::before {
+    content: "✔ ";
+    font-size: 1.3em;
+    vertical-align: middle;
+    }
+    .archivo-status.error {
+    color: #ffffff;
+    background: #ff0000;
+    border-radius: 8px;
+    padding: 10px;
+    padding-bottom: 3px;
+    margin-top: 0px;
+    box-shadow: 0 2px 8px rgba(211,47,47,0.08);
+    }
+    .archivo-status.error::before {
+    content: "✖ ";
+    font-size: 1.3em;
+    vertical-align: middle;
+    }
+    </style>
+</head>
+<body>
+<div class="content">
+    <h2>Nuevo Expediente</h2>
+    <form id="expedienteForm" autocomplete="off">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="tipoExpediente">Tipo de expediente</label>
+                <select id="tipoExpediente" name="tipoExpediente"></select>
+            </div>
+            <div class="form-group">
+                <label for="periodo" id="periodo_text">Período</label>
+                <input type="text" id="periodo" name="periodo">
+            </div>
+        </div>
+        <div class="section-title">Orígenes</div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="afiliado">Afiliado</label>
+                <!--<input type="text" id="afiliado" name="afiliado">-->
+
+                {% if afiliado %}
+                        <select id="afiliado">
+                            {% for x in afiliado %}
+                                <option value="{{ x.benId }}">{{ x.DNI }} - {{ x.Nombre }}</option>
+                            {% endfor %}
+                        </select>
+                {% else %}
+                    <input type="text" id="afiliado" name="afiliado">
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="origenPrestador">Origen Prestador</label>
+                <select id="origenPrestador" name="origenPrestador" style="width:100%"></select>
+            </div>
+            <div class="form-group">
+                <label for="proveedor">Proveedor</label>
+                <select id="proveedor" name="proveedor" style="width:100%"></select>
+            </div>
+        </div>
+        <div class="section-title">Observaciones</div>
+        <textarea id="observaciones" name="observaciones"></textarea>
+        <div class="form-actions">
+            <button type="button" class="secondary" id="archivosBtn" disabled>Archivos</button>
+            <button type="submit">Guardar</button>
+            <button type="button" class="cancel">Cancelar</button>
+        </div>
+    </form>
+</div>
+
+<div id="modalArchivos" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Subir archivo al expediente</h3>
+      <span class="expediente-id">ID <span id="expedienteIdSpan"></span></span>
+    </div>
+    <form id="formArchivo" class="modal-form">
+      <!--<label for="archivoInput" class="file-label">Seleccionar archivo:</label>-->
+      <input type="file" id="archivoInput" required>
+      <div class="modal-actions">
+        <button type="submit" class="btn btn-primary">Subir</button>
+        <button type="button" id="cerrarModalBtn" class="btn btn-cancelar">Salir</button>
+      </div>
+    </form>
+    <div id="archivoStatus" class="archivo-status"></div>
+  </div>
+</div>
+
+<script>
+    // Cargar tipos desde el archivo JSON
+    let tiposExpediente = [];
+    let tiposExpedienteMap = {};
+
+    fetch('/static/tipos_exp.json')
+        .then(res => res.json())
+        .then(data => {
+            if (Array.isArray(data)) {
+                tiposExpediente = data;
+            } else {
+                tiposExpediente = [data];
+            }
+            cargarTipos();
+        });
+
+    function cargarTipos() {
+        const select = document.getElementById('tipoExpediente');
+        select.innerHTML = '<option value="">Seleccione</option>';
+        tiposExpediente.forEach((tipo) => {
+            const option = document.createElement('option');
+            option.value = tipo.mTipoExpId;
+            option.textContent = tipo.mTipoExp_nom;
+            select.appendChild(option);
+            tiposExpedienteMap[tipo.mTipoExpId] = tipo; // Key es el ID
+        });
+    }
+
+    // Cargar orígenes y activar select2
+    fetch('/static/origenes.json')
+    .then(res => res.json())
+    .then(data => {
+        // Llenar el select con los orígenes
+        const $select = $('#origenPrestador');
+        $select.empty().append('<option value="">Seleccione un origen</option>');
+        data.forEach(o => {
+        $select.append(
+            $('<option>', {
+            value: o.ori_id,
+            text: `${o.ori_id} - ${o.nombre}`
+            })
+        );
+        });
+        // Activar select2 con búsqueda por texto o ID
+        $select.select2({
+        placeholder: 'ID | Nombre',
+        allowClear: true,
+        width: 'resolve'
+        });
+    });
+
+    // Cargar proveedores y activar select2
+    fetch('/static/proveedores.json')
+    .then(res => res.json())
+    .then(data => {
+        // Llenar el select con los orígenes
+        const $select = $('#proveedor');
+        $select.empty().append('<option value="">Seleccione un proveedor</option>');
+        data.forEach(p => {
+        $select.append(
+            $('<option>', {
+            value: p.prov_id,
+            text: `${p.prov_id} - ${p.Nombre} - ${p.CUIT}`
+            })
+        );
+        });
+        // Activar select2 con búsqueda por texto o ID
+        $select.select2({
+        placeholder: 'ID | Nombre | CUIT',
+        allowClear: true,
+        width: 'resolve'
+        });
+    });
+
+
+    document.getElementById('tipoExpediente').addEventListener('change', function() {
+
+        document.getElementById('archivosBtn').disabled = true;
+       
+        window.expedienteId = null;
+
+        const tipoId = this.value;
+        if (tipoId === "") {
+            setOrigenesDisabled(true, true, true);
+            return;
+        }
+        const tipo = tiposExpedienteMap[tipoId]; // Ahora busca por ID, no por índice
+        setOrigenesDisabled(
+            tipo.pideBen_id === 0,
+            tipo.pideOri_id === 0,
+            tipo.pideProv_id === 0
+        );
+    });
+
+    function setOrigenesDisabled(afiliadoDisabled, origenPrestadorDisabled, proveedorDisabled) {
+        //document.getElementById('afiliado').disabled = afiliadoDisabled;
+
+        const afiliado = document.getElementById('afiliado');
+        afiliado.disabled = afiliadoDisabled;
+        if (afiliadoDisabled) {
+            afiliado.value = '';
+            afiliado.placeholder = '';
+        }
+        
+        const $origenPrestador = $('#origenPrestador');
+        $origenPrestador.prop('disabled', origenPrestadorDisabled).trigger('change.select2');
+        if (origenPrestadorDisabled) {
+            $origenPrestador.val('').trigger('change');
+            $origenPrestador.data('select2').$container.find('.select2-selection__rendered').text('');
+        }
+        
+        const $proveedor = $('#proveedor');
+        $proveedor.prop('disabled', proveedorDisabled).trigger('change.select2');
+        if (proveedorDisabled) {
+            $proveedor.val('').trigger('change');
+            $proveedor.data('select2').$container.find('.select2-selection__rendered').text('');
+        }
+    }
+
+    function setOrigenesDisabled_init(afiliadoDisabled, origenPrestadorDisabled, proveedorDisabled) {
+
+        const afiliado = document.getElementById('afiliado');
+        afiliado.disabled = afiliadoDisabled;
+        if (afiliadoDisabled) {
+            afiliado.value = '';
+            afiliado.placeholder = '';
+        }
+        
+        const $origenPrestador = $('#origenPrestador');
+        $origenPrestador.prop('disabled', origenPrestadorDisabled).trigger('change.select2');
+        if (origenPrestadorDisabled) {
+            $origenPrestador.val('').trigger('change');    
+        }
+        
+        const $proveedor = $('#proveedor');
+        $proveedor.prop('disabled', proveedorDisabled).trigger('change.select2');
+        if (proveedorDisabled) {
+            $proveedor.val('').trigger('change');
+        }
+    }
+
+    // Autocompletar período con el actual en formato aaaamm
+    function getPeriodoActual() {
+        const hoy = new Date();
+        const yyyy = hoy.getFullYear();
+        const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+        return `${yyyy}${mm}`;
+    }
+    document.getElementById('periodo').value = getPeriodoActual();
+
+    // Inicialmente deshabilitar los campos de origenes
+    document.addEventListener('DOMContentLoaded', function() {
+        setOrigenesDisabled_init(true, true, true);
+    });
+
+    document.getElementById('expedienteForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Usar jQuery para Select2
+        const oriId = $('#origenPrestador').val() || null;
+        const provId = $('#proveedor').val() || null;
+
+        const benId = document.getElementById('afiliado').value || null;
+        const mTipoExpId = document.getElementById('tipoExpediente').value || null;
+        const observaciones = document.getElementById('observaciones').value || "";
+        const periodo = document.getElementById('periodo').value || "";
+
+        const payload = {
+            benId: benId ? parseInt(benId) : null,
+            oriId: oriId ? parseInt(oriId) : null,
+            provId: provId ? parseInt(provId) : null,
+            mTipoExpId: mTipoExpId ? parseInt(mTipoExpId) : null,
+            observaciones: document.getElementById('observaciones').value || "",
+            periodo: document.getElementById('periodo').value || ""
+        };
+
+        fetch("/nuevo_expediente/guardar/", {
+        method: "POST",
+        headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(res => res.json())
+        .then(data => {
+            let expedienteId = null;
+
+            if (data.success && data.data && typeof data.data.data === "number") {
+                expedienteId = data.data.data;
+            }
+
+            if (expedienteId) {
+                //alert("Expediente creado correctamente. ID: " + expedienteId);
+                document.getElementById('archivosBtn').disabled = false;
+                window.expedienteId = expedienteId; // Si querés usarlo después
+            } else {
+                //alert("Error: " + (data.error || "No se pudo obtener el ID del expediente."));
+                document.getElementById('archivosBtn').disabled = true;
+            }
+        })
+        .catch(err => {
+            alert("Error al crear expediente: " + err);
+        });
+    });
+
+    // Abrir el modal al hacer click en "Archivos"
+    document.getElementById('archivosBtn').addEventListener('click', function() {
+        document.getElementById('modalArchivos').classList.add('show');
+
+        const status = document.getElementById('archivoStatus');
+        status.style.display = 'none';
+        status.textContent = '';
+        status.className = 'archivo-status';
+
+        document.getElementById('formArchivo').reset();
+
+        // Mostrar el ID en el modal
+        document.getElementById('expedienteIdSpan').textContent = window.expedienteId || '';
+
+    });
+
+    // Cerrar el modal
+    document.getElementById('cerrarModalBtn').addEventListener('click', function() {
+        document.getElementById('modalArchivos').classList.remove('show');
+    });
+
+    // Subir archivo
+    document.getElementById('formArchivo').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const expedienteId = window.expedienteId;
+        const archivoInput = document.getElementById('archivoInput');
+
+        const status = document.getElementById('archivoStatus');
+        status.style.display = 'block';
+        status.textContent = '';
+        status.className = 'archivo-status';
+
+        if (!expedienteId) {
+            status.textContent = 'No hay expediente seleccionado.';
+            status.classList.add('error');
+            return;
+        }
+        if (!archivoInput.files.length) {
+            status.textContent = 'Seleccioná un archivo.';
+            status.classList.add('error');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', archivoInput.files[0]);
+        formData.append('expedienteId', expedienteId);
+
+        fetch('/nuevo_expediente/subir_archivo/', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            status.style.display = 'block';
+            if (data.success) {
+                status.textContent = 'Archivo subido correctamente.';
+                status.classList.add('success');
+            } else {
+                status.textContent = 'Error al subir archivo: ' + (data.error || JSON.stringify(data));
+                status.classList.add('error');
+            }
+        })
+        .catch(err => {
+            status.style.display = 'block';
+            status.textContent = 'Error al subir archivo: ' + err;
+            status.classList.add('error');
+        });
+    });
+</script>
+</body>
+</html>

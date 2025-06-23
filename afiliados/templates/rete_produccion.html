@@ -468,7 +468,7 @@
             // Configurar el redireccionamiento del botón
             const button = document.getElementById('redirect-button');
             button.addEventListener('click', () => {
-                window.location.href = `https://widget.nobis.com.ar/atencion/${dni}`;
+                window.location.href = `https://widget.nobis.com.ar/widget/atencion/${dni}`;
             });
         } else {
             console.error("No se pudo encontrar el DNI en la URL actual.");
@@ -928,7 +928,7 @@
             //console.log(requestData)
 
             // Enviar datos al backend mediante fetch
-            fetch('/api/cotizar/', { // Ajusta esta URL según tu configuración de Django
+            fetch('/widget/api/cotizar/', { // Ajusta esta URL según tu configuración de Django
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

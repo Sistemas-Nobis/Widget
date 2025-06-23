@@ -10,6 +10,9 @@ import pytz
 from dateutil.relativedelta import relativedelta
 from django.http import HttpResponseBadRequest
 import os
+from django.shortcuts import render
+from django.utils.safestring import mark_safe
+from django.conf import settings
  
 class BuscarAfiliadoView(View):
     template_name = 'ate_produccion.html'
@@ -337,8 +340,7 @@ class BuscarAfiliadoView(View):
         else:
             return render(request, self.template_name, {'error': f'Error en la solicitud. Código de estado: {response_afiliado.status_code}'}, status=500)
        
-from django.shortcuts import render
-from django.utils.safestring import mark_safe
+
 
 class BuscarRetencionView(View):
     template_name = 'rete_produccion.html'
@@ -764,8 +766,180 @@ class BuscarRetencionView(View):
             return render(request, self.template_name, {'error': f'Error en la solicitud. Código de estado: {response_afiliado.status_code}'}, status=500)
         
 
-# COTIZADOR
+class MesaDeEntradaView(View):
+    template_name = 'mesa_entrada.html'   
 
+    def obtener_token_gecros(self):
+        # Verifica si el token está en el caché
+        token = cache.get('gecros_token')
+ 
+        if token is None:
+            # Si el token no está en el caché o ha expirado, actualizar el token
+            token = actualizar_token_gecros()
+            # Almacenar el token en caché con un tiempo de expiración
+            cache.set('gecros_token', token, timeout=1296000)
+ 
+        return token
+
+
+    def get(self, request, dni=None, *args, **kwargs):
+
+        OrigenesService.obtener_origenes()
+        ProveedoresService.obtener_proveedores()
+
+        # Validación de entrada de DNI
+        if not dni:
+            return HttpResponseBadRequest("Debe proporcionar un DNI.")
+        elif len(dni) != 8:
+            return render(request, self.template_name, {'error': 'Verifique el número de DNI, debe ser de 8 dígitos.'}, status=400)
+
+        fecha_actual = datetime.now().strftime("%Y-%m-%d")
+        #print(f"La fecha actual es {fecha_actual} y el DNI {dni}")
+ 
+        url_afiliado = "https://appmobile.nobissalud.com.ar/api/afiliados/gestionAfiliados"
+       
+        payload_afiliado = {
+            "numero": None,
+            "apellido": None,
+            "nombre": None,
+            "dni": dni,
+            "cuil": None,
+            "fecha": fecha_actual,
+            "incluirGrupoFam": True
+        }
+       
+        payload_json_afiliado = json.dumps(payload_afiliado)
+        token_gecros = self.obtener_token_gecros()
+ 
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {token_gecros}"
+            }
+       
+        # Solicitud a la API de afiliados
+        response_afiliado = requests.post(url_afiliado, data=payload_json_afiliado, headers=headers)
+        #print(response_afiliado.text)
+ 
+        if response_afiliado.status_code == 200:
+            data_afiliado = response_afiliado.json().get('data', [])
+            if data_afiliado:
+                df_afiliado = json_normalize(data_afiliado)
+                df_selected = df_afiliado[["benId", "nombre", "nroAfi", "parentesco"]]
+                df_selected.columns = ["benId","Nombre", "DNI", "Parentesco"]
+
+                dni_aux = 0
+                # Solicitud a la API de deuda
+                for x in data_afiliado:
+                    if x.get("esTitular") == True:
+                        dni_aux = x.get("nroAfi")
+                        print(f"Titular detectado: {dni_aux}")
+                        break
+                    else:
+                        pass
+                
+                total_deuda = 0
+                if dni_aux != 0:
+                    url_deuda = f"https://appmobile.nobissalud.com.ar/api/AgentesCuenta/Deuda/{dni_aux}"
+                    response_deuda = requests.get(url_deuda, headers=headers)
+                    data_deuda = response_deuda.json()
+
+                    hoy = datetime.today()
+
+                    if response_deuda.status_code == 200 and data_deuda != []:
+                        for deuda in data_deuda:
+                            fecven_dt = datetime.strptime(deuda.get("fecven"), "%d/%m/%Y")
+                            if fecven_dt < hoy:
+                                total_deuda = sum(float(item.get("monto", 0)) for item in data_deuda)
+                                total_deuda = "SI" if total_deuda > 0 else "NO"
+                                break
+                            else:
+                                total_deuda = "NO"
+                    
+                    elif response_deuda.status_code != 200:
+                        total_deuda = "Sin dato"
+
+                    else:
+                        total_deuda = "NO"
+                else:
+                    print("GRUPO FAMILIAR SIN TITULAR, REVISAR!")
+                    total_deuda = "Sin titular"
+ 
+                df_selected = df_selected.copy()
+                df_selected["Deuda"] = total_deuda
+ 
+                # Ordenar por parentesco
+                orden_parentesco = {"TITULAR": 1, "CONYUGE": 2, "HIJO/A": 3, "FAMILIAR A CARGO": 4}
+                df_selected["Parentesco_Orden"] = df_selected["Parentesco"].map(orden_parentesco)
+                df_selected = df_selected.sort_values(by=["Parentesco_Orden"]).drop("Parentesco_Orden", axis=1)
+                #data = df_selected.to_dict(orient="records")
+ 
+                zona_horaria = pytz.timezone('America/Argentina/Buenos_Aires')
+               
+                # Fecha actual
+                fecha_actual = datetime.now(zona_horaria)
+ 
+                # Restar 3 meses a la fecha actual
+                tres_meses_antes = fecha_actual - relativedelta(months=3)
+
+                fechas_alta_dict = {}
+
+                for afiliado in data_afiliado:
+                    nro_afi = afiliado.get("nroAfi")
+                    nom_afi = afiliado.get("nombre")
+
+                    headers_interno = {
+                    "Content-Type": "application/json"
+                    }
+
+                    # Solicitud a la API interna para obtener fecha de alta y patologia
+                    url_patologias = f"https://api.nobis.com.ar/fecha_alta_y_patologias/{nro_afi}"
+                    response_p = requests.get(url_patologias, headers=headers_interno)
+                    data_p = response_p.json()
+
+                    if data_p:
+                        fecha_alta = data_p[0].get('fecha_alta')
+                        fecha_alta_format = datetime.strptime(fecha_alta, '%Y-%m-%dT%H:%M:%S.000')
+                        fecha_formateada = fecha_alta_format.strftime('%d-%m-%Y')
+                        fechas_alta_dict[nro_afi] = fecha_formateada
+                    else:
+                        fechas_alta_dict[nro_afi] = "Sin dato"
+                
+                # Asignar columna al DataFrame
+                df_selected["Fecha_alta"] = df_selected["DNI"].map(fechas_alta_dict)
+
+                data = df_selected.to_dict(orient="records")
+
+                for item in data:
+                    try:
+                        fecha_alta_dt = datetime.strptime(item["Fecha_alta"], "%d-%m-%Y")
+                        un_anio_despues = fecha_alta_dt + relativedelta(years=1)
+                        hoy = datetime.now()
+
+                        if hoy >= un_anio_despues:
+                            item["color_class"] = "texto-verde"
+                            item["simbolo"] = "+"
+                        else:
+                            item["color_class"] = "texto-rojo"
+                            item["simbolo"] = "-"
+
+                    except:
+                        # Si la fecha está mal o vacía
+                        item["color_class"] = "texto-verde"
+                        item["simbolo"] = "?"
+
+                return render(request, self.template_name, {'afiliado': data})
+ 
+            else:
+                return render(request, self.template_name, {'error': 'No se encontraron datos para el DNI proporcionado.'}, status=404)
+       
+        elif response_afiliado.status_code == 400:
+            return render(request, self.template_name, {'error': f'El servidor retornó un error 400. Comprueba los parámetros de la solicitud.'}, status=400)
+       
+        else:
+            return render(request, self.template_name, {'error': f'Error en la solicitud. Código de estado: {response_afiliado.status_code}'}, status=500)
+
+
+# COTIZADOR
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -794,7 +968,8 @@ def cotizar_actual(request):
 
         # Construir URL de la API externa
         url_api = f"https://cotizador.nobis.com.ar/api?mes={mes}&planes={plan}&gestion={gestion}&ubicacion={ubicacion}&ages={edades}&directo={aporte}&descuento={bonificacion}&preexistencia={patologias}"
-
+        #print(url_api)
+        
         # Consultar la API externa
         try:
             headers = {
@@ -818,3 +993,169 @@ def cotizar_actual(request):
             return JsonResponse({"error": str(e)}, status=500)
 
     return JsonResponse({"error": "Método no permitido"}, status=405)
+
+
+class OrigenesService:
+    @staticmethod
+    def obtener_origenes():
+        url_api = "https://api.nobis.com.ar/origenes/1"
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # Ruta absoluta al archivo origenes.json
+        json_path = os.path.join(settings.BASE_DIR, 'afiliados', 'static', 'origenes.json')
+        archivo_existe = os.path.exists(json_path)
+
+        verificacion_semanal = cache.get('verificacion_semanal_origenes')
+
+        # Si no se realizó la verificación semanal, consultamos la API y actualizamos el archivo
+        if not archivo_existe or not verificacion_semanal:
+            try:
+                response = requests.get(url_api, headers=headers)
+                response.raise_for_status()
+                data = response.json()
+                #print("Actualizando archivo JSON de origenes")
+
+                # Guardar el JSON recibido en el archivo
+                with open(json_path, 'w', encoding='utf-8') as archivo:
+                    json.dump(data, archivo, ensure_ascii=False, indent=2)
+
+                # Registrar que se realizó la verificación semanal (7 días)
+                cache.set('verificacion_semanal_origenes', True, timeout=7 * 24 * 3600)
+
+            except requests.exceptions.RequestException as e:
+                print(f"Error al consultar la API: {e}")
+                # Si hay error y el archivo existe, devolvemos el último dato guardado
+                if os.path.exists(json_path):
+                    with open(json_path, 'r', encoding='utf-8') as archivo:
+                        return json.load(archivo)
+                return None
+
+        # Leer y devolver el contenido del archivo actualizado
+        try:
+            with open(json_path, 'r', encoding='utf-8') as archivo:
+                return json.load(archivo)
+        except FileNotFoundError:
+            print("Archivo local no encontrado y no se pudo actualizar desde la API.")
+            return None
+        
+
+class ProveedoresService:
+    @staticmethod
+    def obtener_proveedores():
+        url_api = "https://api.nobis.com.ar/proveedores/1"
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # Ruta absoluta al archivo origenes.json
+        json_path = os.path.join(settings.BASE_DIR, 'afiliados', 'static', 'proveedores.json')
+        archivo_existe = os.path.exists(json_path)
+
+        verificacion_semanal = cache.get('verificacion_semanal_proveedores')
+
+        # Si no se realizó la verificación semanal, consultamos la API y actualizamos el archivo
+        if not archivo_existe or not verificacion_semanal:
+            try:
+                response = requests.get(url_api, headers=headers)
+                response.raise_for_status()
+                data = response.json()
+                #print("Actualizando archivo JSON de proveedores")
+
+                # Guardar el JSON recibido en el archivo
+                with open(json_path, 'w', encoding='utf-8') as archivo:
+                    json.dump(data, archivo, ensure_ascii=False, indent=2)
+
+                # Registrar que se realizó la verificación semanal (7 días)
+                cache.set('verificacion_semanal_proveedores', True, timeout=7 * 24 * 3600)
+
+            except requests.exceptions.RequestException as e:
+                print(f"Error al consultar la API: {e}")
+                # Si hay error y el archivo existe, devolvemos el último dato guardado
+                if os.path.exists(json_path):
+                    with open(json_path, 'r', encoding='utf-8') as archivo:
+                        return json.load(archivo)
+                return None
+
+        # Leer y devolver el contenido del archivo actualizado
+        try:
+            with open(json_path, 'r', encoding='utf-8') as archivo:
+                return json.load(archivo)
+        except FileNotFoundError:
+            print("Archivo local no encontrado y no se pudo actualizar desde la API.")
+            return None
+        
+
+@csrf_exempt
+def guardar_expediente(request):
+    if request.method == "POST":
+            
+            data = json.loads(request.body)
+
+            benId = data.get("benId")
+            oriId = data.get("oriId")
+            provId = data.get("provId")
+            mTipoExpId = data.get("mTipoExpId")
+            observaciones = data.get("observaciones", "")
+            periodo = data.get("periodo")
+
+            url = "https://appmobile.nobissalud.com.ar/api/Expedientes"
+
+            payload = json.dumps({
+                "BenefUserId": None,
+                "benId": int(benId) if benId else None,
+                "oriId": int(oriId) if oriId else None,
+                "provId": int(provId) if provId else None,
+                "mTipoExpId": int(mTipoExpId) if mTipoExpId else None,
+                "appCode": None,
+                "observaciones": observaciones,
+                "periodo": periodo
+            })
+
+            token = cache.get('gecros_token')
+
+            headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {token}'
+            }
+            
+            try:
+                response = requests.request("POST", url, headers=headers, data=payload)
+                #print("Body enviado:", payload)
+
+                if response.status_code == 200:
+                    return JsonResponse({"success": True, "data": response.json()})
+                else:
+                    return JsonResponse({"success": False, "error": response.text}, status=400)
+            except Exception as e:
+                return JsonResponse({"success": False, "error": str(e)}, status=500)
+    else:
+        return JsonResponse({"success": False, "error": "Método no permitido"}, status=405)
+    
+
+@csrf_exempt
+def archivo_expediente(request):
+    if request.method == "POST":
+        expediente_id = request.POST.get('expedienteId')
+        archivo = request.FILES.get('file')
+        if not expediente_id or not archivo:
+            return JsonResponse({'success': False, 'error': 'Faltan datos'}, status=400)
+
+        token = cache.get('gecros_token')
+
+        files = {'file': (archivo.name, archivo.read(), archivo.content_type)}
+        url = f"https://appmobile.nobissalud.com.ar/api/archivo/SaveArchivo?mExpId={expediente_id}"
+        headers = {'Authorization': f'Bearer {token}'}
+
+        try:
+            response = requests.post(url, files=files, headers=headers)
+            if response.status_code == 200:
+                return JsonResponse({'success': True, 'data': response.json()})
+            else:
+                return JsonResponse({'success': False, 'error': response.text}, status=400)
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=500)
+    else:
+        return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
+    

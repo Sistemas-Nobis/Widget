@@ -38,10 +38,10 @@ def actualizar_token_wise():
 def actualizar_token_gecros():
     url = "https://appmobile.nobissalud.com.ar/connect/token"
     payload = {
-        'userName': '2|24588999',
-        'password': 'wiseapi',
+        'userName': 'maxitejero',
+        'password': 'Nobis24',
         'grant_type': 'password',
-        'client_id': 'gecrosAppAfiliado'
+        'client_id': 'gecros'
     }
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded'
