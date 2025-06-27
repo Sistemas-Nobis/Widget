@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Expedientes del grupo familiar</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Bootstrap 5 CSS para el modal -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: #0e8c13;
+  font-family: 'Roboto', Arial, sans-serif;
+  box-sizing: border-box;
+}
+body {
+  min-height: 100vh;
+  min-width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.container {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+  border: 3px solid #0e8c13;
+  display: flex;
+  flex-direction: column;
+  width: 800px;
+  height: 375px;
+  max-width: 100vw;
+  max-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+h2 {
+  background: #0e8c13;
+  color: #fff;
+  margin: 0;
+  padding: 10px 0 5px 0;
+  font-weight: 700;
+  font-size: 1.25em;
+  text-align: center;
+  border-radius: 15px 15px 0 0;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+.tabs {
+  display: flex;
+  gap: 8px;
+  background: #fff;
+  padding: 0 12px;
+  margin-bottom: 0;
+  border-bottom: 2px solid #0e8c13;
+  flex-shrink: 0;
+}
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px 8px 14px;
+  cursor: pointer;
+  border: none;
+  background: #e6fbe7;
+  font-size: 1em;
+  color: #0e8c13;
+  border-radius: 10px 10px 0 0;
+  margin-bottom: -2px;
+  font-weight: 500;
+  min-width: 120px;
+  transition: background 0.2s, color 0.2s;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+.tab.active {
+  background: #fff;
+  color: #0e8c13;
+  border-bottom: 2.5px solid #0e8c13;
+  font-weight: 700;
+  z-index: 2;
+}
+.tab-content {
+  display: none;
+  background: #fff;
+  border-radius: 0 0 15px 15px;
+  padding: 0 12px;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 220px; /* O el valor que prefieras */
+  overflow-y: auto;  /* El scroll va acá */
+}
+.tab-content.active {
+  display: block;
+  height: 100%;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  font-size: 1.08em;
+  margin-top: 12px;
+}
+th, td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #b6e2b8;
+  text-align: left;
+}
+th {
+  background: #0e8c13;
+  color: #fff;
+  font-weight: 600;
+  border-bottom: 2px solid #fff;
+  font-size: 1.08em;
+}
+tr:nth-child(even) td {
+  background: #e6fbe7;
+}
+tr:nth-child(odd) td {
+  background: #fff;
+}
+.no-expedientes {
+  color: #0e8c13;
+  font-style: italic;
+  margin: 18px 0;
+  text-align: center;
+  font-size: 1.1em;
+}
+.nuevo-expediente {
+  display: inline-block;
+  margin: 12px auto 16px auto;
+  padding: 10px 32px;
+  background: #0e8c13;
+  color: #fff;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.13em;
+  box-shadow: 0 2px 8px rgba(14,140,19,0.10);
+  border: none;
+  transition: background 0.2s;
+  text-align: center;
+  flex-shrink: 0;
+}
+.nuevo-expediente:hover {
+  background: #0a6c10;
+}
+@media (max-width: 900px) {
+  .container {
+    width: 98vw;
+    height: 98vh;
+    max-width: 100vw;
+    max-height: 100vh;
+  }
+}
+@media (max-width: 600px) {
+  .container {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    border-width: 0;
+  }
+  h2 {
+    border-radius: 0;
+    font-size: 1.1em;
+    padding: 12px 0 8px 0;
+  }
+  .tabs {
+    padding: 0 2px;
+    gap: 2px;
+  }
+  .tab {
+    min-width: 80px;
+    font-size: 0.95em;
+    padding: 6px 4px 4px 4px;
+  }
+  .tab-content {
+    padding: 0 2px;
+  }
+  .nuevo-expediente {
+    padding: 8px 8px;
+    font-size: 1em;
+    margin: 8px auto 10px auto;
+  }
+}
+</style>
+</head>
+<body>
+    <div class="container">
+        <h2>Expedientes del grupo familiar</h2>
+        <div class="tabs" id="afiliadoTabs">
+          {% for afiliado, exps in afiliados_data %}
+            <button class="tab{% if forloop.first %} active{% endif %}" data-tab="tab{{ forloop.counter0 }}">
+              <i class="fa-solid fa-user"></i> {{ afiliado }}
+            </button>
+          {% endfor %}
+        </div>
+        <div id="tabContents">
+          {% for afiliado, exps in afiliados_data %}
+            <div class="tab-content{% if forloop.first %} active{% endif %}" id="tab{{ forloop.counter0 }}">
+              {% if exps %}
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Número</th>
+                      <th>Tipo</th>
+                      <th>Sector</th>
+                      <th>Fecha</th>
+                      <th>Más</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for exp in exps %}
+                      <tr>
+                        <td>{{ exp.expedienteNro }}</td>
+                        <td>{{ exp.tipoExp }}</td>
+                        <td>{{ exp.sectorNom }}</td>
+                        <td>{{ exp.fechaIngreso }}</td>
+                        <td>
+                          <button class="btn btn-primary btn-ver-detalle"
+                            data-exp-id="{{ exp.expId }}"
+                            data-afiliado-idx="{{ forloop.parentloop.counter0 }}">
+                            Más
+                          </button>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              {% else %}
+                <div class="no-expedientes">No hay expedientes cargados.</div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+        <a href="?nuevo=1" class="nuevo-expediente">Crear nuevo expediente</a>
+    </div>
+
+    <!-- Modal Detalle -->
+    <div class="modal fade" id="detalleExpedienteModal" tabindex="-1" aria-labelledby="detalleExpedienteLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="detalleExpedienteLabel">Detalle del Expediente</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <strong>Observaciones:</strong>
+              <p id="modal-observaciones"></p>
+            </div>
+            <div>
+              <strong>Adjuntos:</strong>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nombre de archivo</th>
+                    <th>Extensión</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="modal-adjuntos">
+                  <!-- Adjuntos aquí -->
+                </tbody>
+              </table>
+              
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modalPrevisualizacion" tabindex="-1" aria-labelledby="modalPrevisualizacionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modalPrevisualizacionLabel">Previsualización de archivo</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body text-center">
+            <img id="img-previsualizacion" src="" alt="Previsualización" style="max-width:100%;max-height:60vh;display:none;">
+            <iframe id="pdf-previsualizacion" src="" style="width:100%;height:60vh;display:none;" frameborder="0"></iframe>
+            <div id="no-preview" class="alert alert-warning mt-3" style="display:none;">
+            No se puede previsualizar este tipo de archivo. Descargalo para verlo.
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Bootstrap 5 JS (para el modal) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Django: datos serializados para JS -->
+    {{ afiliados_data|json_script:"afiliados-data" }}
+    <script>
+    // Tabs JS (igual que antes)
+    const tabs = document.querySelectorAll('.tab');
+    const contents = document.querySelectorAll('.tab-content');
+    tabs.forEach((tab, idx) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        contents.forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        contents[idx].classList.add('active');
+      });
+    });
+
+    // Modal JS
+    const afiliados_data = JSON.parse(document.getElementById('afiliados-data').textContent);
+    document.body.addEventListener('click', function(e) {
+      if (e.target && e.target.classList.contains('btn-ver-detalle')) {
+        const expId = e.target.getAttribute('data-exp-id');
+        const afiliadoIdx = e.target.getAttribute('data-afiliado-idx');
+        const exps = afiliados_data[afiliadoIdx][1];
+        const expediente = exps.find(exp => exp.expId == expId || exp.expId == parseInt(expId));
+        // Observaciones
+        document.getElementById('modal-observaciones').textContent = expediente.observaciones || 'Sin observaciones';
+        // Adjuntos
+        const adjuntosTbody = document.getElementById('modal-adjuntos');
+        adjuntosTbody.innerHTML = '';
+        if (expediente.adjuntos && expediente.adjuntos.length > 0) {
+          expediente.adjuntos.forEach(adj => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+            <td>${adj.nombreArchivo}</td>
+            <td>${adj.extension}</td>
+            <td>
+                <button class="btn btn-info btn-sm btn-ver-adjunto"
+                data-archivo-id="${adj.archivoId}"
+                data-extension="${adj.extension}">
+                <i class="fa fa-eye"></i> Ver
+                </button>
+                <button class="btn btn-success btn-sm btn-descargar-adjunto"
+                data-archivo-id="${adj.archivoId}"
+                data-nombre-archivo="${adj.nombreArchivo}.${adj.extension}">
+                <i class="fa fa-download"></i> Descargar
+                </button>
+            </td>
+            `;
+            adjuntosTbody.appendChild(row);
+            });
+        } else {
+          const row = document.createElement('tr');
+          row.innerHTML = `<td colspan="2">Sin adjuntos</td>`;
+          adjuntosTbody.appendChild(row);
+        }
+        // Mostrar modal
+        const modal = new bootstrap.Modal(document.getElementById('detalleExpedienteModal'));
+        modal.show();
+      }
+    });
+
+    document.body.addEventListener('click', function(e) {
+    if (e.target && e.target.classList.contains('btn-descargar-adjunto')) {
+        const archivoId = e.target.getAttribute('data-archivo-id');
+        const nombreArchivo = e.target.getAttribute('data-nombre-archivo');
+        descargarAdjunto(archivoId, nombreArchivo);
+    }
+    });
+
+    function descargarAdjunto(archivoId, nombreArchivo) {
+    const csrftoken = getCookie('csrftoken');
+    fetch("/expediente/descargar-adjunto/", {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrftoken
+        },
+        body: JSON.stringify({ archivoId: archivoId })
+    })
+    .then(res => {
+        if (!res.ok) {
+        // Intentá leer el texto (por si es HTML o vacío)
+        return res.text().then(text => {
+            throw new Error(text || `Error HTTP: ${res.status}`);
+        });
+        }
+        return res.blob();
+    })
+    .then(blob => {
+        // Forzar descarga
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = nombreArchivo;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+    })
+    .catch(err => {
+        alert('No se pudo descargar el archivo: ' + err.message);
+    });
+    }
+
+    document.body.addEventListener('click', function(e) {
+    if (e.target && e.target.classList.contains('btn-ver-adjunto')) {
+        const archivoId = e.target.getAttribute('data-archivo-id');
+        const extension = e.target.getAttribute('data-extension');
+        previsualizarAdjunto(archivoId, extension);
+    }
+    });
+
+    function previsualizarAdjunto(archivoId, extension) {
+    const csrftoken = getCookie('csrftoken');
+    fetch("/expediente/previsualizar-adjunto/", {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrftoken
+        },
+        body: JSON.stringify({ archivoId: archivoId, extension: extension })
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("No se pudo obtener el archivo");
+        return res.blob();
+    })
+    .then(blob => {
+        const url = URL.createObjectURL(blob);
+        mostrarArchivoEnModal(url, extension);
+    })
+    .catch(err => {
+        alert("No se pudo previsualizar el archivo: " + err.message);
+    });
+    }
+
+    // Función para obtener el CSRF token (igual que en tu ejemplo)
+    function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+        }
+        }
+    }
+    return cookieValue;
+    }
+
+    function mostrarArchivoEnModal(url, extension) {
+    const imgModal = document.getElementById('img-previsualizacion');
+    const pdfModal = document.getElementById('pdf-previsualizacion');
+    const noPreview = document.getElementById('no-preview');
+    imgModal.style.display = 'none';
+    pdfModal.style.display = 'none';
+    noPreview.style.display = 'none';
+
+    if (['jpg', 'jpeg', 'png', 'gif'].includes(extension.toLowerCase())) {
+        imgModal.src = url;
+        imgModal.style.display = 'block';
+    } else if (extension.toLowerCase() === 'pdf') {
+        pdfModal.src = url;
+        pdfModal.style.display = 'block';
+    } else {
+        noPreview.style.display = 'block';
+    }
+    const modal = new bootstrap.Modal(document.getElementById('modalPrevisualizacion'));
+    modal.show();
+    }
+    </script>
+</body>
+</html>

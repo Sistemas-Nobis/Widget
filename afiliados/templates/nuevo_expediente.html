@@ -336,7 +336,7 @@
   <div class="modal-content">
     <div class="modal-header">
       <h3>Subir archivo al expediente</h3>
-      <span class="expediente-id">ID <span id="expedienteIdSpan"></span></span>
+      <span class="expediente-id">N°<span id="expedienteCreadoIdSpan2"></span></span>
     </div>
     <form id="formArchivo" class="modal-form">
       <!--<label for="archivoInput" class="file-label">Seleccionar archivo:</label>-->
@@ -347,6 +347,21 @@
       </div>
     </form>
     <div id="archivoStatus" class="archivo-status"></div>
+  </div>
+</div>
+
+<div id="modalCreacionExpediente" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Expediente creado</h3>
+      <span class="expediente-id">N°<span id="expedienteCreadoIdSpan"></span></span>
+    </div>
+    <div class="modal-body">
+      <div id="creacionExpedienteStatus" class="archivo-status"></div>
+    </div>
+    <div class="modal-actions">
+      <button type="button" id="cerrarModalCreacionBtn" class="btn btn-cancelar">Cerrar</button>
+    </div>
   </div>
 </div>
 
@@ -529,29 +544,51 @@
         fetch("/nuevo_expediente/guardar/", {
         method: "POST",
         headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken
             },
             body: JSON.stringify(payload)
         })
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) {
+                // Intentá leer el texto (por si es HTML o vacío)
+                return res.text().then(text => {
+                    throw new Error(text || `Error HTTP: ${res.status}`);
+                });
+            }
+            return res.json();
+        })
         .then(data => {
             let expedienteId = null;
 
             if (data.success && data.data && typeof data.data.data === "number") {
                 expedienteId = data.data.data;
-            }
-
-            if (expedienteId) {
-                //alert("Expediente creado correctamente. ID: " + expedienteId);
                 document.getElementById('archivosBtn').disabled = false;
-                window.expedienteId = expedienteId; // Si querés usarlo después
+                window.expedienteId = expedienteId;
+
+                // Ahora traé el número de expediente
+                fetch(`https://api.nobis.com.ar/datos_expediente/${expedienteId}`)
+                .then(res => res.json())
+                .then(datos => {
+                    // datos es un array, tomá el primer elemento
+                    const exp = Array.isArray(datos) && datos.length > 0 ? datos[0] : null;
+                    mostrarModalCreacionExpediente({
+                        success: true,
+                        mExpNro: exp ? exp.mExp_nro : null
+                    });
+                })
+                .catch(err => {
+                    mostrarModalCreacionExpediente({ error: "No se pudo obtener el número de expediente: " + err });
+                });
+
             } else {
-                //alert("Error: " + (data.error || "No se pudo obtener el ID del expediente."));
                 document.getElementById('archivosBtn').disabled = true;
+                window.expedienteId = null;
+                mostrarModalCreacionExpediente(data);
             }
         })
         .catch(err => {
-            alert("Error al crear expediente: " + err);
+            mostrarModalCreacionExpediente({ error: "Error al crear expediente: " + err });
         });
     });
 
@@ -624,6 +661,56 @@
             status.classList.add('error');
         });
     });
+
+    // Mostrar el modal de creación de expediente
+    function mostrarModalCreacionExpediente(data) {
+        let mensaje = '';
+        let esExito = false;
+        let numeroExpediente = data.mExpNro || '-';
+
+        if (data.success && data.mExpNro) {
+            mensaje = "Expediente creado correctamente.";
+            esExito = true;
+        } else if (data.error) {
+            mensaje = "Error: " + data.error;
+        } else {
+            mensaje = "No se pudo crear el expediente.";
+        }
+
+        document.querySelector('#modalCreacionExpediente .modal-header h3').textContent =
+            esExito ? "Expediente creado" : "Error al crear el expediente";
+
+        document.getElementById('expedienteCreadoIdSpan').textContent = numeroExpediente;
+        document.getElementById('expedienteCreadoIdSpan2').textContent = numeroExpediente;
+        const status = document.getElementById('creacionExpedienteStatus');
+        status.textContent = mensaje;
+        status.className = 'archivo-status' + (esExito ? ' success' : ' error');
+
+        document.getElementById('modalCreacionExpediente').classList.add('show');
+    }
+
+    // Cerrar el modal de creación
+    document.getElementById('cerrarModalCreacionBtn').addEventListener('click', function() {
+        document.getElementById('modalCreacionExpediente').classList.remove('show');
+    });
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
 </script>
 </body>
 </html>

@@ -9021,7 +9021,7 @@
     "ori_id": 1508,
     "nombre": "LIC. GODOY LUCILA ",
     "loc_id": 1766,
-    "tp_id": 175
+    "tp_id": 215
   },
   {
     "ori_id": 1509,
@@ -13953,7 +13953,7 @@
     "ori_id": 8659,
     "nombre": "CENTRO NEFROLOGICO NOROESTE SOC COL ",
     "loc_id": 1249,
-    "tp_id": 2537
+    "tp_id": 12132
   },
   {
     "ori_id": 8670,
@@ -16543,7 +16543,7 @@
   },
   {
     "ori_id": 14290,
-    "nombre": "ADRIANA HEREDIA ",
+    "nombre": "ADRIANA HEREDIA- NO USAR",
     "loc_id": 1625,
     "tp_id": 215
   },
@@ -19398,6 +19398,12 @@
     "tp_id": 148
   },
   {
+    "ori_id": 21161,
+    "nombre": " ADAN SALOMON ",
+    "loc_id": 1249,
+    "tp_id": 150
+  },
+  {
     "ori_id": 21183,
     "nombre": "Javurek Maria Alejandra ",
     "loc_id": 1416,
@@ -19564,6 +19570,12 @@
     "nombre": "Colegio Medico de Neuquen ",
     "loc_id": 2930,
     "tp_id": 114
+  },
+  {
+    "ori_id": 23030,
+    "nombre": "Haron Oses Alana Belen",
+    "loc_id": 2014,
+    "tp_id": 229
   },
   {
     "ori_id": 23083,
@@ -23052,6 +23064,12 @@
     "tp_id": 215
   },
   {
+    "ori_id": 72501,
+    "nombre": "BERTOLDI GISELA CARLA ",
+    "loc_id": 2420,
+    "tp_id": 174
+  },
+  {
     "ori_id": 72699,
     "nombre": "BIANCHI VIVIANA BEATRIZ ",
     "loc_id": 1989,
@@ -23211,7 +23229,7 @@
     "ori_id": 74437,
     "nombre": "HOSPITAL ELEAZAR HERRERA MOTTA",
     "loc_id": 2153,
-    "tp_id": 111
+    "tp_id": 4
   },
   {
     "ori_id": 74505,

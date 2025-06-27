@@ -1,6 +1,7 @@
 import requests
 import json
 import os
+from datetime import datetime
 
 # Calcula la ruta relativa a partir de utils.py
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -181,3 +182,27 @@ def buscar_preexistencias(ids_gecros):
             resultados.extend(coincidencias)  # Agregar los resultados encontrados
 
     return resultados if resultados else "No se encontraron coincidencias."
+
+def obtener_expedientes_grupo_familiar(ben_ids, token_gecros, benid_to_dni, benid_to_nombre):
+    url_base = "https://appmobile.nobissalud.com.ar/api/Expedientes"
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {token_gecros}"
+    }
+    expedientes = []
+    for ben_id in ben_ids:
+        url = f"{url_base}?BenId={ben_id}"
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            data = response.json().get("data", [])
+            for exp in data:
+                exp["DNI"] = benid_to_dni.get(ben_id, "")
+                exp["Nombre"] = benid_to_nombre.get(ben_id, "")
+                expedientes.append(exp)
+    # Ordenar por fechaIngreso descendente
+    expedientes.sort(
+        key=lambda x: datetime.strptime(x["fechaIngreso"], "%d/%m/%Y"),
+        reverse=True
+    )
+    return expedientes[:10]
+

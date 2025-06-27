@@ -18502,7 +18502,7 @@
   {
     "prov_id": 74441,
     "Nombre": "CENTRO PROV. DE SALUD INFANTIL EVA PERON",
-    "CUIT": "30710781318"
+    "CUIT": ""
   },
   {
     "prov_id": 74445,
@@ -52538,5 +52538,100 @@
     "prov_id": 123254,
     "Nombre": "VALDIVIA STELLA MARIS ",
     "CUIT": "27168199673"
+  },
+  {
+    "prov_id": 123259,
+    "Nombre": "ALVAREZ SILVIO ALEJANDRINO",
+    "CUIT": "20297835409"
+  },
+  {
+    "prov_id": 123260,
+    "Nombre": "TORRES JULIETA",
+    "CUIT": "27347649894"
+  },
+  {
+    "prov_id": 123261,
+    "Nombre": "FIDELIO LUCIA ",
+    "CUIT": "27330825443"
+  },
+  {
+    "prov_id": 123262,
+    "Nombre": "ZANEL ELISABET",
+    "CUIT": "27290493981"
+  },
+  {
+    "prov_id": 123263,
+    "Nombre": "RUGGERI NATALIA MARIA ",
+    "CUIT": "27279398543"
+  },
+  {
+    "prov_id": 123264,
+    "Nombre": "LLUGDAR MARIA ADRIANA ",
+    "CUIT": "27167719525"
+  },
+  {
+    "prov_id": 123265,
+    "Nombre": "ROMERO MELINA CECILIA ",
+    "CUIT": "27396105905"
+  },
+  {
+    "prov_id": 123266,
+    "Nombre": "LECOUSER S.A. ",
+    "CUIT": "33717029009"
+  },
+  {
+    "prov_id": 123267,
+    "Nombre": "MASSELLO DAYANA SOLEDAD ",
+    "CUIT": "23350503854"
+  },
+  {
+    "prov_id": 123268,
+    "Nombre": "RODRIGUEZ MARIA GISELLE DEL VALLE ",
+    "CUIT": "27358452669"
+  },
+  {
+    "prov_id": 123269,
+    "Nombre": "CACERES REQUENA ANA CECILIA ",
+    "CUIT": "27335403121"
+  },
+  {
+    "prov_id": 123270,
+    "Nombre": "HARON OSES ALANA BELEN",
+    "CUIT": "27395823030"
+  },
+  {
+    "prov_id": 123271,
+    "Nombre": "MAVEJOS S.A.S.",
+    "CUIT": "33718784129"
+  },
+  {
+    "prov_id": 123272,
+    "Nombre": "PERINAT SOCIEDAD ANONIMA",
+    "CUIT": "30621080217"
+  },
+  {
+    "prov_id": 123273,
+    "Nombre": "ARROYO ORIANA MONTSERRAT",
+    "CUIT": "27404815348"
+  },
+  {
+    "prov_id": 123274,
+    "Nombre": "CIRCULO ODONTOLOGICO DEL NEUQUEN",
+    "CUIT": "30569316029"
+  },
+  {
+    "prov_id": 123275,
+    "Nombre": "FLORES GROUP SAS",
+    "CUIT": "30718246101"
+  },
+  {
+    "prov_id": 123281,
+    "Nombre": "LIBERATORE DANIELA SILVANA",
+    "CUIT": "27172736241"
+  },
+  {
+    "prov_id": 123285,
+    "Nombre": "BATTISTA MARIANO JAVIER ",
+    "CUIT": "20207837181"
   }
 ]

@@ -4,7 +4,7 @@ from datetime import datetime
 import requests
 import json
 from pandas import json_normalize
-from .utils import actualizar_token_wise, actualizar_token_gecros, actualizar_preexistencias, buscar_cobertura, condicion_grupal, buscar_preexistencias
+from .utils import actualizar_token_wise, actualizar_token_gecros, actualizar_preexistencias, buscar_cobertura, condicion_grupal, buscar_preexistencias, obtener_expedientes_grupo_familiar
 from django.core.cache import cache
 import pytz
 from dateutil.relativedelta import relativedelta
@@ -13,6 +13,7 @@ import os
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
 from django.conf import settings
+from collections import defaultdict
  
 class BuscarAfiliadoView(View):
     template_name = 'ate_produccion.html'
@@ -767,7 +768,8 @@ class BuscarRetencionView(View):
         
 
 class MesaDeEntradaView(View):
-    template_name = 'mesa_entrada.html'   
+    template_carga_expediente = 'nuevo_expediente.html'
+    template_expedientes = 'expedientes.html'
 
     def obtener_token_gecros(self):
         # Verifica si el token está en el caché
@@ -791,8 +793,8 @@ class MesaDeEntradaView(View):
         if not dni:
             return HttpResponseBadRequest("Debe proporcionar un DNI.")
         elif len(dni) != 8:
-            return render(request, self.template_name, {'error': 'Verifique el número de DNI, debe ser de 8 dígitos.'}, status=400)
-
+            return render(request, self.template_carga_expediente, {'error': 'Verifique el número de DNI, debe ser de 8 dígitos.'}, status=400)
+        
         fecha_actual = datetime.now().strftime("%Y-%m-%d")
         #print(f"La fecha actual es {fecha_actual} y el DNI {dni}")
  
@@ -826,6 +828,36 @@ class MesaDeEntradaView(View):
                 df_afiliado = json_normalize(data_afiliado)
                 df_selected = df_afiliado[["benId", "nombre", "nroAfi", "parentesco"]]
                 df_selected.columns = ["benId","Nombre", "DNI", "Parentesco"]
+
+                ben_ids = df_selected["benId"].tolist() # Obtiene todos los BenID del grupo familiar
+                benid_to_dni = dict(zip(df_selected["benId"], df_selected["DNI"]))
+                benid_to_nombre = dict(zip(df_selected["benId"], df_selected["Nombre"]))
+
+                crear_nuevo = request.GET.get('nuevo', '0') == '1'
+
+                expedientes = obtener_expedientes_grupo_familiar(ben_ids, token_gecros, benid_to_dni, benid_to_nombre)
+                #print("Expedientes:", expedientes)
+
+                if not crear_nuevo:
+                    
+                    expedientes_por_afiliado = defaultdict(list)
+                    for exp in expedientes:
+                        #print(exp.keys())
+                        key = f"{exp['Nombre']} ({exp['DNI']})"
+                        expedientes_por_afiliado[key].append(exp)
+
+                    #print("Expedientes por afiliado:", dict(expedientes_por_afiliado))
+                    afiliados = list(expedientes_por_afiliado.keys())
+                    afiliados.sort(key=lambda x: (dni not in x, x))
+
+                    afiliados_data = [(afiliado, expedientes_por_afiliado[afiliado]) for afiliado in afiliados]
+                    
+                    #print(afiliados_data)
+                    
+                    return render(request, self.template_expedientes, {
+                        'afiliados_data': afiliados_data,
+                        'dni': dni
+                    })
 
                 dni_aux = 0
                 # Solicitud a la API de deuda
@@ -927,16 +959,16 @@ class MesaDeEntradaView(View):
                         item["color_class"] = "texto-verde"
                         item["simbolo"] = "?"
 
-                return render(request, self.template_name, {'afiliado': data})
+                return render(request, self.template_carga_expediente, {'afiliado': data})
  
             else:
-                return render(request, self.template_name, {'error': 'No se encontraron datos para el DNI proporcionado.'}, status=404)
+                return render(request, self.template_carga_expediente, {'error': 'No se encontraron datos para el DNI proporcionado.'}, status=404)
        
         elif response_afiliado.status_code == 400:
-            return render(request, self.template_name, {'error': f'El servidor retornó un error 400. Comprueba los parámetros de la solicitud.'}, status=400)
+            return render(request, self.template_carga_expediente, {'error': f'El servidor retornó un error 400. Comprueba los parámetros de la solicitud.'}, status=400)
        
         else:
-            return render(request, self.template_name, {'error': f'Error en la solicitud. Código de estado: {response_afiliado.status_code}'}, status=500)
+            return render(request, self.template_carga_expediente, {'error': f'Error en la solicitud. Código de estado: {response_afiliado.status_code}'}, status=500)
 
 
 # COTIZADOR
@@ -1159,3 +1191,85 @@ def archivo_expediente(request):
     else:
         return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
     
+
+from django.http import HttpResponse
+EXTENSION_TO_CONTENT_TYPE = {
+    'jpg': 'image/jpeg',
+    'jpeg': 'image/jpeg',
+    'png': 'image/png',
+    'gif': 'image/gif',
+    'pdf': 'application/pdf',
+    'txt': 'text/plain',
+    'doc': 'application/msword',
+    'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'xls': 'application/vnd.ms-excel',
+    'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+}
+
+@csrf_exempt
+def descargar_adjunto(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            archivo_id = data.get("archivoId")
+            if not archivo_id:
+                return JsonResponse({"error": "Falta archivoId"}, status=400)
+
+            token = cache.get('gecros_token')
+
+            # Llamar a la API externa
+            api_url = f"https://appmobile.nobissalud.com.ar/api/Archivo/get-img/{archivo_id}"
+            headers = {'Authorization': f'Bearer {token}'}
+            api_response = requests.get(api_url, stream=True, headers=headers)
+
+            if api_response.status_code != 200:
+                return JsonResponse({"error": "No se pudo obtener el archivo"}, status=404)
+
+            # Intentar obtener el nombre de archivo del header, si lo hay
+            content_disposition = api_response.headers.get('Content-Disposition')
+            if content_disposition and 'filename=' in content_disposition:
+                filename = content_disposition.split('filename=')[1].strip('"')
+            else:
+                # Si no viene, usar un nombre genérico
+                filename = f"archivo_{archivo_id}"
+
+            # Detectar el tipo de archivo
+            content_type = api_response.headers.get('Content-Type', 'application/octet-stream')
+
+            response = HttpResponse(api_response.content, content_type=content_type)
+            response['Content-Disposition'] = f'attachment; filename="{filename}"'
+            return response
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+    return JsonResponse({"error": "Método no permitido"}, status=405)
+
+
+@csrf_exempt
+def previsualizar_adjunto(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            archivo_id = data.get("archivoId")
+            extension = data.get("extension", "").lower()
+
+            if not archivo_id or not extension:
+                return JsonResponse({"error": "Faltan datos"}, status=400)
+            
+            token = cache.get('gecros_token')
+            
+            api_url = f"https://appmobile.nobissalud.com.ar/api/Archivo/get-img/{archivo_id}"
+            headers = {'Authorization': f'Bearer {token}'}
+            api_response = requests.get(api_url, stream=True, headers=headers)
+            
+            if api_response.status_code != 200:
+                return JsonResponse({"error": "No se pudo obtener el archivo"}, status=404)
+            
+            content_type = EXTENSION_TO_CONTENT_TYPE.get(extension, 'application/octet-stream')
+            
+            return HttpResponse(api_response.content, content_type=content_type)
+        except Exception as e:
+            
+            return JsonResponse({"error": str(e)}, status=400)
+    return JsonResponse({"error": "Método no permitido"}, status=405)
+
