@@ -10950,6 +10950,12 @@
     "tp_id": 218
   },
   {
+    "ori_id": 3121,
+    "nombre": "CACERES REQUENA ANA CECILIA ",
+    "loc_id": 2189,
+    "tp_id": 174
+  },
+  {
     "ori_id": 3123,
     "nombre": "SAPEI VALERIA SOLEDAD ",
     "loc_id": 1795,
@@ -11370,6 +11376,18 @@
     "tp_id": 4
   },
   {
+    "ori_id": 3848,
+    "nombre": "Asociación Nazareth Casa San Francisco de Asis",
+    "loc_id": 2181,
+    "tp_id": 176
+  },
+  {
+    "ori_id": 3854,
+    "nombre": "MASSELLO DAYANA SOLEDAD ",
+    "loc_id": 2181,
+    "tp_id": 174
+  },
+  {
     "ori_id": 3881,
     "nombre": "COLEGIO DE BIOQUIMICOS DE TUCUMAN ",
     "loc_id": 2189,
@@ -11761,7 +11779,7 @@
   },
   {
     "ori_id": 4539,
-    "nombre": "Colegio de Bioquimicos de Neuquen ",
+    "nombre": "- Colegio de Bioquimicos de Neuquen ",
     "loc_id": 2930,
     "tp_id": 114
   },
@@ -12420,6 +12438,12 @@
     "tp_id": 102
   },
   {
+    "ori_id": 5541,
+    "nombre": "IMPLANTES R.B. S.R.L. ",
+    "loc_id": 2181,
+    "tp_id": 2537
+  },
+  {
     "ori_id": 5542,
     "nombre": "FARMA KD SA ",
     "loc_id": 1254,
@@ -12598,6 +12622,12 @@
     "nombre": "ARTRO SA",
     "loc_id": 2181,
     "tp_id": 102
+  },
+  {
+    "ori_id": 5905,
+    "nombre": "ROMERO MELINA CECILIA ",
+    "loc_id": 2181,
+    "tp_id": 174
   },
   {
     "ori_id": 5911,
@@ -16050,6 +16080,12 @@
     "tp_id": 164
   },
   {
+    "ori_id": 11392,
+    "nombre": "TEJERINA LICIA DANIELA ABIGAIL",
+    "loc_id": 2203,
+    "tp_id": 174
+  },
+  {
     "ori_id": 11443,
     "nombre": "Salassa Rodolfo ",
     "loc_id": 2420,
@@ -16798,6 +16834,12 @@
     "nombre": "AUXILIADORA DE LA SALUD ",
     "loc_id": 3101,
     "tp_id": 102
+  },
+  {
+    "ori_id": 16029,
+    "nombre": "Circulo Odontologico del Neuquen",
+    "loc_id": 2930,
+    "tp_id": 114
   },
   {
     "ori_id": 16044,
@@ -18582,6 +18624,12 @@
     "tp_id": 215
   },
   {
+    "ori_id": 19525,
+    "nombre": "LLUGDAR MARIA ADRIANA ",
+    "loc_id": 2181,
+    "tp_id": 174
+  },
+  {
     "ori_id": 19625,
     "nombre": "BIOSALUD",
     "loc_id": 1300,
@@ -19806,6 +19854,12 @@
     "tp_id": 248
   },
   {
+    "ori_id": 25443,
+    "nombre": " FIDELIO LUCIA",
+    "loc_id": 2181,
+    "tp_id": 174
+  },
+  {
     "ori_id": 25481,
     "nombre": "SANTAELLA PATRICIA",
     "loc_id": 1301,
@@ -20062,6 +20116,12 @@
     "nombre": "CENTRO DE TRATAMIENTO ENDOVASCULAR SRL",
     "loc_id": 2189,
     "tp_id": 2537
+  },
+  {
+    "ori_id": 29009,
+    "nombre": "LECOUSER S.A. ",
+    "loc_id": 2181,
+    "tp_id": 174
   },
   {
     "ori_id": 29064,
@@ -20602,6 +20662,12 @@
     "nombre": "MARTINEZ ARIAS CLAUDIA",
     "loc_id": 2181,
     "tp_id": 174
+  },
+  {
+    "ori_id": 35409,
+    "nombre": "Alvarez Silvio Alejandrino",
+    "loc_id": 1249,
+    "tp_id": 2537
   },
   {
     "ori_id": 35416,
@@ -21540,6 +21606,12 @@
     "tp_id": 127
   },
   {
+    "ori_id": 49894,
+    "nombre": "FARMACIA FARMARKET",
+    "loc_id": 2189,
+    "tp_id": 2537
+  },
+  {
     "ori_id": 49916,
     "nombre": "AGUILERA CARINA FABIANA ",
     "loc_id": 2181,
@@ -21828,6 +21900,12 @@
     "tp_id": 111
   },
   {
+    "ori_id": 52669,
+    "nombre": "RODRIGUEZ MARIA GISELLE DEL VALLE ",
+    "loc_id": 2189,
+    "tp_id": 174
+  },
+  {
     "ori_id": 52724,
     "nombre": "ROBLEDO CHAMI FLORENCIA NAHOM ",
     "loc_id": 2181,
@@ -22000,6 +22078,12 @@
     "nombre": "COMUNA LAS BAJADAS",
     "loc_id": 2181,
     "tp_id": 4
+  },
+  {
+    "ori_id": 55137,
+    "nombre": "RECCHIUTO MONICA MELINA ",
+    "loc_id": 2203,
+    "tp_id": 174
   },
   {
     "ori_id": 55141,
@@ -22986,6 +23070,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 71208,
+    "nombre": "PROTE + SALUD ",
+    "loc_id": 1249,
+    "tp_id": 2537
+  },
+  {
     "ori_id": 71227,
     "nombre": "Centro Medico Don Bosco ",
     "loc_id": 3079,
@@ -23080,6 +23170,12 @@
     "nombre": "BUFFA ROMINA SOLEDAD",
     "loc_id": 2181,
     "tp_id": 174
+  },
+  {
+    "ori_id": 72718,
+    "nombre": "ASOCIACION CIVIL NUESTRA SEÑORA DE LUJAN",
+    "loc_id": 1770,
+    "tp_id": 114
   },
   {
     "ori_id": 72875,
@@ -23638,6 +23734,12 @@
     "nombre": "SI CONSTRUCCIONES S.A.S ",
     "loc_id": 1986,
     "tp_id": 2537
+  },
+  {
+    "ori_id": 80217,
+    "nombre": "Sanatorio de la Mujer ",
+    "loc_id": 2423,
+    "tp_id": 111
   },
   {
     "ori_id": 80354,
@@ -24594,6 +24696,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 93981,
+    "nombre": "ZANEL ELIZABETH ",
+    "loc_id": 1301,
+    "tp_id": 174
+  },
+  {
     "ori_id": 94140,
     "nombre": "MONTENEGRO GABRIELA KARINA",
     "loc_id": 1254,
@@ -24894,6 +25002,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 98543,
+    "nombre": "RUGGERI NATALIA ",
+    "loc_id": 1301,
+    "tp_id": 174
+  },
+  {
     "ori_id": 98570,
     "nombre": "NUÑEZ RAFO MIGUEL ALBERTO ",
     "loc_id": 2189,
@@ -24978,6 +25092,12 @@
     "tp_id": 102
   },
   {
+    "ori_id": 99326,
+    "nombre": "HOSPITAL RAMON CARRILLO ",
+    "loc_id": 1985,
+    "tp_id": 4
+  },
+  {
     "ori_id": 99424,
     "nombre": "Sosa Agustina ",
     "loc_id": 1241,
@@ -25023,6 +25143,12 @@
     "ori_id": 99789,
     "nombre": "GONZALEZ LOURDES JIMENA ",
     "loc_id": 1249,
+    "tp_id": 174
+  },
+  {
+    "ori_id": 99905,
+    "nombre": "ALBORNOZ SOFIA BELEN",
+    "loc_id": 2203,
     "tp_id": 174
   },
   {
@@ -25186,6 +25312,12 @@
     "nombre": "EXEQUIEL ASEF BLANCO",
     "loc_id": 2181,
     "tp_id": 174
+  },
+  {
+    "ori_id": 131344,
+    "nombre": "LUDUEÑA MARIA BELEN ",
+    "loc_id": 2181,
+    "tp_id": 217
   },
   {
     "ori_id": 132111,
@@ -30768,6 +30900,12 @@
     "tp_id": 4
   },
   {
+    "ori_id": 712277,
+    "nombre": "Centro Medico Don Bosco - Odontologia ",
+    "loc_id": 3079,
+    "tp_id": 12132
+  },
+  {
     "ori_id": 719947,
     "nombre": "Ana Paula Dutto ",
     "loc_id": 2181,
@@ -30823,7 +30961,7 @@
   },
   {
     "ori_id": 784808,
-    "nombre": "ASOCIACIÓN CÍRCULO ODONTOLÓGICO DE LA PAMPA ",
+    "nombre": "ASOCIACION CIRCULO ODONTOLOGICO DE LA PAMPA ",
     "loc_id": 2391,
     "tp_id": 12194
   },

@@ -999,7 +999,7 @@ def cotizar_actual(request):
         token = "496ae7b9-0787-482e-bbe2-235279237940"
 
         # Construir URL de la API externa
-        url_api = f"https://cotizador.nobis.com.ar/api?mes={mes}&planes={plan}&gestion={gestion}&ubicacion={ubicacion}&ages={edades}&directo={aporte}&descuento={bonificacion}&preexistencia={patologias}"
+        url_api = f"https://cotizador.nobis.com.ar/cotizacion?mes={mes}&planes={plan}&convenio={gestion}&provincia={ubicacion}&ages={edades}&directo={aporte}&descuento={bonificacion}&preexistencia={patologias}"
         #print(url_api)
         
         # Consultar la API externa
