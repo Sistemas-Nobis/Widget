@@ -978,7 +978,6 @@ from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 def cotizar_actual(request):
     if request.method == 'POST':
-        # Leer datos enviados desde el frontend
         data = json.loads(request.body)
         mes = data.get('mes')
         plan = data.get('plan')
@@ -987,36 +986,46 @@ def cotizar_actual(request):
         aporte = data.get('aportes')
         bonificacion = data.get('bonificaciones')
         patologias = data.get('patologias')
-        edades = ','.join(data.get('edades', []))  # Convertir lista de edades en cadena separada por comas
+        edades = ','.join(data.get('edades', []))
 
-        # Verificar si todos los parámetros necesarios están presentes
         if not all([mes, plan, gestion, ubicacion, edades]):
             return JsonResponse({"error": "Faltan parámetros"}, status=400)
-        
-        #print("Datos recibidos:", data)
 
-        # Token fijo
         token = "496ae7b9-0787-482e-bbe2-235279237940"
 
-        # Construir URL de la API externa
-        url_api = f"https://cotizador.nobis.com.ar/cotizacion?mes={mes}&planes={plan}&convenio={gestion}&provincia={ubicacion}&ages={edades}&directo={aporte}&descuento={bonificacion}&preexistencia={patologias}"
-        #print(url_api)
-        
-        # Consultar la API externa
-        try:
+        def consultar_api(mes_valor):
+            url_api = (
+                f"https://cotizador.nobis.com.ar/cotizacion?"
+                f"mes={mes_valor}&planes={plan}&convenio={gestion}&provincia={ubicacion}"
+                f"&ages={edades}&directo={aporte}&descuento={bonificacion}&preexistencia={patologias}"
+            )
             headers = {
                 "Content-Type": "application/json",
                 "Authorization": f"Bearer {token}"
-                }
-
+            }
             response = requests.get(url_api, headers=headers)
-            response_data = response.json()
+            return response
 
-            # Extraer los valores necesarios
+        try:
+            response = consultar_api(mes)
+            if response.status_code == 400:
+                error_data = response.json()
+                if error_data.get("error") == "'NoneType' object is not subscriptable":
+                    # Reintentar con mes - 1
+                    try:
+                        mes_int = int(mes)
+                        if mes_int > 1:
+                            #print(f"Reintentando con mes: {mes_int - 1}")
+                            response = consultar_api(mes_int - 1)
+                        else:
+                            return JsonResponse({"error": "No se puede restar más meses"}, status=400)
+                    except Exception:
+                        return JsonResponse({"error": "El valor de 'mes' no es un número válido"}, status=400)
+
+            response_data = response.json()
             valor_pc = response_data['resultado']['cotizacion']['planes'][0]['primera_cuota']
             valor_p = response_data['resultado']['cotizacion']['planes'][0]['valor_plan']
 
-            # Enviar respuesta al frontend
             return JsonResponse({
                 "primera_cuota": valor_pc,
                 "valor_plan": valor_p
