@@ -11424,6 +11424,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 3948,
+    "nombre": "MUNICIPALIDAD DE BALLESTEROS",
+    "loc_id": 2181,
+    "tp_id": 176
+  },
+  {
     "ori_id": 3958,
     "nombre": "MUNICIPALIDAD DE RIO CEBALLOS ",
     "loc_id": 1765,
@@ -16704,6 +16710,12 @@
     "tp_id": 7
   },
   {
+    "ori_id": 15348,
+    "nombre": "Arroyo Oriana Montserrat",
+    "loc_id": 1963,
+    "tp_id": 167
+  },
+  {
     "ori_id": 15365,
     "nombre": "PLAZA VISION",
     "loc_id": 2940,
@@ -19920,6 +19932,12 @@
     "tp_id": 102
   },
   {
+    "ori_id": 26107,
+    "nombre": "Hospital Italiano ",
+    "loc_id": 2423,
+    "tp_id": 111
+  },
+  {
     "ori_id": 26420,
     "nombre": "Vitis Salud ",
     "loc_id": 3090,
@@ -20856,6 +20874,12 @@
     "tp_id": 148
   },
   {
+    "ori_id": 38879,
+    "nombre": "centro oncologico de integracion regional ",
+    "loc_id": 2940,
+    "tp_id": 176
+  },
+  {
     "ori_id": 38965,
     "nombre": "MUNICIPALIDAD DE MATTALDI ",
     "loc_id": 2371,
@@ -21030,6 +21054,12 @@
     "tp_id": 114
   },
   {
+    "ori_id": 40840,
+    "nombre": "Crema Luisina ",
+    "loc_id": 2358,
+    "tp_id": 215
+  },
+  {
     "ori_id": 40847,
     "nombre": "MATORRAS VILLEGAS GUADALUPE ",
     "loc_id": 2181,
@@ -21142,6 +21172,12 @@
     "nombre": "PIVA DAVIANA SOLEDAD",
     "loc_id": 1986,
     "tp_id": 168
+  },
+  {
+    "ori_id": 42652,
+    "nombre": "TEJERIZO MARIA DEL MILAGRO",
+    "loc_id": 2189,
+    "tp_id": 157
   },
   {
     "ori_id": 42835,
@@ -21834,6 +21870,12 @@
     "tp_id": 114
   },
   {
+    "ori_id": 51622,
+    "nombre": "Funsal Centro Quirurgico",
+    "loc_id": 2930,
+    "tp_id": 111
+  },
+  {
     "ori_id": 51676,
     "nombre": "MUNAR LUCIA ",
     "loc_id": 1249,
@@ -22126,6 +22168,12 @@
     "nombre": "RUIZ FLORENCIA BELEN",
     "loc_id": 1249,
     "tp_id": 174
+  },
+  {
+    "ori_id": 55855,
+    "nombre": "Sanatorio Mapaci",
+    "loc_id": 2423,
+    "tp_id": 111
   },
   {
     "ori_id": 55893,
@@ -23208,6 +23256,12 @@
     "tp_id": 165
   },
   {
+    "ori_id": 73146,
+    "nombre": "Asociacion Medica de Rosario",
+    "loc_id": 2423,
+    "tp_id": 114
+  },
+  {
     "ori_id": 73377,
     "nombre": "Lozano Andrea Soledad ",
     "loc_id": 1766,
@@ -24030,6 +24084,12 @@
     "tp_id": 111
   },
   {
+    "ori_id": 83509,
+    "nombre": "Sanatorio Americano ",
+    "loc_id": 2423,
+    "tp_id": 111
+  },
+  {
     "ori_id": 83535,
     "nombre": "ZARATE MARCELA LILIANA",
     "loc_id": 2181,
@@ -24052,6 +24112,12 @@
     "nombre": "Hoyos Micaela Leonor",
     "loc_id": 2153,
     "tp_id": 167
+  },
+  {
+    "ori_id": 84129,
+    "nombre": "Centro Valle Salud",
+    "loc_id": 2181,
+    "tp_id": 102
   },
   {
     "ori_id": 84140,
@@ -24556,6 +24622,12 @@
     "nombre": "MUNICIPALIDAD DE ESTACION JUAREZ CELMAN ",
     "loc_id": 1544,
     "tp_id": 102
+  },
+  {
+    "ori_id": 91664,
+    "nombre": "RIVERO CARINA ANABELA ",
+    "loc_id": 1975,
+    "tp_id": 174
   },
   {
     "ori_id": 91929,
@@ -25114,6 +25186,12 @@
     "nombre": "Zarate Monica ",
     "loc_id": 1906,
     "tp_id": 148
+  },
+  {
+    "ori_id": 99489,
+    "nombre": "CMIC SALUD",
+    "loc_id": 2930,
+    "tp_id": 111
   },
   {
     "ori_id": 99519,
@@ -31026,6 +31104,12 @@
     "tp_id": 7
   },
   {
+    "ori_id": 888330,
+    "nombre": "Farmacia Tacuari",
+    "loc_id": 2185,
+    "tp_id": 7
+  },
+  {
     "ori_id": 905051,
     "nombre": "MUNICIPALIDAD DE LAS PERDICES ",
     "loc_id": 2345,
@@ -31072,6 +31156,24 @@
     "nombre": "FARMACIA GALENICA AÑATUYA ",
     "loc_id": 1995,
     "tp_id": 7
+  },
+  {
+    "ori_id": 994895,
+    "nombre": "Instituto Conciencia",
+    "loc_id": 2930,
+    "tp_id": 111
+  },
+  {
+    "ori_id": 994899,
+    "nombre": "CMIC SALUD - ConsultorioExterno ",
+    "loc_id": 2930,
+    "tp_id": 111
+  },
+  {
+    "ori_id": 999489,
+    "nombre": "CMIC SALUD -Consultorio Externo ",
+    "loc_id": 2930,
+    "tp_id": 111
   },
   {
     "ori_id": 999999,

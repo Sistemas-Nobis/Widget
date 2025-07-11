@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- Bootstrap 5 CSS para el modal -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    
 <style>
 html, body {
   height: 100%;
@@ -32,8 +34,8 @@ body {
   border: 3px solid #0e8c13;
   display: flex;
   flex-direction: column;
-  width: 800px;
-  height: 375px;
+  width: 100%;
+  height: 100%;
   max-width: 100vw;
   max-height: 100vh;
   margin: 0;
@@ -81,6 +83,7 @@ h2 {
 }
 .tab.active {
   background: #fff;
+  font-size: 30px;
   color: #0e8c13;
   border-bottom: 2.5px solid #0e8c13;
   font-weight: 700;
@@ -91,9 +94,8 @@ h2 {
   background: #fff;
   border-radius: 0 0 15px 15px;
   padding: 0 12px;
+  max-height: 670px;
   flex: 1 1 auto;
-  min-height: 0;
-  max-height: 220px; /* O el valor que prefieras */
   overflow-y: auto;  /* El scroll va acá */
 }
 .tab-content.active {
@@ -104,7 +106,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   background: #fff;
-  font-size: 1.08em;
+  font-size: 25px;
   margin-top: 12px;
 }
 th, td {
@@ -141,7 +143,7 @@ tr:nth-child(odd) td {
   border-radius: 10px;
   text-decoration: none;
   font-weight: bold;
-  font-size: 1.13em;
+  font-size: 30px;
   box-shadow: 0 2px 8px rgba(14,140,19,0.10);
   border: none;
   transition: background 0.2s;
@@ -151,6 +153,29 @@ tr:nth-child(odd) td {
 .nuevo-expediente:hover {
   background: #0a6c10;
 }
+.modal-dialog{
+  max-width: 750px;
+  width: 100%;
+  height: 90vh;
+  font-size: 35px;
+}
+.modal-title {
+  font-size: 35px;
+  font-weight: 800;
+  padding-left: 175px;
+}
+.modal td{
+  font-size: 30px;
+}
+.modal button.btn.btn-secondary{
+  font-size: 30px;
+}
+.modal button.btn.btn-info.btn-sm.btn-ver-adjunto{
+  font-size: 30px;
+}
+.modal button.btn.btn-success.btn-sm.btn-descargar-adjunto{
+  font-size: 30px;
+}
 @media (max-width: 900px) {
   .container {
     width: 98vw;
@@ -159,35 +184,106 @@ tr:nth-child(odd) td {
     max-height: 100vh;
   }
 }
-@media (max-width: 600px) {
-  .container {
-    width: 100vw;
-    height: 100vh;
-    border-radius: 0;
-    border-width: 0;
+@media (max-width: 375px), (max-height: 332px) {
+    .content {
+        max-width: 100vw;
+        width: 100vw;
+        min-width: 0;
+        max-height: 100vh;
+        padding: 4px 2px;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    h2 {
+        font-size: 1em;
+        margin-bottom: 4px;
+    }
+    .form-row {
+        display: flex;
+        flex-direction: row;
+        gap: 6px;
+        margin-bottom: 4px;
+        width: 100%;
+    }
+    .form-row:not(:first-child) {
+        flex-direction: column;
+        gap: 0;
+    }
+    .form-group {
+        min-width: 0;
+        width: 100%;
+        flex: 1 1 0;
+        margin-bottom: 0;
+    }
+    label {
+        font-size: 0.8em;
+        margin-bottom: 1px;
+    }
+    input, select, textarea {
+        font-size: 0.8em;
+        padding: 2px 3px;
+        border-radius: 3px;
+    }
+    textarea {
+        min-height: 24px;
+        font-size: 0.8em;
+    }
+    .form-actions {
+        margin-top: 4px;
+        gap: 2px;
+        flex-direction: row;
+        justify-content: space-between;
+        display: inline-flex;
+    }
+    button, .btn {
+        font-size: 0.8em;
+    } 
   }
-  h2 {
-    border-radius: 0;
-    font-size: 1.1em;
-    padding: 12px 0 8px 0;
-  }
-  .tabs {
-    padding: 0 2px;
-    gap: 2px;
-  }
-  .tab {
-    min-width: 80px;
-    font-size: 0.95em;
-    padding: 6px 4px 4px 4px;
-  }
-  .tab-content {
-    padding: 0 2px;
-  }
-  .nuevo-expediente {
-    padding: 8px 8px;
-    font-size: 1em;
-    margin: 8px auto 10px auto;
-  }
+
+#modalPrevisualizacion .modal-dialog {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100vh;
+  margin: 0;
+}
+
+#modalPrevisualizacion .modal-content {
+  height: 100vh;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#modalPrevisualizacion .modal-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+}
+#pdf-wrapper {
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+}
+
+#pdf-canvas {
+  transform-origin: top center;
+  transition: transform 0.2s ease;
+  background: white;
+}
+#zoom-controls {
+  margin: 10px 0;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+h5#modalPrevisualizacionLabel {
+    font-size: 30px;
+    padding-left: 277px;
+}
+span#pagina-actual {
+  font-size: 28px;
 }
 </style>
 </head>
@@ -223,7 +319,7 @@ tr:nth-child(odd) td {
                         <td>{{ exp.sectorNom }}</td>
                         <td>{{ exp.fechaIngreso }}</td>
                         <td>
-                          <button class="btn btn-primary btn-ver-detalle"
+                          <button class="btn btn-primary btn-ver-detalle" style="--bs-btn-font-size: 1.5rem;"
                             data-exp-id="{{ exp.expId }}"
                             data-afiliado-idx="{{ forloop.parentloop.counter0 }}">
                             Más
@@ -243,7 +339,7 @@ tr:nth-child(odd) td {
     </div>
 
     <!-- Modal Detalle -->
-    <div class="modal fade" id="detalleExpedienteModal" tabindex="-1" aria-labelledby="detalleExpedienteLabel" aria-hidden="true">
+    <div class="modal fade" id="detalleExpedienteModal" tabindex="-1" aria-labelledby="detalleExpedienteLabel">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -279,19 +375,28 @@ tr:nth-child(odd) td {
       </div>
     </div>
 
-    <div class="modal fade" id="modalPrevisualizacion" tabindex="-1" aria-labelledby="modalPrevisualizacionLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal fade" id="modalPrevisualizacion" tabindex="-1" aria-labelledby="modalPrevisualizacionLabel">
+    <div class="modal-dialog" style="max-width: 100vw; margin: 0;">
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="modalPrevisualizacionLabel">Previsualización de archivo</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
-        <div class="modal-body text-center">
-            <img id="img-previsualizacion" src="" alt="Previsualización" style="max-width:100%;max-height:60vh;display:none;">
-            <iframe id="pdf-previsualizacion" src="" style="width:100%;height:60vh;display:none;" frameborder="0"></iframe>
-            <div id="no-preview" class="alert alert-warning mt-3" style="display:none;">
-            No se puede previsualizar este tipo de archivo. Descargalo para verlo.
-            </div>
+        <div class="modal-body text-center p-0">
+          <div id="zoom-controls" class="d-flex flex-wrap justify-content-center my-3" style="display: none;">
+            <button onclick="cambiarPagina(-1)" class="btn btn-outline-secondary">←</button>
+            <span id="pagina-actual" class="align-self-center fw-bold">Página 1 de 1</span>
+            <button onclick="cambiarPagina(1)" class="btn btn-outline-secondary">→</button>
+            <button onclick="cambiarZoom(-0.25)" class="btn btn-outline-secondary">−</button>
+            <button onclick="cambiarZoom(0.25)" class="btn btn-outline-secondary">+</button>
+          </div>
+          <div id="pdf-wrapper" style="overflow: auto; width: 100%; flex: 1; display: flex; justify-content: center;">
+            <canvas id="pdf-canvas" style="display: block;"></canvas>
+          </div>
+          <img id="img-previsualizacion" src="" alt="Previsualización" style="display:none;">
+          <div id="no-preview" class="alert alert-warning mt-3" style="display:none;">
+            No se puede previsualizar este tipo de archivo.
+          </div>
         </div>
         </div>
     </div>
@@ -449,26 +554,94 @@ tr:nth-child(odd) td {
     return cookieValue;
     }
 
-    function mostrarArchivoEnModal(url, extension) {
-    const imgModal = document.getElementById('img-previsualizacion');
-    const pdfModal = document.getElementById('pdf-previsualizacion');
-    const noPreview = document.getElementById('no-preview');
-    imgModal.style.display = 'none';
-    pdfModal.style.display = 'none';
-    noPreview.style.display = 'none';
+    let currentPDF = null;
+    let currentPage = 1;
+    let renderScale = 1.5;
+    let visualScale = 1;
 
-    if (['jpg', 'jpeg', 'png', 'gif'].includes(extension.toLowerCase())) {
+    const canvas = document.getElementById('pdf-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function mostrarArchivoEnModal(url, extension) {
+      const imgModal = document.getElementById('img-previsualizacion');
+      const zoomControls = document.getElementById('zoom-controls');
+      const noPreview = document.getElementById('no-preview');
+
+      imgModal.style.display = 'none';
+      canvas.style.display = 'none';
+      zoomControls.style.display = 'none';
+      noPreview.style.display = 'none';
+
+      if (['jpg', 'jpeg', 'png', 'gif'].includes(extension.toLowerCase())) {
         imgModal.src = url;
         imgModal.style.display = 'block';
-    } else if (extension.toLowerCase() === 'pdf') {
-        pdfModal.src = url;
-        pdfModal.style.display = 'block';
-    } else {
+      } else if (extension.toLowerCase() === 'pdf') {
+        pdfjsLib.getDocument(url).promise.then(pdf => {
+          currentPDF = pdf;
+          currentPage = 1;
+          renderScale = calcularEscalaBase();
+          visualScale = 1;
+          canvas.style.transform = `scale(${visualScale})`;
+          canvas.style.display = 'block';
+          zoomControls.style.display = 'flex';
+          renderPDFPage();
+        }).catch(err => {
+          canvas.style.display = 'none';
+          zoomControls.style.display = 'none';
+          noPreview.style.display = 'block';
+          console.error("Error al cargar el PDF:", err);
+        });
+      } else {
         noPreview.style.display = 'block';
+      }
+
+      new bootstrap.Modal(document.getElementById('modalPrevisualizacion')).show();
     }
-    const modal = new bootstrap.Modal(document.getElementById('modalPrevisualizacion'));
-    modal.show();
+
+    function calcularEscalaBase() {
+      const anchoPantalla = window.innerWidth;
+      return Math.min(anchoPantalla / 1000, 2); // Escala base de renderizado
     }
+
+    function renderPDFPage() {
+      currentPDF.getPage(currentPage).then(page => {
+        const viewport = page.getViewport({ scale: renderScale });
+
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        const renderContext = {
+          canvasContext: ctx,
+          viewport: viewport
+        };
+
+        page.render(renderContext).promise.then(() => {
+          actualizarContadorPagina();
+        });
+      });
+    }
+
+    function cambiarZoom(delta) {
+      visualScale = Math.max(0.25, Math.min(5, visualScale + delta));
+      canvas.style.transform = `scale(${visualScale})`;
+    }
+
+    function cambiarPagina(delta) {
+      const nueva = currentPage + delta;
+      if (nueva >= 1 && nueva <= currentPDF.numPages) {
+        currentPage = nueva;
+        renderPDFPage();
+      }
+    }
+
+    function actualizarContadorPagina() {
+      const texto = `Página ${currentPage} de ${currentPDF.numPages}`;
+      document.getElementById('pagina-actual').innerText = texto;
+    }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     </script>
 </body>
 </html>

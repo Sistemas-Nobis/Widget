@@ -52177,7 +52177,7 @@
   {
     "prov_id": 123151,
     "Nombre": "FUNDACION CENTRO ONCOLOGICO DE INTEGRACION REGION)",
-    "CUIT": "33707338879"
+    "CUIT": "30709142042"
   },
   {
     "prov_id": 123152,
@@ -52698,5 +52698,100 @@
     "prov_id": 123307,
     "Nombre": "SOSA MARIO JOSE OSCAR ",
     "CUIT": "20211660008"
+  },
+  {
+    "prov_id": 123317,
+    "Nombre": "ASOCIACION MEDICA DE ROSARIO",
+    "CUIT": "30528073146"
+  },
+  {
+    "prov_id": 123318,
+    "Nombre": "LA CASA DEL MEDICO MUTUAL ",
+    "CUIT": "30710126107"
+  },
+  {
+    "prov_id": 123319,
+    "Nombre": "POBLETE RODOLFO GUSTAVO ",
+    "CUIT": "20229580168"
+  },
+  {
+    "prov_id": 123320,
+    "Nombre": "CAMPOS MARIA MARTA",
+    "CUIT": "27267822218"
+  },
+  {
+    "prov_id": 123321,
+    "Nombre": "CREMA LUISINA ",
+    "CUIT": "27357340840"
+  },
+  {
+    "prov_id": 123353,
+    "Nombre": "PFP S.A.",
+    "CUIT": "30711558477"
+  },
+  {
+    "prov_id": 123354,
+    "Nombre": "SANATORIO MAPACI S. A.",
+    "CUIT": "30562655855"
+  },
+  {
+    "prov_id": 123355,
+    "Nombre": "SANATORIO AMERICANO SA",
+    "CUIT": "33545883509"
+  },
+  {
+    "prov_id": 123356,
+    "Nombre": "SANATORIO LAPRIDA S A ",
+    "CUIT": "30545909371"
+  },
+  {
+    "prov_id": 123357,
+    "Nombre": "MONTUANI DANILA LOURDES ",
+    "CUIT": "27387282705"
+  },
+  {
+    "prov_id": 123358,
+    "Nombre": "GUANUSACATE SALUD S.A.",
+    "CUIT": "30717065758"
+  },
+  {
+    "prov_id": 123359,
+    "Nombre": "ALCARAZ PABLO MATIAS",
+    "CUIT": "20362242577"
+  },
+  {
+    "prov_id": 123360,
+    "Nombre": "SANTUCHO MARIA EMILIA DE LOS ANGELES",
+    "CUIT": "27309658472"
+  },
+  {
+    "prov_id": 123361,
+    "Nombre": "NASCHTAR KEILA MAIRA VICTORIA ",
+    "CUIT": "27410590102"
+  },
+  {
+    "prov_id": 123362,
+    "Nombre": "AGUIRRE VERONICA SOLEDAD",
+    "CUIT": "27280201850"
+  },
+  {
+    "prov_id": 123363,
+    "Nombre": "CORREA MAIAM LENI ",
+    "CUIT": "27392657776"
+  },
+  {
+    "prov_id": 123364,
+    "Nombre": "GODOY PEREZ MARIA CONSTANZA ",
+    "CUIT": "27405056041"
+  },
+  {
+    "prov_id": 123365,
+    "Nombre": "PASTRANA LORENA JIMENA",
+    "CUIT": "27354833285"
+  },
+  {
+    "prov_id": 123366,
+    "Nombre": "GUANACTOLAY ROCIO BELEN ",
+    "CUIT": "27377757969"
   }
 ]
