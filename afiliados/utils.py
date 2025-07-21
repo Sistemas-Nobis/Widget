@@ -149,7 +149,9 @@ def condicion_grupal(convenio):
     #print(convenio)
     return "1"
 
+
 import pandas as pd
+
 
 def buscar_preexistencias(ids_gecros):
     # Cargar el archivo de homologación
@@ -183,6 +185,7 @@ def buscar_preexistencias(ids_gecros):
 
     return resultados if resultados else "No se encontraron coincidencias."
 
+
 def obtener_expedientes_grupo_familiar(ben_ids, token_gecros, benid_to_dni, benid_to_nombre):
     url_base = "https://appmobile.nobissalud.com.ar/api/Expedientes"
     headers = {
@@ -205,4 +208,5 @@ def obtener_expedientes_grupo_familiar(ben_ids, token_gecros, benid_to_dni, beni
         reverse=True
     )
     return expedientes[:10]
+
 

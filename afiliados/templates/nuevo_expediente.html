@@ -277,6 +277,40 @@
     font-size: 20px;
     vertical-align: middle;
     }
+
+    .input-lupa-group {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    }
+
+    .input-lupa-group input[type="text"] {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+    }
+
+    .input-lupa-group button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    height: 25px;
+    background: #008000;
+    color: #fff;
+    border: 1px solid #008000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    }
+
+    .input-lupa-group button:disabled {
+    background: #ccc !important;
+    color: #888 !important;
+    cursor: not-allowed !important;
+    border: 1px solid #aaa !important;
+    opacity: 0.7;
+    }
     
     @media (max-width: 375px), (max-height: 332px) {
     .content {
@@ -354,16 +388,23 @@
             <div class="form-group">
                 <label for="afiliado">Afiliado</label>
                 <!--<input type="text" id="afiliado" name="afiliado">-->
-
-                {% if afiliado %}
-                        <select id="afiliado">
-                            {% for x in afiliado %}
-                                <option value="{{ x.benId }}">{{ x.DNI }} - {{ x.Nombre }}</option>
-                            {% endfor %}
-                        </select>
-                {% else %}
-                    <input type="text" id="afiliado" name="afiliado">
-                {% endif %}
+                <div class="input-lupa-group">
+                    {% if afiliado %}
+                            <select id="afiliado">
+                                {% for x in afiliado %}
+                                    <option value="{{ x.benId }}">{{ x.DNI }} - {{ x.Nombre }}</option>
+                                {% endfor %}
+                            </select>
+                    {% else %}
+                        <input type="text" id="afiliado" name="afiliado">
+                        <button id="buscarbenBtn" type="button" disabled title="Buscar" style="padding: 0 10px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24">
+                                <circle cx="11" cy="11" r="7" stroke="#fff" stroke-width="2"/>
+                                <line x1="16.5" y1="16.5" x2="22" y2="22" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                    {% endif %}
+                </div>
             </div>
         </div>
         <div class="form-row">
@@ -433,6 +474,7 @@
     // Cargar tipos desde el archivo JSON
     let tiposExpediente = [];
     let tiposExpedienteMap = {};
+    let benIdEncontrado = null;
 
     fetch('/static/tipos_exp.json')
         .then(res => res.json())
@@ -591,12 +633,22 @@
         const oriId = $('#origenPrestador').val() || null;
         const provId = $('#proveedor').val() || null;
 
-        const benId = document.getElementById('afiliado').value || null;
         const mTipoExpId = document.getElementById('tipoExpediente').value || null;
         const observaciones = document.getElementById('observaciones').value || "";
         const periodo = document.getElementById('periodo').value || "";
 
-        // VALIDACIÓN NUEVA
+        let benId = null;
+        const afiliadoElem = document.getElementById('afiliado');
+        if (afiliadoElem){
+            if (afiliadoElem.tagName.toLowerCase() === 'select') {
+                // Hay select, tomar el valor seleccionado
+                benId = afiliadoElem.value || null;
+            } else {
+                // Es input, tomar el benId encontrado por JS
+                benId = benIdEncontrado || null;
+            }
+        }
+
         let errores = [];
 
         if (!mTipoExpId) {
@@ -606,8 +658,7 @@
             const tipo = tiposExpedienteMap[mTipoExpId];
 
             // Solo validar los campos que están habilitados (no disabled)
-            const afiliado = document.getElementById('afiliado');
-            if (!afiliado.disabled && (!benId || benId === "")) {
+            if (afiliadoElem && !afiliadoElem.disabled && (!benId || benId === "")) {
                 errores.push("Debe seleccionar un Afiliado.");
             }
 
@@ -855,6 +906,51 @@
 
         // Redirigir
         window.location.href = nuevaUrl;
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var input = document.getElementById('afiliado');
+        var btn_ben = document.getElementById('buscarbenBtn');
+        var guardarBtn = document.querySelector('button[type="submit"]');
+
+        if (input && btn_ben) {
+            if (guardarBtn) guardarBtn.disabled = true;
+
+            input.addEventListener('input', function() {
+                btn_ben.disabled = input.value.trim() === '';
+                if (guardarBtn) guardarBtn.disabled = true;
+            });
+
+            btn_ben.addEventListener('click', function() {
+                var numero = input.value.trim();
+                if (numero) {
+                    fetch('/buscar_beneficiario?numero=' + encodeURIComponent(numero))
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.ben_id !== undefined && data.nombre !== undefined) {
+                            console.log('ID:', data.ben_id, 'Nombre:', data.nombre);
+                            benIdEncontrado = data.ben_id;
+                            nombreEncontrado = data.nombre;
+                            if (guardarBtn) guardarBtn.disabled = false;
+
+                            input.value = numero + ' - ' + data.nombre;
+                        } else {
+                            benIdEncontrado = null;
+                            nombreEncontrado = null;
+                            if (guardarBtn) guardarBtn.disabled = true;
+                            mostrarModalError("No hay beneficiario con el DNI ingresado");
+                        }
+                    })
+                    .catch(error => {
+                        benIdEncontrado = null;
+                        nombreEncontrado = null;
+                        if (guardarBtn) guardarBtn.disabled = true;
+                        mostrarModalError("Error en la búsqueda");
+                        console.error('Error en la búsqueda:', error);
+                    });
+                }
+            });
+        }
     });
 
 </script>

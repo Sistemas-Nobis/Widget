@@ -843,7 +843,8 @@ class MesaDeEntradaView(View):
                     expedientes_por_afiliado = defaultdict(list)
                     for exp in expedientes:
                         #print(exp.keys())
-                        key = f"{exp['Nombre']} ({exp['DNI']})"
+                        key = f"{exp['Nombre']}"
+                        #key = f"{exp['Nombre']} ({exp['DNI']})"
                         expedientes_por_afiliado[key].append(exp)
 
                     #print("Expedientes por afiliado:", dict(expedientes_por_afiliado))
@@ -1215,6 +1216,7 @@ EXTENSION_TO_CONTENT_TYPE = {
     'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 }
 
+
 @csrf_exempt
 def descargar_adjunto(request):
     if request.method == "POST":
@@ -1281,4 +1283,39 @@ def previsualizar_adjunto(request):
             
             return JsonResponse({"error": str(e)}, status=400)
     return JsonResponse({"error": "Método no permitido"}, status=405)
+
+@csrf_exempt
+def buscar_beneficiario(request):
+    if request.method == "GET":
+        try:
+            numero = request.GET.get('numero')
+            if not numero:
+                return JsonResponse({'error': 'No se proporcionó número'}, status=400)
+            
+            api_url = f"https://api.nobis.com.ar/obtener_beneficiario/{numero}"
+            api_response = requests.get(api_url)
+            
+            if api_response.status_code != 200:
+                return JsonResponse({"error": "No se pudo obtener el dato"}, status=404)
+            
+            # Parsear el JSON de la respuesta
+            data = api_response.json()
+            if not data or not isinstance(data, list) or not data[0]:
+                return JsonResponse({"error": "No se encontró el beneficiario"}, status=404)
+            
+            # Extraer ben_id y nombre
+            ben_id = data[0].get("ben_id")
+            nombre = data[0].get("nombre")
+            if ben_id is None or nombre is None:
+                return JsonResponse({"error": "Datos incompletos"}, status=404)
+            
+            return JsonResponse({
+                "ben_id": ben_id,
+                "nombre": nombre
+            })
+        
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
 

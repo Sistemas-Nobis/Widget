@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import BuscarAfiliadoView, BuscarRetencionView, MesaDeEntradaView
-from .views import guardar_expediente, archivo_expediente, cotizar_actual, descargar_adjunto, previsualizar_adjunto
+from .views import guardar_expediente, archivo_expediente, cotizar_actual, descargar_adjunto, previsualizar_adjunto, buscar_beneficiario
 
 app_name = 'afiliados'
 
@@ -17,5 +17,6 @@ urlpatterns = [
     path('nuevo_expediente/guardar/', guardar_expediente, name='guardar_expediente'),
     path('nuevo_expediente/subir_archivo/', archivo_expediente, name='archivo_expediente'),
     path('expediente/descargar-adjunto/', descargar_adjunto, name='descargar_adjunto'),
-    path('expediente/previsualizar-adjunto/', previsualizar_adjunto, name='previsualizar_adjunto')
+    path('expediente/previsualizar-adjunto/', previsualizar_adjunto, name='previsualizar_adjunto'),
+    path('buscar_beneficiario', buscar_beneficiario, name='buscar_beneficiario')
 ]
