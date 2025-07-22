@@ -60,7 +60,7 @@
         }
 
         td {
-            max-width: 82px; /* Limitar ancho máximo de celdas */
+            max-width: 100px; /* Limitar ancho máximo de celdas */
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -677,29 +677,16 @@
                                         <tr>
                                             <th>Provincia:</th>
                                             <td><select id="provincias" name="provincias" onchange="actualizarPlanes()">
-                                                <option value="CORDOBA" {% if item.Provincia == "CORDOBA" %}selected{% endif %}>Cordoba</option>
-                                                <option value="SAN_LUIS" {% if item.Provincia == "SAN LUIS" %}selected{% endif %}>San Luis</option>
-                                                <option value="SALTA" {% if item.Provincia == "SALTA" %}selected{% endif %}>Salta</option>
-                                                <option value="JUJUY" {% if item.Provincia == "JUJUY" %}selected{% endif %}>Jujuy</option>
-                                                <option value="TUCUMAN" {% if item.Provincia == "TUCUMAN" %}selected{% endif %}>Tucuman</option>
-                                                <option value="MENDOZA" {% if item.Provincia == "MENDOZA" %}selected{% endif %}>Mendoza</option>
-                                                <option value="SAN_JUAN" {% if item.Provincia == "SAN JUAN" %}selected{% endif %}>San Juan</option>
-                                                <option value="SANTIAGO_DEL_ESTERO" {% if item.Provincia == "SANTIAGO DEL ESTERO" %}selected{% endif %}>Santiago del Estero</option>
-                                                <option value="CATAMARCA" {% if item.Provincia == "CATAMARCA" %}selected{% endif %}>Catamarca</option>
-                                                <option value="LA_RIOJA" {% if item.Provincia == "LA RIOJA" %}selected{% endif %}>La Rioja</option>
-                                                <option value="BUENOS_AIRES" {% if item.Provincia == "BUENOS AIRES" %}selected{% endif %}>Buenos Aires</option>
-                                                <option value="CHACO" {% if item.Provincia == "CHACO" %}selected{% endif %}>Chaco</option>
-                                                <option value="CHUBUT" {% if item.Provincia == "CHUBUT" %}selected{% endif %}>Chubut</option>
-                                                <option value="CORRIENTES" {% if item.Provincia == "CORRIENTES" %}selected{% endif %}>Corrientes</option>
-                                                <option value="ENTRE_RIOS" {% if item.Provincia == "ENTRE RIOS" %}selected{% endif %}>Entre Rios</option>
-                                                <option value="FORMOSA" {% if item.Provincia == "FORMOSA" %}selected{% endif %}>Formosa</option>
-                                                <option value="LA_PAMPA" {% if item.Provincia == "LA PAMPA" %}selected{% endif %}>La Pampa</option>
-                                                <option value="MISIONES" {% if item.Provincia == "MISIONES" %}selected{% endif %}>Misiones</option>
-                                                <option value="NEUQUEN" {% if item.Provincia == "NEUQUEN" %}selected{% endif %}>Neuquen</option>
-                                                <option value="RIO_NEGRO" {% if item.Provincia == "RIO NEGRO" %}selected{% endif %}>Rio Negro</option>
-                                                <option value="SANTA_CRUZ" {% if item.Provincia == "SANTA CRUZ" %}selected{% endif %}>Santa Cruz</option>
-                                                <option value="SANTA_FE" {% if item.Provincia == "SANTA FE" %}selected{% endif %}>Santa Fe</option>
-                                                <option value="TIERRA_DEL_FUEGO" {% if item.Provincia == "TIERRA DEL FUEGO" %}selected{% endif %}>Tierra del Fuego</option>
+                                                <option value="Cordoba" {% if item.Provincia == "CORDOBA" %}selected{% endif %}>Cordoba</option>
+                                                <option value="San_luis" {% if item.Provincia == "SAN LUIS" %}selected{% endif %}>San Luis</option>
+                                                <option value="Salta" {% if item.Provincia == "SALTA" %}selected{% endif %}>Salta</option>
+                                                <option value="Jujuy" {% if item.Provincia == "JUJUY" %}selected{% endif %}>Jujuy</option>
+                                                <option value="Tucuman" {% if item.Provincia == "TUCUMAN" %}selected{% endif %}>Tucuman</option>
+                                                <option value="Mendoza" {% if item.Provincia == "MENDOZA" %}selected{% endif %}>Mendoza</option>
+                                                <option value="San_Juan" {% if item.Provincia == "SAN JUAN" %}selected{% endif %}>San Juan</option>
+                                                <option value="Santiago" {% if item.Provincia == "SANTIAGO DEL ESTERO" %}selected{% endif %}>Santiago del Estero</option>
+                                                <option value="Catamarca" {% if item.Provincia == "CATAMARCA" %}selected{% endif %}>Catamarca</option>
+                                                <option value="LaRioja" {% if item.Provincia == "LA RIOJA" %}selected{% endif %}>La Rioja</option>
                                             </select></td>
                                         </tr>
                                     {% endif %}
@@ -708,29 +695,16 @@
                                 <tr>
                                     <th>Provincia:</th>
                                     <td><select id="provincias" name="provincias" onchange="actualizarPlanes()">
-                                        <option value="CORDOBA">Cordoba</option>
-                                        <option value="SAN_LUIS">San Luis</option>
-                                        <option value="SALTA">Salta</option>
-                                        <option value="JUJUY">Jujuy</option>
-                                        <option value="TUCUMAN">Tucuman</option>
-                                        <option value="MENDOZA">Mendoza</option>
-                                        <option value="SAN_JUAN">San Juan</option>
-                                        <option value="SANTIAGO_DEL_ESTERO">Santiago del Estero</option>
-                                        <option value="CATAMARCA">Catamarca</option>
-                                        <option value="LA_RIOJA">La Rioja</option>
-                                        <option value="BUENOS_AIRES">Buenos Aires</option>
-                                        <option value="CHACO">Chaco</option>
-                                        <option value="CHUBUT">Chubut</option>
-                                        <option value="CORRIENTES">Corrientes</option>
-                                        <option value="ENTRE_RIOS">Entre Rios</option>
-                                        <option value="FORMOSA">Formosa</option>
-                                        <option value="LA_PAMPA">La Pampa</option>
-                                        <option value="MISIONES">Misiones</option>
-                                        <option value="NEUQUEN">Neuquen</option>
-                                        <option value="RIO_NEGRO">Rio Negro</option>
-                                        <option value="SANTA_CRUZ">Santa Cruz</option>
-                                        <option value="SANTA_FE">Santa Fe</option>
-                                        <option value="TIERRA_DEL_FUEGO">Tierra del Fuego</option>
+                                        <option value="Cordoba">Cordoba</option>
+                                        <option value="San_luis">San Luis</option>
+                                        <option value="Salta">Salta</option>
+                                        <option value="Jujuy">Jujuy</option>
+                                        <option value="Tucuman">Tucuman</option>
+                                        <option value="Mendoza">Mendoza</option>
+                                        <option value="San_Juan">San Juan</option>
+                                        <option value="Santiago">Santiago del Estero</option>
+                                        <option value="Catamarca">Catamarca</option>
+                                        <option value="LaRioja">La Rioja</option>
                                     </select></td>
                                 </tr>
                             {% endif %}
@@ -738,11 +712,11 @@
                                 <th>Condición:</th>
                                 <th style="background-color: #ffffff; color: black;">
                                     <select id="convenio" name="convenio" onchange="actualizarPlanes()" {% if convenio_id %}onmousedown="return false;"{% endif %}>
-                                        <option value="2" {% if convenio_id == "1" %}selected{% endif %}>Relación de dependencia</option>
-                                        <option value="1" {% if convenio_id == "2" %}selected{% endif %}>Monotributo</option>
-                                        <option value="0" {% if convenio_id == "3" %}selected{% endif %}>Prepago</option>
-                                        <option value="2" {% if convenio_id == "4" %}selected{% endif %}>No usar (RD)</option>
-                                        <option value="2" {% if convenio_id == "5" %}selected{% endif %}>Servicio domestico (RD)</option>
+                                        <option value="1" {% if convenio_id == "1" %}selected{% endif %}>Relación de dependencia</option>
+                                        <option value="2" {% if convenio_id == "2" %}selected{% endif %}>Monotributo</option>
+                                        <option value="3" {% if convenio_id == "3" %}selected{% endif %}>Prepago</option>
+                                        <option value="1" {% if convenio_id == "4" %}selected{% endif %}>No usar (RD)</option>
+                                        <option value="1" {% if convenio_id == "5" %}selected{% endif %}>Servicio domestico (RD)</option>
                                     </select>
                                     <span 
                                         style="color: #007bff; font-weight: bold; margin-left: 5px;" 
@@ -954,7 +928,7 @@
             //console.log(requestData)
 
             // Enviar datos al backend mediante fetch
-            fetch('/widget/api/cotizar/', {
+            fetch('/widget/api/cotizar/', { // Ajusta esta URL según tu configuración de Django
             //fetch('/api/cotizar/', {
                 method: 'POST',
                 headers: {
@@ -1020,124 +994,56 @@
             const planSelect = document.getElementById('plan');
             
             // Opciones de planes disponibles
-            // 1 RD -> 2 RD
-            // 2 MT -> 1 MT
-            // 3 PP -> 0 PP
             const planesDisponibles = {
-                'BUENOS_AIRES': {
+                'Cordoba': {
+                    '1': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
                     '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
+                    '3': ['B200', 'N200', 'N400', 'N500']
                 },
-                'CATAMARCA': {
-                    '2': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
-                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
-                },
-                'CHACO': {
+                'San_luis': {
+                    '1': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
                     '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
+                    '3': ['B200', 'N200', 'N400', 'N500']
                 },
-                'CHUBUT': {
+                'Salta': {
+                    '1': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
                     '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
+                    '3': ['B200', 'N200', 'N400', 'N500']
                 },
-                'CORDOBA': {
-                    '2': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
+                'Jujuy': {
                     '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
-                },
-                'CORRIENTES': {
                     '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
+                    '3': ['B200', 'N200', 'N400', 'N500']
                 },
-                'ENTRE_RIOS': {
+                'Tucuman': {
+                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
                     '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
+                    '3': ['B200', 'N200', 'N400', 'N500']
                 },
-                'FORMOSA': {
+                'Mendoza': {
+                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
                     '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
+                    '3': ['B200', 'N200', 'N400', 'N500']
                 },
-                'JUJUY': {
-                    '2': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
+                'San_Juan': {
                     '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
-                },
-                'LA_PAMPA': {
-                    '2': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
-                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
-                },
-                'LA_RIOJA': {
                     '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
+                    '3': ['B200', 'N200', 'N400', 'N500']
                 },
-                'MENDOZA': {
-                    '2': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
-                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
-                },
-                'MISIONES': {
+                'Santiago': {
+                    '1': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
                     '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
+                    '3': ['B200', 'N200', 'N400', 'N500']
                 },
-                'NEUQUEN': {
-                    '2': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
-                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
-                },
-                'RIO_NEGRO': {
+                'Catamarca': {
+                    '1': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
                     '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
+                    '3': ['B200', 'N200', 'N400', 'N500']
                 },
-                'SALTA': {
-                    '2': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
+                'LaRioja': {
                     '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
-                },
-                'SAN_JUAN': {
                     '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
-                },
-                'SAN_LUIS': {
-                    '2': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
-                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
-                },
-                'SANTA_CRUZ': {
-                    '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
-                },
-                'SANTA_FE': {
-                    '2': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
-                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
-                },
-                'SANTIAGO_DEL_ESTERO': {
-                    '2': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
-                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
-                },
-                'TIERRA_DEL_FUEGO': {
-                    '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
-                },
-                'TUCUMAN': {
-                    '2': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
-                    '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
-                    '0': ['B200', 'N200', 'N400', 'N500']
+                    '3': ['B200', 'N200', 'N400', 'N500']
                 },
                 // Agrega más provincias y sus respectivas opciones de planes aquí
             };

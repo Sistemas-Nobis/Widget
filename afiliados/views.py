@@ -344,7 +344,7 @@ class BuscarAfiliadoView(View):
 
 
 class BuscarRetencionView(View):
-    template_name = 'rete_produccion.html'
+    template_name = 'rete_prod.html'
  
     def obtener_token_wise(self):
         """
@@ -992,14 +992,16 @@ def cotizar_actual(request):
         if not all([mes, plan, gestion, ubicacion, edades]):
             return JsonResponse({"error": "Faltan parámetros"}, status=400)
 
+        print(aporte, bonificacion, patologias)
         token = "496ae7b9-0787-482e-bbe2-235279237940"
 
         def consultar_api(mes_valor):
-            url_api = (
-                f"https://cotizador.nobis.com.ar/cotizacion?"
-                f"mes={mes_valor}&planes={plan}&convenio={gestion}&provincia={ubicacion}"
-                f"&ages={edades}&directo={aporte}&descuento={bonificacion}&preexistencia={patologias}"
-            )
+            url_api = f"https://cotizador.nobis.com.ar/api?mes={mes_valor}&planes={plan}&gestion={gestion}&ubicacion={ubicacion}&ages={edades}&directo={int(aporte)}&descuento={bonificacion}&preexistencia={patologias}"
+            #url_api = (
+            #    f"https://cotizador.nobis.com.ar/cotizacion?"
+            #    f"mes={mes_valor}&planes={plan}&convenio={gestion}&provincia={ubicacion}"
+            #    f"&ages={edades}&directo={aporte}&descuento={bonificacion}&preexistencia={patologias}"
+            #)
             headers = {
                 "Content-Type": "application/json",
                 "Authorization": f"Bearer {token}"
