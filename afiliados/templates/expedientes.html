@@ -474,7 +474,8 @@ span#pagina-actual {
 
     function descargarAdjunto(archivoId, nombreArchivo) {
     const csrftoken = getCookie('csrftoken');
-    fetch("/expediente/descargar-adjunto/", {
+    fetch("/widget/expediente/descargar-adjunto/", {
+    //fetch("/expediente/descargar-adjunto/", {
         method: "POST",
         headers: {
         "Content-Type": "application/json",
@@ -517,7 +518,8 @@ span#pagina-actual {
 
     function previsualizarAdjunto(archivoId, extension) {
     const csrftoken = getCookie('csrftoken');
-    fetch("/expediente/previsualizar-adjunto/", {
+    fetch("/widget/expediente/previsualizar-adjunto/", {
+    //fetch("/expediente/previsualizar-adjunto/", {
         method: "POST",
         headers: {
         "Content-Type": "application/json",

@@ -476,7 +476,8 @@
     let tiposExpedienteMap = {};
     let benIdEncontrado = null;
 
-    fetch('/static/tipos_exp.json')
+    //fetch('/static/tipos_exp.json')
+    fetch('/widget/static/tipos_exp.json')
         .then(res => res.json())
         .then(data => {
             if (Array.isArray(data)) {
@@ -500,7 +501,8 @@
     }
 
     // Cargar orígenes y activar select2
-    fetch('/static/origenes.json')
+    //fetch('/static/origenes.json')
+    fetch('/widget/static/origenes.json')
     .then(res => res.json())
     .then(data => {
         // Llenar el select con los orígenes
@@ -523,7 +525,8 @@
     });
 
     // Cargar proveedores y activar select2
-    fetch('/static/proveedores.json')
+    //fetch('/static/proveedores.json')
+    fetch('/widget/static/proveedores.json')
     .then(res => res.json())
     .then(data => {
         // Llenar el select con los orígenes
@@ -688,7 +691,8 @@
             periodo: document.getElementById('periodo').value || ""
         };
 
-        fetch("/nuevo_expediente/guardar/", {
+        fetch("/widget/nuevo_expediente/guardar/", {
+        //fetch("/nuevo_expediente/guardar/", {    
         method: "POST",
         headers: {
                 "Content-Type": "application/json",
@@ -787,7 +791,8 @@
         formData.append('file', archivoInput.files[0]);
         formData.append('expedienteId', expedienteId);
 
-        fetch('/nuevo_expediente/subir_archivo/', {
+        //fetch('/nuevo_expediente/subir_archivo/', {
+        fetch('/widget/nuevo_expediente/subir_archivo/', {
             method: 'POST',
             body: formData
         })
@@ -924,7 +929,8 @@
             btn_ben.addEventListener('click', function() {
                 var numero = input.value.trim();
                 if (numero) {
-                    fetch('/buscar_beneficiario?numero=' + encodeURIComponent(numero))
+                    fetch('/widget/buscar_beneficiario?numero=' + encodeURIComponent(numero))
+                    //fetch('/buscar_beneficiario?numero=' + encodeURIComponent(numero))
                     .then(response => response.json())
                     .then(data => {
                         if (data.ben_id !== undefined && data.nombre !== undefined) {
