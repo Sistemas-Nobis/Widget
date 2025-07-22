@@ -476,8 +476,7 @@
     let tiposExpedienteMap = {};
     let benIdEncontrado = null;
 
-    //fetch('/static/tipos_exp.json')
-    fetch('/widget/static/tipos_exp.json')
+    fetch('/static/tipos_exp.json')
         .then(res => res.json())
         .then(data => {
             if (Array.isArray(data)) {
@@ -501,8 +500,7 @@
     }
 
     // Cargar orígenes y activar select2
-    //fetch('/static/origenes.json')
-    fetch('/widget/static/origenes.json')
+    fetch('/static/origenes.json')
     .then(res => res.json())
     .then(data => {
         // Llenar el select con los orígenes
@@ -525,8 +523,7 @@
     });
 
     // Cargar proveedores y activar select2
-    //fetch('/static/proveedores.json')
-    fetch('/widget/static/proveedores.json')
+    fetch('/static/proveedores.json')
     .then(res => res.json())
     .then(data => {
         // Llenar el select con los orígenes
