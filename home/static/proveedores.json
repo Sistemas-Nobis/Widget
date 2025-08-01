@@ -18502,7 +18502,7 @@
   {
     "prov_id": 74441,
     "Nombre": "CENTRO PROV. DE SALUD INFANTIL EVA PERON",
-    "CUIT": ""
+    "CUIT": "30710781318"
   },
   {
     "prov_id": 74445,
@@ -39067,7 +39067,7 @@
   {
     "prov_id": 119645,
     "Nombre": "SALAZAR SILVIA MARIA",
-    "CUIT": "27175310334"
+    "CUIT": ""
   },
   {
     "prov_id": 119646,
@@ -53418,5 +53418,160 @@
     "prov_id": 123516,
     "Nombre": "QUINTEROS JULIETA ",
     "CUIT": "27381097302"
+  },
+  {
+    "prov_id": 123518,
+    "Nombre": "LASCANO ODDONE LUZ MARIA",
+    "CUIT": "27390742628"
+  },
+  {
+    "prov_id": 123524,
+    "Nombre": "EXPOSITO IVAN DARIO ",
+    "CUIT": "20310539377"
+  },
+  {
+    "prov_id": 123525,
+    "Nombre": "FERNANDEZ MATIAS",
+    "CUIT": "20328749581"
+  },
+  {
+    "prov_id": 123526,
+    "Nombre": "GUZMAN ANGEL IGNACIO",
+    "CUIT": "20406794483"
+  },
+  {
+    "prov_id": 123527,
+    "Nombre": "GUZMAN MIGUEL ANGEL ",
+    "CUIT": "20346870967"
+  },
+  {
+    "prov_id": 123528,
+    "Nombre": "ROMERO JESSICA ROMINA ",
+    "CUIT": "27372256899"
+  },
+  {
+    "prov_id": 123529,
+    "Nombre": "BLUNNO FLORENCIA BELEN",
+    "CUIT": "27404163278"
+  },
+  {
+    "prov_id": 123530,
+    "Nombre": "CUADROS MARIA EMILIA",
+    "CUIT": "27168177165"
+  },
+  {
+    "prov_id": 123531,
+    "Nombre": "MEDINA BEATRIZ ROSARIO DEL HUERTO ",
+    "CUIT": "27173128237"
+  },
+  {
+    "prov_id": 123532,
+    "Nombre": "PALAVECINO MILAGROS SOLEDAD ",
+    "CUIT": "27387187389"
+  },
+  {
+    "prov_id": 123533,
+    "Nombre": "TORRES AGUSTINA DEL MILAGRO ",
+    "CUIT": "27403267991"
+  },
+  {
+    "prov_id": 123534,
+    "Nombre": "SILVERA MARIA ISABEL",
+    "CUIT": "23304205334"
+  },
+  {
+    "prov_id": 123535,
+    "Nombre": "CASALI MARIA EUGENIA",
+    "CUIT": "27395434263"
+  },
+  {
+    "prov_id": 123536,
+    "Nombre": "PASSO SILVIA ALEJANDRA",
+    "CUIT": "27181264263"
+  },
+  {
+    "prov_id": 123537,
+    "Nombre": "AYALA ARROYO MARIA DEL CARMEN ",
+    "CUIT": "27302351975"
+  },
+  {
+    "prov_id": 123538,
+    "Nombre": "CIARES MARTINA",
+    "CUIT": "27251471768"
+  },
+  {
+    "prov_id": 123539,
+    "Nombre": "FRANCITORRA JOAQUIN TOMAS ",
+    "CUIT": "20428613547"
+  },
+  {
+    "prov_id": 123540,
+    "Nombre": "MUNICIPALIDAD DE ARROYO CABRAL",
+    "CUIT": "30999062764"
+  },
+  {
+    "prov_id": 123541,
+    "Nombre": "MUNICIPALIDAD DE AUSONIA",
+    "CUIT": "30999114497"
+  },
+  {
+    "prov_id": 123542,
+    "Nombre": "MUNICIPALIDAD DE IDIAZABAL",
+    "CUIT": "30668261767"
+  },
+  {
+    "prov_id": 123543,
+    "Nombre": "MUNICIPALIDAD DE VILLA NUEVA",
+    "CUIT": "30999062837"
+  },
+  {
+    "prov_id": 123544,
+    "Nombre": "COLEGIO MEDICO DE CIPOLLETTI",
+    "CUIT": "30589596206"
+  },
+  {
+    "prov_id": 123545,
+    "Nombre": "RUSSO ELIANA ISABEL ",
+    "CUIT": "27110914410"
+  },
+  {
+    "prov_id": 123546,
+    "Nombre": "TORREGO ALONSO FLORENCIA INES ",
+    "CUIT": "27387377315"
+  },
+  {
+    "prov_id": 123547,
+    "Nombre": "MAGEN DAVID ADOM - HEALTHCARE ",
+    "CUIT": "30718887069"
+  },
+  {
+    "prov_id": 123557,
+    "Nombre": "GORETTA ROA JUDITH CRISTINA ",
+    "CUIT": "27216261742"
+  },
+  {
+    "prov_id": 123558,
+    "Nombre": "ARMONELLI ELDA PATRICIA ",
+    "CUIT": "27147021726"
+  },
+  {
+    "prov_id": 123564,
+    "Nombre": "YACOB JERONIMO JOAQUIN",
+    "CUIT": "20333710863"
+  },
+  {
+    "prov_id": 123571,
+    "Nombre": "EL REPARITO S.A.",
+    "CUIT": "30711648069"
+  },
+  {
+    "prov_id": 123572,
+    "Nombre": "MUNICIPALIDAD DE LA BANDA DEL RIO SALI",
+    "CUIT": "30675264194"
+  },
+  {
+    "prov_id": 123573,
+    "Nombre": "CARASSALE MARIO SANTIAGO",
+    "CUIT": "20127072214"
   }
 ]

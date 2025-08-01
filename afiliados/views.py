@@ -1048,7 +1048,7 @@ class OrigenesService:
         }
 
         # Ruta absoluta al archivo origenes.json
-        json_path = os.path.join(settings.BASE_DIR, 'afiliados', 'static', 'origenes.json')
+        json_path = os.path.join(settings.BASE_DIR, 'home', 'static', 'origenes.json')
         archivo_existe = os.path.exists(json_path)
 
         verificacion_semanal = cache.get('verificacion_semanal_origenes')
@@ -1094,7 +1094,7 @@ class ProveedoresService:
         }
 
         # Ruta absoluta al archivo origenes.json
-        json_path = os.path.join(settings.BASE_DIR, 'afiliados', 'static', 'proveedores.json')
+        json_path = os.path.join(settings.BASE_DIR, 'home', 'static', 'proveedores.json')
         archivo_existe = os.path.exists(json_path)
 
         verificacion_semanal = cache.get('verificacion_semanal_proveedores')

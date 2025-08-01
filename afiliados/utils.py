@@ -201,12 +201,12 @@ def obtener_expedientes_grupo_familiar(ben_ids, token_gecros, benid_to_dni, beni
             for exp in data:
                 exp["DNI"] = benid_to_dni.get(ben_id, "")
                 exp["Nombre"] = benid_to_nombre.get(ben_id, "")
-                expedientes.append(exp)
-    # Ordenar por fechaIngreso descendente
-    expedientes.sort(
-        key=lambda x: datetime.strptime(x["fechaIngreso"], "%d/%m/%Y"),
-        reverse=True
-    )
-    return expedientes[:10]
+            # Ordenar y tomar los 10 más recientes de este ben_id
+            data.sort(
+                key=lambda x: datetime.strptime(x["fechaIngreso"], "%d/%m/%Y"),
+                reverse=True
+            )
+            expedientes.extend(data[:10])
+    return expedientes
 
 
