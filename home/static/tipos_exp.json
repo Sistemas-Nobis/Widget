@@ -1,67 +1,12 @@
 [
-  {
-    "mTipoExpId": 1,
-    "mTipoExp_nom": "Autorizaciones",
-    "mSectorId": 9,
-    "EntFacId": 1,
-    "pideBen_id": 1,
-    "pideOri_id": 0,
-    "pideProv_id": 0
-  },
-  {
-    "mTipoExpId": 12,
-    "mTipoExp_nom": "Devolución Prestacional",
-    "mSectorId": 2,
-    "EntFacId": 1,
-    "pideBen_id": 1,
-    "pideOri_id": 1,
-    "pideProv_id": 1
-  },
-  {
-    "mTipoExpId": 13,
-    "mTipoExp_nom": "Reintegro Prestacional",
-    "mSectorId": 9,
-    "EntFacId": 1,
-    "pideBen_id": 1,
-    "pideOri_id": 1,
-    "pideProv_id": 1
-  },
-  {
-    "mTipoExpId": 42,
-    "mTipoExp_nom": "Baja de afiliados",
-    "mSectorId": 55,
-    "EntFacId": 1,
-    "pideBen_id": 1,
-    "pideOri_id": 0,
-    "pideProv_id": 0
-  },
-  {
-    "mTipoExpId": 43,
-    "mTipoExp_nom": "Cobro Indebido de Plus",
-    "mSectorId": 9,
-    "EntFacId": 1,
-    "pideBen_id": 1,
-    "pideOri_id": 0,
-    "pideProv_id": 0
-  },
-  {
-    "mTipoExpId": 47, 
-    "mTipoExp_nom": "Activar - Plan Materno Infantil", "mSectorId": 45, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
-  {"mTipoExpId": 50, "mTipoExp_nom": "Cambio de Plan", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
-  {"mTipoExpId": 51, "mTipoExp_nom": "Reintegro por Cobro de Plus", "mSectorId": 61, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
-  {"mTipoExpId": 52, "mTipoExp_nom": "Reintegro por Prestador Fuera de Cartilla", "mSectorId": 61, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 1, "pideProv_id": 1},
-  {"mTipoExpId": 53, "mTipoExp_nom": "Renovación - Ticket de cobro de fondo de desempleo", "mSectorId": 45, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 1, "pideProv_id": 0},
-  {"mTipoExpId": 54, "mTipoExp_nom": "Adecuación de género - Cambio de nombre", "mSectorId": 45, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
-  {"mTipoExpId": 55, "mTipoExp_nom": "Adhesión/Renovación Tarjeta de Crédito-Cuenta Banc", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
-  {"mTipoExpId": 56, "mTipoExp_nom": "Desafectación Tarjeta de Crédito-Cuenta Bancaria", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
-  {"mTipoExpId": 57, "mTipoExp_nom": "Aviso de desempleo - Suspensión afiliado", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
-  {"mTipoExpId": 58, "mTipoExp_nom": "Certificado de alumno regular", "mSectorId": 27, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
-  {"mTipoExpId": 60, "mTipoExp_nom": "ACO - Anticonceptivos", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
-  {"mTipoExpId": 66, "mTipoExp_nom": "Incorporación definitiva", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
-  {"mTipoExpId": 67, "mTipoExp_nom": "Incorporación provisoria", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
-  {"mTipoExpId": 68, "mTipoExp_nom": "Unificación de aportes", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
-  {"mTipoExpId": 71, "mTipoExp_nom": "Presenta Documentación", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
-  {"mTipoExpId": 72, "mTipoExp_nom": "Reintegro por Celiaquía", "mSectorId": 61, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 1, "pideProv_id": 1},
-  {"mTipoExpId": 74, "mTipoExp_nom": "Cambio de plan - Bajar Fidelización", "mSectorId": 55, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
-  {"mTipoExpId": 75, "mTipoExp_nom": "Cambio de plan - Subir Fidelización", "mSectorId": 55, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0}
+  {"mTipoExpId": 12, "mTipoExp_nom": "Devolución Prestacional", "mSectorId": 2, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 1, "pideProv_id": 1},
+  {"mTipoExpId": 13, "mTipoExp_nom": "Reintegro Prestacional", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 1, "pideProv_id": 1},
+  {"mTipoExpId": 7, "mTipoExp_nom": "Devolución NO Prestacional", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
+  {"mTipoExpId": 9, "mTipoExp_nom": "Reintegros NO Prestacional", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
+  {"mTipoExpId": 32, "mTipoExp_nom": "Tramites Contado", "mSectorId": 55, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
+  {"mTipoExpId": 33, "mTipoExp_nom": "Tramites TC", "mSectorId": 55, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
+  {"mTipoExpId": 34, "mTipoExp_nom": "Tramites DB", "mSectorId": 55, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
+  {"mTipoExpId": 44, "mTipoExp_nom": "Reintegro Odontología", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 1, "pideProv_id": 1},
+  {"mTipoExpId": 45, "mTipoExp_nom": "Devolucion Odontologia", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 1, "pideProv_id": 1},
+  {"mTipoExpId": 64, "mTipoExp_nom": "Trámites Alta", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 1, "pideProv_id": 0}
 ]
