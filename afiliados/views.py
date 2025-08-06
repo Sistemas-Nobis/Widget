@@ -344,7 +344,7 @@ class BuscarAfiliadoView(View):
 
 
 class BuscarRetencionView(View):
-    template_name = 'rete_prod.html'
+    template_name = 'rete_produccion.html'
  
     def obtener_token_wise(self):
         """
@@ -977,7 +977,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
-def cotizar_actual(request):
+def cotizar_anterior(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         mes = data.get('mes')
@@ -1033,6 +1033,58 @@ def cotizar_actual(request):
                 "primera_cuota": valor_pc,
                 "valor_plan": valor_p
             })
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Método no permitido"}, status=405)
+
+
+@csrf_exempt
+def cotizar_actual(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        plan = data.get('plan')
+        gestion = data.get('gestion')
+        ubicacion = data.get('ubicacion')
+        aporte = data.get('aportes')
+        bonificacion = data.get('bonificaciones')
+        patologias = data.get('patologias')
+        edades = ','.join(data.get('edades', []))
+
+        if not all([plan, gestion, ubicacion, edades]):
+            return JsonResponse({"error": "Faltan parámetros"}, status=400)
+
+        print(aporte, bonificacion, patologias)
+        token = "496ae7b9-0787-482e-bbe2-235279237940"
+
+        def consultar_api():
+            url_api = (
+                f"https://cotizador.nobis.com.ar/cotizacion?"
+                f"planes={plan}&convenio={gestion}&provincia={ubicacion}"
+                f"&ages={edades}&directo={aporte}&descuento={bonificacion}&preexistencia={patologias}"
+            )
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {token}"
+            }
+            response = requests.get(url_api, headers=headers)
+            return response
+
+        try:
+            response = consultar_api()
+            if response.status_code != 200:
+                error_data = response.json()
+                return JsonResponse({"error": f"{error_data}"}, status=400)
+            else:
+                response_data = response.json()
+                valor_pc = response_data['resultado']['cotizacion']['planes'][0]['primera_cuota']
+                valor_p = response_data['resultado']['cotizacion']['planes'][0]['valor_plan']
+
+                return JsonResponse({
+                    "primera_cuota": valor_pc,
+                    "valor_plan": valor_p
+                })
+            
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
 
