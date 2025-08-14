@@ -714,6 +714,8 @@
                 document.getElementById('archivosBtn').disabled = false;
                 window.expedienteId = expedienteId;
 
+                limpiarFormularioParaNuevo();
+
                 // Ahora traé el número de expediente
                 fetch(`https://api.nobis.com.ar/datos_expediente/${expedienteId}`)
                 .then(res => res.json())
@@ -842,6 +844,37 @@
     document.getElementById('cerrarModalCreacionBtn').addEventListener('click', function() {
         document.getElementById('modalCreacionExpediente').classList.remove('show');
     });
+
+    function limpiarFormularioParaNuevo() {
+        const form = document.getElementById('expedienteForm');
+        form.reset();
+
+        // Reiniciar selects con Select2
+        $('#origenPrestador').val('').trigger('change');
+        $('#proveedor').val('').trigger('change');
+
+        // Limpio variables usadas en búsqueda de afiliado
+        benIdEncontrado = null;
+        if (typeof nombreEncontrado !== 'undefined') nombreEncontrado = null;
+
+        // Periodo por defecto (aaaamm)
+        document.getElementById('periodo').value = getPeriodoActual();
+
+        // Dejo el tipo en blanco y vuelvo a deshabilitar los orígenes
+        document.getElementById('tipoExpediente').value = '';
+        setOrigenesDisabled(true, true, true);
+
+        // Restauro UI del afiliado y botón de búsqueda
+        const input = document.getElementById('afiliado');
+        const btn = document.getElementById('buscarbenBtn');
+        if (input) input.value = '';
+        if (btn) btn.disabled = true;
+
+        // Muy importante: mantener habilitado el botón Archivos,
+        // y NO tocar window.expedienteId (sigue apuntando al recién creado)
+        document.getElementById('archivosBtn').disabled = false;
+    }
+
 
     function getCookie(name) {
         let cookieValue = null;

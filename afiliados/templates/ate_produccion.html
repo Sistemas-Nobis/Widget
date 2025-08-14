@@ -254,8 +254,17 @@
             <table>
                 <thead>
                     <tr>
-                        <th colspan="5" style="background-color: #008000; color: white;">Información del grupo familiar
-                        <button id="redirect-button" class="top-right-button">→ Retención</button></th>
+                        <th colspan="5" style="background-color: #008000; color: white;">
+                            {% if agentes %}
+                                <span
+                                    style="color: #000000; font-weight: bold; margin-left: -10px; padding-right: 2px; border-radius: 5px;"
+                                    title="🔍Vigencias:{% for agente in agentes %}&#10;📌Agente: {{ agente.agecta_id }} - {{ agente.agecta_nombre }}&#10;➡️Periodo desde: {{ agente.peri_desde }}&#10;➡️Periodo hasta: {{ agente.peri_hasta }}{% endfor %}">
+                                    ⓘ
+                                </span>
+                            {% endif %}
+                             Información del grupo familiar
+                            <button id="redirect-button" class="top-right-button">→ Retención</button>
+                        </th>
                     </tr>
                     <tr>
                         <th>Alta</th>

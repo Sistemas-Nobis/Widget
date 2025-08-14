@@ -47,6 +47,8 @@ class BuscarAfiliadoView(View):
  
     def get(self, request, dni=None, *args, **kwargs):
 
+        print("Cargando vista de afiliado...")
+
         # Validación de entrada de DNI
         if not dni:
             return HttpResponseBadRequest("Debe proporcionar un DNI.")
@@ -90,10 +92,27 @@ class BuscarAfiliadoView(View):
                 dni_aux = 0
                 # Solicitud a la API de deuda
                 for x in data_afiliado:
-                    if x.get("esTitular") == True:
-                        dni_aux = x.get("nroAfi")
-                        print(f"Titular detectado: {dni_aux}")
-                        break
+                    #if x.get("esTitular") == True:
+                    #    dni_aux = x.get("nroAfi")
+                    #    print(f"Titular detectado: {dni_aux}")
+                    #    break
+                    #print(x)
+                    if x.get("benGrId"):
+                        grupo_id = x.get("benGrId")
+                        #print(f"Grupo familiar: {grupo_id}")
+
+                        url_agegru = f"https://api.nobis.com.ar/agente_por_grupo/{grupo_id}"
+                        response_agegru = requests.get(url_agegru)
+                        data_agegru = response_agegru.json()
+
+                        if response_agegru.status_code == 200 and data_agegru != []:
+                            for x in data_agegru:
+                                dni_aux = x.get("doc_id")
+                                if dni_aux != 0:
+                                    #print(x)
+                                    print(f"DNI Agente de cuenta: {dni_aux}")
+                                    break
+                            break
                     else:
                         pass
                 
@@ -102,6 +121,8 @@ class BuscarAfiliadoView(View):
                     url_deuda = f"https://appmobile.nobissalud.com.ar/api/AgentesCuenta/Deuda/{dni_aux}"
                     response_deuda = requests.get(url_deuda, headers=headers)
                     data_deuda = response_deuda.json()
+
+                    #print(data_deuda)
 
                     hoy = datetime.today()
 
@@ -134,7 +155,9 @@ class BuscarAfiliadoView(View):
                 #data = df_selected.to_dict(orient="records")
                
                 # Obtener el token desde el caché o actualizarlo si ha expirado
+                #print("Obteniendo token de Wise...")
                 token = self.obtener_token_wise()
+                #print("Token de Wise obtenido.", token)
  
                 # Solicitud a la API de casos
                 headers_wise = headers = {
@@ -162,11 +185,13 @@ class BuscarAfiliadoView(View):
                     headers_interno = {
                     "Content-Type": "application/json"
                     }
+                    #print(f"Consultando casos para {nro_afi} - {nom_afi}")
 
                     # Solicitud a la API interna para obtener fecha de alta y patologia
                     url_patologias = f"https://api.nobis.com.ar/fecha_alta_y_patologias/{nro_afi}"
                     response_p = requests.get(url_patologias, headers=headers_interno)
                     data_p = response_p.json()
+                    #print(f"Datos de patologías para {nro_afi}: {data_p}")
 
                     if data_p:
                         fecha_alta = data_p[0].get('fecha_alta')
@@ -330,7 +355,7 @@ class BuscarAfiliadoView(View):
                         item["simbolo"] = "?"
 
                 # Renderiza la plantilla con ambos conjuntos de datos
-                return render(request, self.template_name, {'data': data, 'data_casos': all_cases})
+                return render(request, self.template_name, {'data': data, 'data_casos': all_cases, 'agentes': data_agegru})
  
             else:
                 return render(request, self.template_name, {'error': 'No se encontraron datos para el DNI proporcionado.'}, status=404)
@@ -700,8 +725,11 @@ class BuscarRetencionView(View):
                 all_aportes = []
 
                 url_aportes = f"https://api.nobis.com.ar/ultimos_aportes/{dni_titular}"
+                #url_aportes = f"http://127.0.0.1:8080/ultimos_aportes/{dni_titular}"
                 response_a = requests.get(url_aportes, headers=headers_interno)
                 data_a = response_a.json()
+
+                #print(f"Datos de aportes: {data_a}")
 
                 cont = 0
 
@@ -714,8 +742,8 @@ class BuscarRetencionView(View):
                             # Convertir el período a un objeto datetime
                             fecha = datetime.strptime(periodo, '%Y%m')
 
-                            # Sumar 3 meses usando relativedelta
-                            nueva_fecha = fecha + relativedelta(months=3)
+                            # Sumar 2 meses usando relativedelta
+                            nueva_fecha = fecha + relativedelta(months=2)
 
                             # Convertir de nuevo a formato 'YYYYMM'
                             nuevo_periodo = nueva_fecha.strftime('%Y%m')
@@ -728,6 +756,21 @@ class BuscarRetencionView(View):
                             #dni = aporte.get('numero').replace(' ', '')
                             #aporte['numero'] == dni
                             #print(dni)
+
+                            # ----- Retención de aportes -----
+                            #mes_actual = datetime.now().strftime('%m')
+                            #if mes_actual in ('08', '03'):
+                            #    aporte['aporte_base'] = aporte.get('aporte')
+                            #    nuevo_monto = round(aporte.get('aporte') * 0.7, 2)
+                            #    aporte['Retencion'] = "30%"
+                            #else:
+                            #    aporte['aporte_base'] = aporte.get('aporte')
+                            #    nuevo_monto = round(aporte.get('aporte') * 0.9, 2)
+                            #    aporte['Retencion'] = "10%"
+                            #aporte['aporte'] = nuevo_monto
+                            # ----------------------------------
+
+                            aporte['aporte_base'] = aporte.get('aporte')
 
                             if monto > 1:
                                 all_aportes.append(aporte)
@@ -785,6 +828,8 @@ class MesaDeEntradaView(View):
 
 
     def get(self, request, dni=None, *args, **kwargs):
+
+        print("Cargando vista de mesa de entrada...")
 
         OrigenesService.obtener_origenes()
         ProveedoresService.obtener_proveedores()

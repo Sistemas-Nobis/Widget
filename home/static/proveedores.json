@@ -43420,6 +43420,11 @@
     "CUIT": "30591600164"
   },
   {
+    "prov_id": 120843,
+    "Nombre": "BUGEAU MARIA PIA",
+    "CUIT": "27371389429"
+  },
+  {
     "prov_id": 120844,
     "Nombre": "ZG MULTITEC SRL ",
     "CUIT": "30710804830"
@@ -43953,6 +43958,11 @@
     "prov_id": 121029,
     "Nombre": "GRUPO MACROCOR S.A.S. ",
     "CUIT": "30716194945"
+  },
+  {
+    "prov_id": 121030,
+    "Nombre": "HERRERA RITA DEBORA MARTA ",
+    "CUIT": "27366203066"
   },
   {
     "prov_id": 121031,
@@ -53573,5 +53583,440 @@
     "prov_id": 123573,
     "Nombre": "CARASSALE MARIO SANTIAGO",
     "CUIT": "20127072214"
+  },
+  {
+    "prov_id": 123576,
+    "Nombre": "VELASQUEZ CRISTIAN ROBERTO",
+    "CUIT": "20261799473"
+  },
+  {
+    "prov_id": 123577,
+    "Nombre": "acs aviajes ",
+    "CUIT": "33718663089"
+  },
+  {
+    "prov_id": 123581,
+    "Nombre": "CIRCULO DE ODONTOLOGOS DE GENERAL ROCA",
+    "CUIT": "30557879303"
+  },
+  {
+    "prov_id": 123583,
+    "Nombre": "THOSS RICARDO TOMAS ",
+    "CUIT": "20125264701"
+  },
+  {
+    "prov_id": 123584,
+    "Nombre": "GOMEZ ARZANI LUCIANA",
+    "CUIT": "27320466690"
+  },
+  {
+    "prov_id": 123585,
+    "Nombre": "OCAMPO CINTHIA GIMENA ",
+    "CUIT": "23347834734"
+  },
+  {
+    "prov_id": 123588,
+    "Nombre": "ANAVI SA",
+    "CUIT": "30708777893"
+  },
+  {
+    "prov_id": 123589,
+    "Nombre": "PAOLIN GASTON ARMANDO ",
+    "CUIT": "20327029550"
+  },
+  {
+    "prov_id": 123590,
+    "Nombre": "ASOCIACION MUTUAL PERSONAL DIARIO EL TRIBUNO",
+    "CUIT": "30654963122"
+  },
+  {
+    "prov_id": 123591,
+    "Nombre": "AUTO SI S.A",
+    "CUIT": "30715688499"
+  },
+  {
+    "prov_id": 123592,
+    "Nombre": "AVALOS HOGAR SRL ",
+    "CUIT": "30716778181"
+  },
+  {
+    "prov_id": 123593,
+    "Nombre": "BACAR TRANSPORTADORA DE CAUDALES S.A.",
+    "CUIT": "30668134978"
+  },
+  {
+    "prov_id": 123594,
+    "Nombre": "CL-NICA FAMAILLA SRL",
+    "CUIT": "30712550747"
+  },
+  {
+    "prov_id": 123595,
+    "Nombre": "CONVENIO SITRACYT",
+    "CUIT": "33693335219"
+  },
+  {
+    "prov_id": 123596,
+    "Nombre": "COOP. DE TRABAJO TRANS. LA UNION",
+    "CUIT": "30633114133"
+  },
+  {
+    "prov_id": 123597,
+    "Nombre": "COOPERATIVA DE TRABAJO RECUPLAST CORDOBA LIMITADA",
+    "CUIT": "30718654714"
+  },
+  {
+    "prov_id": 123598,
+    "Nombre": "COOPERATIVA DE TRABAJO TEXTIL SANTIAGO LIMITADA",
+    "CUIT": "30716221594"
+  },
+  {
+    "prov_id": 123599,
+    "Nombre": "CREDITO MALARGUE",
+    "CUIT": "20142705371"
+  },
+  {
+    "prov_id": 123600,
+    "Nombre": "CTRO COM INDUSTRIAL Y DE LA PROPIEDAD DE BRINKMANN",
+    "CUIT": "30669212220"
+  },
+  {
+    "prov_id": 123601,
+    "Nombre": "DISTRIBUIDORA MILIY S.R.L",
+    "CUIT": "30710776918"
+  },
+  {
+    "prov_id": 123602,
+    "Nombre": "ECHENIQUE DEHESA RODOLFO",
+    "CUIT": "20080004886"
+  },
+  {
+    "prov_id": 123603,
+    "Nombre": "EN VIVO PRODUCCIONES",
+    "CUIT": "30710441339"
+  },
+  {
+    "prov_id": 123604,
+    "Nombre": "ESTABLECIMIENTO SANTO TOMAS S.A AGRO. COMER. E IN",
+    "CUIT": "30620124547"
+  },
+  {
+    "prov_id": 123605,
+    "Nombre": "FARMA SUR AGRUPACIËN",
+    "CUIT": "30672175573"
+  },
+  {
+    "prov_id": 123606,
+    "Nombre": "FED AND VEL S.A.",
+    "CUIT": "30714586366"
+  },
+  {
+    "prov_id": 123607,
+    "Nombre": "FIDEICOMISO OPERA PARK",
+    "CUIT": "30716076284"
+  },
+  {
+    "prov_id": 123608,
+    "Nombre": "FIDELITYTOOLS S.A.",
+    "CUIT": "33712462669"
+  },
+  {
+    "prov_id": 123609,
+    "Nombre": "FRIGORIFICO FORRES-BELTRAN S.A.",
+    "CUIT": "30710014287"
+  },
+  {
+    "prov_id": 123610,
+    "Nombre": "FYC MKT INTERACTIV",
+    "CUIT": "33717942219"
+  },
+  {
+    "prov_id": 123611,
+    "Nombre": "GANADERA DEL TOTORAL S.A",
+    "CUIT": "30615487895"
+  },
+  {
+    "prov_id": 123612,
+    "Nombre": "GIBERTCAR ARGENTINA S R L",
+    "CUIT": "30709918938"
+  },
+  {
+    "prov_id": 123613,
+    "Nombre": "GRAND ESTATE SAS",
+    "CUIT": "30716519062"
+  },
+  {
+    "prov_id": 123614,
+    "Nombre": "GRUPO FARMACIAS DEL PLATA",
+    "CUIT": "33708974779"
+  },
+  {
+    "prov_id": 123615,
+    "Nombre": "GRUPO POMIGLIO",
+    "CUIT": "30710668619"
+  },
+  {
+    "prov_id": 123616,
+    "Nombre": "GRUPO SANTA ANA",
+    "CUIT": "30708643366"
+  },
+  {
+    "prov_id": 123617,
+    "Nombre": "GS-HAUS",
+    "CUIT": "30717887278"
+  },
+  {
+    "prov_id": 123618,
+    "Nombre": "IFK SPORTS S.A.S.",
+    "CUIT": "30716259532"
+  },
+  {
+    "prov_id": 123619,
+    "Nombre": "INNO GYJ SAS",
+    "CUIT": "30718168461"
+  },
+  {
+    "prov_id": 123620,
+    "Nombre": "MICELAS S.A - PP",
+    "CUIT": "30710695810"
+  },
+  {
+    "prov_id": 123621,
+    "Nombre": "MIGUEL SEGURA SA",
+    "CUIT": "20302896489"
+  },
+  {
+    "prov_id": 123622,
+    "Nombre": "MUTUAL DE EMPLEADOS BANCARIOS DE SAN JUAN",
+    "CUIT": "30715538659"
+  },
+  {
+    "prov_id": 123623,
+    "Nombre": "MVS ARGENTINA SRL",
+    "CUIT": "30715201239"
+  },
+  {
+    "prov_id": 123624,
+    "Nombre": "POMIGLIO S.A.S.",
+    "CUIT": "30716717492"
+  },
+  {
+    "prov_id": 123625,
+    "Nombre": "PORTA HNOS S.A.",
+    "CUIT": "30501099933"
+  },
+  {
+    "prov_id": 123626,
+    "Nombre": "PROACO S.A",
+    "CUIT": "30709356174"
+  },
+  {
+    "prov_id": 123627,
+    "Nombre": "PULIZIA S.R.L.",
+    "CUIT": "30713602406"
+  },
+  {
+    "prov_id": 123628,
+    "Nombre": "RAMOS MATIAS EMANUEL",
+    "CUIT": "20362337020"
+  },
+  {
+    "prov_id": 123629,
+    "Nombre": "SALINERA SAN JOSE",
+    "CUIT": "30628630697"
+  },
+  {
+    "prov_id": 123630,
+    "Nombre": "SALINERA SAN JOSES.A",
+    "CUIT": "30715763873"
+  },
+  {
+    "prov_id": 123631,
+    "Nombre": "SERVICIO CAPITAL HUMANO S. A. S.",
+    "CUIT": "30717712079"
+  },
+  {
+    "prov_id": 123632,
+    "Nombre": "SERVICIOS MEDICOS SALTA SRL",
+    "CUIT": "30709233978"
+  },
+  {
+    "prov_id": 123633,
+    "Nombre": "SUMP S.R.L",
+    "CUIT": "30717771415"
+  },
+  {
+    "prov_id": 123634,
+    "Nombre": "SYLVIA ANDRADA",
+    "CUIT": "27230162439"
+  },
+  {
+    "prov_id": 123635,
+    "Nombre": "TCTECH SRL",
+    "CUIT": "30711189692"
+  },
+  {
+    "prov_id": 123636,
+    "Nombre": "TEMPLE GROUP SAS",
+    "CUIT": "30716857316"
+  },
+  {
+    "prov_id": 123637,
+    "Nombre": "TIERRA FERTIL SRL",
+    "CUIT": "30708589116"
+  },
+  {
+    "prov_id": 123638,
+    "Nombre": "TRAMAT S.A. Y OTROS UNION TRANSITORIA DE EMPRESAS",
+    "CUIT": "30703160014"
+  },
+  {
+    "prov_id": 123639,
+    "Nombre": "TRIUM S.A.",
+    "CUIT": "30709594075"
+  },
+  {
+    "prov_id": 123640,
+    "Nombre": "TRUBEN SRL",
+    "CUIT": "30716045532"
+  },
+  {
+    "prov_id": 123641,
+    "Nombre": "UNIVERSO JIMENEZ",
+    "CUIT": "30717665984"
+  },
+  {
+    "prov_id": 123642,
+    "Nombre": "XYCA S.R.L",
+    "CUIT": "30710368488"
+  },
+  {
+    "prov_id": 123643,
+    "Nombre": "INDUBOL SA",
+    "CUIT": "30710433891"
+  },
+  {
+    "prov_id": 123644,
+    "Nombre": "BRAKIN SILVIA KARINA",
+    "CUIT": "27205473586"
+  },
+  {
+    "prov_id": 123645,
+    "Nombre": "ELJALL NALHA VALENTINA",
+    "CUIT": "23401689974"
+  },
+  {
+    "prov_id": 123646,
+    "Nombre": "TROGLIA CAMILA SOFIA",
+    "CUIT": "27384183897"
+  },
+  {
+    "prov_id": 123647,
+    "Nombre": "PEDRAZA ANALIA MARINA ",
+    "CUIT": "23297121464"
+  },
+  {
+    "prov_id": 123648,
+    "Nombre": "TORRES DAIANA MARIA LEANDRA ",
+    "CUIT": "23356938054"
+  },
+  {
+    "prov_id": 123649,
+    "Nombre": "MAZZUCHI ADOLFO SEBASTIAN ",
+    "CUIT": "20296868516"
+  },
+  {
+    "prov_id": 123650,
+    "Nombre": "CIPADI SOCIEDAD ANONIMA ",
+    "CUIT": "30711513570"
+  },
+  {
+    "prov_id": 123651,
+    "Nombre": "DIAGNOSTICO INTEGRAL MEDICO S R L ",
+    "CUIT": "30694852390"
+  },
+  {
+    "prov_id": 123652,
+    "Nombre": "ASOCIACION MUTUAL DE ESPECIALIDADES ODONTOLOGICASC",
+    "CUIT": "30703580706"
+  },
+  {
+    "prov_id": 123653,
+    "Nombre": "ASOCIACION DE CLINICAS SANATORIOS Y HOSPITALES PRQ",
+    "CUIT": "30627872026"
+  },
+  {
+    "prov_id": 123654,
+    "Nombre": "QUINTEROS FARIAS MARIA LAURA",
+    "CUIT": "27295411932"
+  },
+  {
+    "prov_id": 123655,
+    "Nombre": "ASOCIACION PAMPEANA DE KINESIOLOGOS Y FISIOTERAPES",
+    "CUIT": "30622207741"
+  },
+  {
+    "prov_id": 123656,
+    "Nombre": "GIMENEZ ANDREA LUCIANA",
+    "CUIT": "27419081626"
+  },
+  {
+    "prov_id": 123658,
+    "Nombre": "PEREZ MORENO SEBASTIAN FERNANDO ",
+    "CUIT": "20297409523"
+  },
+  {
+    "prov_id": 123663,
+    "Nombre": "BUSTOS WALTER RUBEN ",
+    "CUIT": "20336658404"
+  },
+  {
+    "prov_id": 123665,
+    "Nombre": "BAZAN MONTAÑA FEDERICO JESUS F",
+    "CUIT": "20295122081"
+  },
+  {
+    "prov_id": 123681,
+    "Nombre": "BONINO ERICA GISELA ",
+    "CUIT": "27284255505"
+  },
+  {
+    "prov_id": 123683,
+    "Nombre": "EGUIA JAVIER ANDRES ",
+    "CUIT": "20225625884"
+  },
+  {
+    "prov_id": 123685,
+    "Nombre": "GANZBURG ADRIAN ",
+    "CUIT": "20268144057"
+  },
+  {
+    "prov_id": 123686,
+    "Nombre": "ZUBIRIA EDUARDO IGNACIO ",
+    "CUIT": "20202560084"
+  },
+  {
+    "prov_id": 123687,
+    "Nombre": "CABALLERO SERGIO ADRIAN ",
+    "CUIT": "20397210597"
+  },
+  {
+    "prov_id": 123691,
+    "Nombre": "MULEIRO ARANDA VICTOR ",
+    "CUIT": "20270907866"
+  },
+  {
+    "prov_id": 123692,
+    "Nombre": "LIOTTA INMOBILIARIA SRL ",
+    "CUIT": "30718581067"
+  },
+  {
+    "prov_id": 123693,
+    "Nombre": "DI RICO BRUNO ENZO",
+    "CUIT": "20422095056"
+  },
+  {
+    "prov_id": 123694,
+    "Nombre": "RUARTE ENRIQUE RAFAEL ",
+    "CUIT": "20303095137"
   }
 ]

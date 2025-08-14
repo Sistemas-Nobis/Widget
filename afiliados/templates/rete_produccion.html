@@ -418,7 +418,14 @@
                     <tr>
                         <th style="width: 50px;">-</th>
                         <th>Periodo</th>
-                        <th>Aporte</th>
+                        <th>Aporte
+                            <span style="position: absolute; right: 6px; bottom: 176px;">
+                                <select id="rete_aporte" name="rete_aporte" onchange="actualizarDesdeCampo()">
+                                    <option value="10">10%</option>
+                                    <option value="30">30%</option>
+                                </select>
+                            </span>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -429,12 +436,19 @@
                                     <input 
                                         type="checkbox" 
                                         class="aporte-checkbox" 
-                                        data-valor="{{ aporte.aporte }}" 
-                                        onchange="actualizarSeleccion()"
+                                        data-valor="{{ aporte.aporte }}"
+                                        data-aporte-base="{{ aporte.aporte_base }}"
+                                        onchange="actualizarSeleccion(true)"
                                     />
                                 </td>
                                 <td>{{ aporte.Periodo }}</td>
-                                <td>${{ aporte.aporte }}</td>
+                                <td>${{ aporte.aporte }}
+                                    <span
+                                        class="info-aporte"
+                                        style="color: black; font-weight: bold; padding-right: 2px; border-radius: 5px; position: absolute; right: 10px;">
+                                        ⓘ
+                                    </span>
+                                </td>
                             </tr>
                         {% endfor %}
                     {% else %}
@@ -477,25 +491,47 @@
 
     <script>
         let aportesSeleccionados = [];
+        let aporteManualOverride = false;
 
-        function actualizarSeleccion() {
-            // Reiniciar la lista de seleccionados
-            aportesSeleccionados = [];
-            let total = 0;
+        // Enganche del input manual
+        document.addEventListener('DOMContentLoaded', () => {
+            const aportesInput = document.getElementById('aportes');
+            if (!aportesInput) return;
 
-            // Seleccionar todos los checkboxes
-            document.querySelectorAll(".aporte-checkbox").forEach(checkbox => {
-                if (checkbox.checked) {
-                    const valor = parseFloat(checkbox.dataset.valor);
-                    aportesSeleccionados.push(valor);
-                    total += valor;
-                }
+            // Al escribir: activar modo manual
+            aportesInput.addEventListener('input', () => {
+            aporteManualOverride = true;
             });
 
-            // Redondear hacia abajo y actualizar el campo de entrada
+            // Si queda vacío al salir, volvemos a automático
+            aportesInput.addEventListener('blur', () => {
+            if (aportesInput.value.trim() === '') {
+                aporteManualOverride = false;
+                if (typeof actualizarSeleccion === 'function') actualizarSeleccion(false);
+            }
+            });
+        });
+
+        // fromUser = true si viene de un click en la tabla de aportes
+        function actualizarSeleccion(fromUser = false) {
+            // Si el usuario selecciona/deselecciona aportes, volvemos a automático
+            if (fromUser) aporteManualOverride = false;
+
+            let total = 0;
+            document.querySelectorAll(".aporte-checkbox").forEach(checkbox => {
+            if (checkbox.checked) {
+                const valor = parseFloat(checkbox.dataset.valor);
+                if (!isNaN(valor)) total += valor;
+            }
+            });
+
             const totalRedondeado = Math.floor(total);
-            document.getElementById("aportes").value = totalRedondeado;
-            //console.log(totalRedondeado)
+            const aportesInput = document.getElementById("aportes");
+
+            // Solo pisamos si NO está en modo manual
+            if (!aporteManualOverride) {
+            aportesInput.value = totalRedondeado;
+            }
         }
     </script>
 
@@ -849,13 +885,76 @@
             input.value = input.value.replace(/[^0-9]/g, '');
         }
 
-        function actualizarDesdeCampo() {
-            const valorManual = parseInt(document.getElementById("aportes").value) || 0;
 
-            // Si el valor ingresado manualmente no coincide con la suma, puedes decidir cómo manejarlo.
-            console.log("Valor ingresado manualmente:", valorManual);
-            // Actualizar lógica aquí si es necesario
+        // Formateador de moneda (ARS)
+        const fmt = window.fmt || new Intl.NumberFormat('es-AR', {
+            style: 'currency',
+            currency: 'ARS',
+            minimumFractionDigits: 0,   // mostrás sin decimales; cambiá a 2 si preferís
+            maximumFractionDigits: 2
+        });
+
+        // Parsea string con coma o punto como decimal, p. ej. "1,7" => 1.7
+        function parseDec(val) {
+            if (val == null) return NaN;
+            if (typeof val === 'number') return val;
+            const s = String(val).trim().replace(',', '.');
+            return parseFloat(s);
         }
+
+        // 10% => base * 0.9 ; 30% => base * 0.7
+        function calcularNuevoAporte(valorBase, porcSelect) {
+            const factor = porcSelect === 30 ? 0.7 : 0.9;
+            return valorBase * factor;
+        }
+
+        function actualizarDesdeCampo() {
+            const select = document.getElementById("rete_aporte");
+            const porcentajeSeleccionado = parseInt(select?.value, 10) || 10; // fallback 10
+            const retencionPorc = porcentajeSeleccionado; // 10 o 30
+
+            document.querySelectorAll(".aporte-checkbox").forEach(checkbox => {
+            // SIEMPRE tomar el base real (puede venir con coma)
+            const valorBase = parseDec(checkbox.dataset.aporteBase);
+            if (isNaN(valorBase)) return;
+
+            const nuevoValor = calcularNuevoAporte(valorBase, retencionPorc);
+            const retencionMonto = valorBase - nuevoValor;
+
+            // Actualiza valor mostrado ($X) en la 3ra celda (antes del span)
+            const celdaAporte = checkbox.closest("tr")?.querySelector("td:nth-child(3)");
+            if (celdaAporte && celdaAporte.firstChild) {
+                celdaAporte.firstChild.nodeValue = `${fmt.format(nuevoValor)} `;
+            }
+
+            // Actualiza data-valor para que actualizarSeleccion() sume bien
+            checkbox.dataset.valor = nuevoValor.toFixed(2);
+
+            // Actualiza tooltip con desglose
+            const infoSpan = celdaAporte?.querySelector(".info-aporte");
+            if (infoSpan) {
+                infoSpan.title =
+                `🔍Composición:\n` +
+                `📌Aporte base: ${fmt.format(valorBase)}\n` +
+                `🫳Retención (${retencionPorc}%): ${fmt.format(retencionMonto)}\n` +
+                `✅Aporte final: ${fmt.format(nuevoValor)}`;
+            }
+            });
+
+            // Recalcula el total si hay seleccionados
+            if (typeof actualizarSeleccion === 'function') {
+            actualizarSeleccion();
+            }
+        }
+
+        // Al cargar: seleccionar 10% por defecto y aplicar el cálculo inicial
+        document.addEventListener("DOMContentLoaded", function () {
+            const selectRete = document.getElementById("rete_aporte");
+            if (selectRete) {
+            selectRete.value = "10";
+            actualizarDesdeCampo();
+            }
+        });
 
         // Mostrar el segundo modal
         function openSecondaryModal() {

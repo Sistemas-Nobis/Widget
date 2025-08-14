@@ -10,7 +10,7 @@ SECRET_KEY = 'django-insecure-8xv_ta*-1dryi#afggy2!h)(^q&)7t_v%uw56ls=o+w0iihv=_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
  
-ALLOWED_HOSTS = ['172.210.161.18', 'localhost', 'widget.nobis.com.ar', '192.168.0.156']
+ALLOWED_HOSTS = ['172.210.161.18', 'localhost', 'widget.nobis.com.ar', '192.168.0.156', '172.16.1.186','172.16.0.254']
 CSRF_TRUSTED_ORIGINS = ['https://widget.nobis.com.ar']
  
 # Application definition

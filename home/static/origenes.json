@@ -12372,6 +12372,12 @@
     "tp_id": 158
   },
   {
+    "ori_id": 5353,
+    "nombre": "E.M.E.C PRIVADO S.A ",
+    "loc_id": 2370,
+    "tp_id": 111
+  },
+  {
     "ori_id": 5356,
     "nombre": "Garcia Romina ",
     "loc_id": 1765,
@@ -13614,6 +13620,12 @@
     "tp_id": 102
   },
   {
+    "ori_id": 7866,
+    "nombre": "Muleiro Aranda Victor ",
+    "loc_id": 3082,
+    "tp_id": 259
+  },
+  {
     "ori_id": 7884,
     "nombre": "ROBLEDO NESTOR MATIAS ",
     "loc_id": 1249,
@@ -13810,6 +13822,12 @@
     "nombre": "MELANO MYRNA CELIA",
     "loc_id": 2181,
     "tp_id": 148
+  },
+  {
+    "ori_id": 8069,
+    "nombre": "EL REPARITO S.A.",
+    "loc_id": 3082,
+    "tp_id": 2537
   },
   {
     "ori_id": 8070,
@@ -16078,6 +16096,12 @@
     "nombre": "OBEIDE GRACIELA ALEJANDRA ",
     "loc_id": 1249,
     "tp_id": 174
+  },
+  {
+    "ori_id": 11100,
+    "nombre": "Colegio deBioquimicos Sgo del Estero (Prueba) ",
+    "loc_id": 1249,
+    "tp_id": 112
   },
   {
     "ori_id": 11123,
@@ -19674,6 +19698,12 @@
     "tp_id": 259
   },
   {
+    "ori_id": 21464,
+    "nombre": "PEDRAZA ANALIA MARINA ",
+    "loc_id": 2181,
+    "tp_id": 134
+  },
+  {
     "ori_id": 21511,
     "nombre": "VIRGILI SAN MILLAN AGUSTIN",
     "loc_id": 2203,
@@ -20250,6 +20280,12 @@
     "tp_id": 2537
   },
   {
+    "ori_id": 26908,
+    "nombre": "IRARRAZAVAL LUIS ARTURO ",
+    "loc_id": 2064,
+    "tp_id": 2537
+  },
+  {
     "ori_id": 27502,
     "nombre": "Cimo Consultorio LV ",
     "loc_id": 1588,
@@ -20500,6 +20536,12 @@
     "nombre": "KASSAR FACUNDO",
     "loc_id": 1301,
     "tp_id": 148
+  },
+  {
+    "ori_id": 29550,
+    "nombre": "PAOLIN GASTON ARMANDO ",
+    "loc_id": 1920,
+    "tp_id": 174
   },
   {
     "ori_id": 29627,
@@ -21274,6 +21316,12 @@
     "nombre": "BIO BQ SRL",
     "loc_id": 2189,
     "tp_id": 156
+  },
+  {
+    "ori_id": 38054,
+    "nombre": "TORRES DAIANA MARIA LEANDRA ",
+    "loc_id": 2181,
+    "tp_id": 174
   },
   {
     "ori_id": 38197,
@@ -23556,6 +23604,12 @@
     "tp_id": 177
   },
   {
+    "ori_id": 64194,
+    "nombre": "MUNICIPALIDAD DE LA BANDA DEL RIO SALI",
+    "loc_id": 2831,
+    "tp_id": 176
+  },
+  {
     "ori_id": 64263,
     "nombre": "PASSO SILVIA ALEJANDRA",
     "loc_id": 2181,
@@ -23818,6 +23872,12 @@
     "nombre": "Centro Medico San Ignacio ",
     "loc_id": 3083,
     "tp_id": 102
+  },
+  {
+    "ori_id": 68516,
+    "nombre": "MAZZUCHI ADOLFO SEBASTIAN ",
+    "loc_id": 2181,
+    "tp_id": 217
   },
   {
     "ori_id": 68864,
@@ -24262,6 +24322,12 @@
     "nombre": "CUELLO CLAUDIA ISABEL ",
     "loc_id": 2181,
     "tp_id": 134
+  },
+  {
+    "ori_id": 73586,
+    "nombre": "BRAKIN SILVIA KARINA",
+    "loc_id": 2181,
+    "tp_id": 174
   },
   {
     "ori_id": 73607,
@@ -24984,6 +25050,12 @@
     "tp_id": 7
   },
   {
+    "ori_id": 81626,
+    "nombre": "GIMENEZ ANDREA LUCIANA",
+    "loc_id": 2203,
+    "tp_id": 140
+  },
+  {
     "ori_id": 81779,
     "nombre": "SECO JUAN PABLO ",
     "loc_id": 2181,
@@ -25552,6 +25624,12 @@
     "nombre": "Frontera Brenda Paola ",
     "loc_id": 1249,
     "tp_id": 229
+  },
+  {
+    "ori_id": 89974,
+    "nombre": "ELJALL NALHA VALENTINA",
+    "loc_id": 1249,
+    "tp_id": 174
   },
   {
     "ori_id": 90017,
@@ -27705,7 +27783,7 @@
     "ori_id": 234628,
     "nombre": "TROGLIA CAMILA SOFIA",
     "loc_id": 2420,
-    "tp_id": 215
+    "tp_id": 174
   },
   {
     "ori_id": 234629,
@@ -32404,6 +32482,12 @@
     "nombre": "Asociación Civil Esclerosis Múltiple (ACEM) ",
     "loc_id": 2181,
     "tp_id": 217
+  },
+  {
+    "ori_id": 1229855,
+    "nombre": "BRAKIN KARINA ",
+    "loc_id": 2181,
+    "tp_id": 177
   },
   {
     "ori_id": 1251111,

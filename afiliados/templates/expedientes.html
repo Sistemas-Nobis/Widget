@@ -47,7 +47,7 @@ h2 {
   margin: 0 0 8px 0;
   padding: 10px 0 5px 0;
   font-weight: 700;
-  font-size: 1.25em;
+  font-size: 18px;
   text-align: center;
   border-radius: 15px 15px 0 0;
   letter-spacing: 0.5px;
@@ -135,7 +135,7 @@ th {
 }
 
 th, tr{
-  font-size: 9px;
+  font-size: 11px;
 }
 
 tr:nth-child(even) td {
@@ -202,11 +202,63 @@ tr:nth-child(odd) td {
     font-size: 12px;
   }
 }
+
+.titulo-expedientes {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #0e8c13;
+  padding: 8px 12px;
+  border-radius: 6px 6px 0 0;
+}
+
+.titulo-expedientes h2 {
+  margin: 0;
+  margin-left: 5px;
+  font-size: 18px;
+}
+
+.icon-button {
+  width: 28px; height: 28px;
+  border: none; border-radius: 50%;
+  background: #fff; color: #0e8c13;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,.15);
+  cursor: pointer;
+}
+.icon-button:hover{ background:#e6fbe7; }
+.icon-button:focus{ outline: 2px solid #b6e2b8; }
+
+/* Ancho de columnas de la tabla de expedientes */
+.tabla-expedientes { table-layout: fixed; }
+
+.tabla-expedientes col.c-num    { width: 15%; }
+.tabla-expedientes col.c-tipo   { width: 27%; }
+.tabla-expedientes col.c-sector { width: 28%; }
+.tabla-expedientes col.c-fecha  { width: 20%; }
+
+/* La de acciones (Más) chica, pero usable */
+.tabla-expedientes col.c-mas    { width: 10%; min-width: 20px; }
+
+.tabla-expedientes th:last-child,
+.tabla-expedientes td:last-child { text-align: center; }
+
+.btn-ver-detalle { padding: 4px 8px; line-height: 1; }
+
+
 </style>
 </head>
 <body>
     <div class="container">
-        <h2>Expedientes del grupo familiar</h2>
+        <div class="titulo-expedientes">
+          <h2>Expedientes del grupo familiar</h2>
+          <button id="openFilters" class="icon-button" type="button" style="margin-left: 5px;"
+                  data-bs-toggle="modal" data-bs-target="#filtrosModal"
+                  title="Filtrar expedientes">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
         <div class="tabs" id="afiliadoTabs">
           {% for afiliado, exps in afiliados_data %}
             <button class="tab{% if forloop.first %} active{% endif %}" data-tab="tab{{ forloop.counter0 }}">
@@ -218,7 +270,14 @@ tr:nth-child(odd) td {
           {% for afiliado, exps in afiliados_data %}
             <div class="tab-content{% if forloop.first %} active{% endif %}" id="tab{{ forloop.counter0 }}">
               {% if exps %}
-                <table>
+                <table class="tabla-expedientes">
+                  <colgroup>
+                    <col class="c-num">
+                    <col class="c-tipo">
+                    <col class="c-sector">
+                    <col class="c-fecha">
+                    <col class="c-mas">
+                  </colgroup>
                   <thead>
                     <tr>
                       <th>Número</th>
@@ -253,6 +312,47 @@ tr:nth-child(odd) td {
           {% endfor %}
         </div>
         <a href="?nuevo=1" class="nuevo-expediente">Crear nuevo expediente</a>
+    </div>
+
+    <!-- Modal Filtros -->
+    <div class="modal fade" id="filtrosModal" tabindex="-1" aria-labelledby="filtrosModalLabel">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="filtrosModalLabel">Filtrar expedientes</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-2">
+              <label class="form-label">Número de expediente</label>
+              <input id="fNum" type="text" class="form-control" placeholder="Ej: 12345">
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Tipo de expediente</label>
+              <select id="fTipo" class="form-select">
+                <option value="">Todos</option>
+              </select>
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Sector final</label>
+              <select id="fSector" class="form-select">
+                <option value="">Todos</option>
+              </select>
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Fecha (rango)</label>
+              <div class="d-flex gap-2">
+                <input id="fDesde" type="date" class="form-control">
+                <input id="fHasta" type="date" class="form-control">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="clearFilters" type="button" class="btn btn-outline-secondary">Limpiar</button>
+            <button id="applyFilters" type="button" class="btn btn-primary">Aplicar</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Modal Detalle -->
@@ -557,6 +657,128 @@ tr:nth-child(odd) td {
       const texto = `Página ${currentPage} de ${currentPDF.numPages}`;
       document.getElementById('pagina-actual').innerText = texto;
     }
+
+    function getActiveTable() {
+      const active = document.querySelector('.tab-content.active');
+      return active ? active.querySelector('table') : null;
+    }
+
+    function uniqueFromColumn(table, colIdx) {
+      const set = new Set();
+      table?.querySelectorAll('tbody tr')?.forEach(tr => {
+        const txt = (tr.children[colIdx]?.textContent || '').trim();
+        if (txt) set.add(txt);
+      });
+      return Array.from(set).sort((a,b)=> a.localeCompare(b,'es',{sensitivity:'base'}));
+    }
+
+    function parseDateFlexible(str) {
+      if (!str) return null;
+      const s = str.trim();
+      // Soporta dd/mm/yyyy o yyyy-mm-dd
+      const parts = s.split(/[\/\-]/).map(p=>p.trim());
+      if (parts.length !== 3) return new Date(s); // que el Date intente resolver
+      let y,m,d;
+      if (parts[0].length === 4) { // yyyy-mm-dd
+        y = +parts[0]; m = +parts[1]-1; d = +parts[2];
+      } else { // dd/mm/yyyy
+        d = +parts[0]; m = +parts[1]-1; y = +parts[2];
+      }
+      const dt = new Date(y, m, d);
+      return isNaN(dt.getTime()) ? null : dt;
+    }
+
+    // --- Estado de filtros (se conserva mientras no recargues) ---
+    const filtros = { num:'', tipo:'', sector:'', desde:'', hasta:'' };
+
+    // Construye opciones de selects cada vez que se abre el modal, según la pestaña activa
+    const filtrosModal = document.getElementById('filtrosModal');
+    filtrosModal.addEventListener('show.bs.modal', () => {
+      const table = getActiveTable();
+      const tipos = uniqueFromColumn(table, 1);   // Columna "Tipo"
+      const sectores = uniqueFromColumn(table, 2);// Columna "Sector"
+
+      const selTipo = document.getElementById('fTipo');
+      const selSector = document.getElementById('fSector');
+
+      // reset manteniendo "Todos"
+      selTipo.innerHTML = '<option value="">Todos</option>' + tipos.map(t=>`<option>${t}</option>`).join('');
+      selSector.innerHTML = '<option value="">Todos</option>' + sectores.map(s=>`<option>${s}</option>`).join('');
+
+      // precarga estado previo
+      document.getElementById('fNum').value = filtros.num;
+      selTipo.value = filtros.tipo;
+      selSector.value = filtros.sector;
+      document.getElementById('fDesde').value = filtros.desde;
+      document.getElementById('fHasta').value = filtros.hasta;
+    });
+
+    function aplicarFiltrosSobreTabla() {
+      const table = getActiveTable();
+      if (!table) return;
+
+      const valNum = filtros.num.toLowerCase();
+      const valTipo = filtros.tipo.toLowerCase();
+      const valSector = filtros.sector.toLowerCase();
+      const dDesde = filtros.desde ? new Date(filtros.desde) : null;
+      const dHasta = filtros.hasta ? new Date(filtros.hasta) : null;
+
+      table.querySelectorAll('tbody tr').forEach(tr => {
+        const num = (tr.children[0]?.textContent || '').toLowerCase().trim();
+        const tipo = (tr.children[1]?.textContent || '').toLowerCase().trim();
+        const sector = (tr.children[2]?.textContent || '').toLowerCase().trim();
+        const fechaStr = (tr.children[3]?.textContent || '').trim();
+        const fecha = parseDateFlexible(fechaStr);
+
+        let ok = true;
+
+        if (valNum && !num.includes(valNum)) ok = false;
+        if (ok && valTipo && tipo !== valTipo) ok = false;
+        if (ok && valSector && sector !== valSector) ok = false;
+
+        if (ok && (dDesde || dHasta) && fecha instanceof Date && !isNaN(fecha)) {
+          if (dDesde && fecha < dDesde) ok = false;
+          if (dHasta) {
+            // incluir el día completo en "hasta"
+            const fin = new Date(dHasta); fin.setHours(23,59,59,999);
+            if (fecha > fin) ok = false;
+          }
+        }
+
+        tr.style.display = ok ? '' : 'none';
+      });
+    }
+
+    // Botones modal
+    document.getElementById('applyFilters').addEventListener('click', () => {
+      filtros.num = document.getElementById('fNum').value.trim();
+      filtros.tipo = document.getElementById('fTipo').value.trim();
+      filtros.sector = document.getElementById('fSector').value.trim();
+      filtros.desde = document.getElementById('fDesde').value;
+      filtros.hasta = document.getElementById('fHasta').value;
+
+      aplicarFiltrosSobreTabla();
+      bootstrap.Modal.getInstance(document.getElementById('filtrosModal')).hide();
+    });
+
+    document.getElementById('clearFilters').addEventListener('click', () => {
+      filtros.num = filtros.tipo = filtros.sector = '';
+      filtros.desde = filtros.hasta = '';
+      document.getElementById('fNum').value = '';
+      document.getElementById('fTipo').value = '';
+      document.getElementById('fSector').value = '';
+      document.getElementById('fDesde').value = '';
+      document.getElementById('fHasta').value = '';
+      aplicarFiltrosSobreTabla();
+    });
+
+    // Si cambiás de pestaña, re-aplicamos los filtros activos
+    tabs.forEach((tabBtn) => {
+      tabBtn.addEventListener('click', () => {
+        // pequeño delay para que cambie el DOM .active
+        setTimeout(aplicarFiltrosSobreTabla, 0);
+      });
+    });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
