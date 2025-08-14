@@ -101,7 +101,7 @@ h2 {
   padding: 0 0 12px 0;
   flex: 1 1 auto;
   overflow-y: auto;
-  max-height: calc(90vh - 120px);
+  max-height: calc(90vh - 90px);
 }
 
 .tab-content.active {
@@ -114,7 +114,6 @@ table {
   border-collapse: collapse;
   background: #fff;
   font-size: 1.1rem;
-  margin-top: 12px;
   table-layout: fixed; /* para que las columnas se ajusten */
   word-wrap: break-word; /* para que el texto no desborde */
 }
@@ -135,7 +134,7 @@ th {
 }
 
 th, tr{
-  font-size: 11px;
+  font-size: 12px;
 }
 
 tr:nth-child(even) td {
@@ -156,8 +155,8 @@ tr:nth-child(odd) td {
 
 .nuevo-expediente {
   display: inline-block;
-  margin: 12px auto 20px auto; /* margen inferior para separar del borde */
-  padding: 10px 32px;
+  margin: 5px auto 0px auto; /* margen inferior para separar del borde */
+  padding: 5px 10px;
   background: #0e8c13;
   color: #fff;
   border-radius: 10px;
@@ -209,14 +208,13 @@ tr:nth-child(odd) td {
   align-items: center;
   justify-content: space-between;
   background: #0e8c13;
-  padding: 8px 12px;
+  padding: 1px 12px;
   border-radius: 6px 6px 0 0;
 }
 
 .titulo-expedientes h2 {
   margin: 0;
-  margin-left: 5px;
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .icon-button {
@@ -233,9 +231,9 @@ tr:nth-child(odd) td {
 /* Ancho de columnas de la tabla de expedientes */
 .tabla-expedientes { table-layout: fixed; }
 
-.tabla-expedientes col.c-num    { width: 15%; }
+.tabla-expedientes col.c-num    { width: 17%; }
 .tabla-expedientes col.c-tipo   { width: 27%; }
-.tabla-expedientes col.c-sector { width: 28%; }
+.tabla-expedientes col.c-sector { width: 26%; }
 .tabla-expedientes col.c-fecha  { width: 20%; }
 
 /* La de acciones (Más) chica, pero usable */
@@ -341,7 +339,7 @@ tr:nth-child(odd) td {
             </div>
             <div class="mb-2">
               <label class="form-label">Fecha (rango)</label>
-              <div class="d-flex gap-2">
+              <div class="d-flex flex-column gap-2">
                 <input id="fDesde" type="date" class="form-control">
                 <input id="fHasta" type="date" class="form-control">
               </div>
