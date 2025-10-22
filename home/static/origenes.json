@@ -193,7 +193,7 @@
   },
   {
     "ori_id": 32,
-    "nombre": "NOBIS CENTER",
+    "nombre": " - NOBIS CENTER ",
     "loc_id": 2181,
     "tp_id": 4
   },
@@ -343,7 +343,7 @@
   },
   {
     "ori_id": 57,
-    "nombre": "CENTRO MÉDICO ETHIKOS ",
+    "nombre": "- CENTRO MÉDICO ETHIKOS ",
     "loc_id": 2181,
     "tp_id": 102
   },
@@ -523,7 +523,7 @@
   },
   {
     "ori_id": 88,
-    "nombre": "GENUS CENTRO MÉDICO ",
+    "nombre": "- GENUS CENTRO MÉDICO ",
     "loc_id": 2181,
     "tp_id": 102
   },
@@ -919,7 +919,7 @@
   },
   {
     "ori_id": 154,
-    "nombre": "SANATORIO EL CÁRMEN ",
+    "nombre": "SANATORIO EL CARMEN ",
     "loc_id": 2203,
     "tp_id": 111
   },
@@ -937,7 +937,7 @@
   },
   {
     "ori_id": 157,
-    "nombre": "SANATORIO MAYO PRIVADO",
+    "nombre": "- SANATORIO MAYO PRIVADO",
     "loc_id": 2181,
     "tp_id": 111
   },
@@ -973,7 +973,7 @@
   },
   {
     "ori_id": 163,
-    "nombre": "HOSPITAL PRIVADO",
+    "nombre": " - HOSPITAL PRIVADO ",
     "loc_id": 2181,
     "tp_id": 111
   },
@@ -1051,7 +1051,7 @@
   },
   {
     "ori_id": 176,
-    "nombre": "CLÍNICA REINA FABIOLA ",
+    "nombre": "- CLÍNICA REINA FABIOLA ",
     "loc_id": 2181,
     "tp_id": 111
   },
@@ -1201,7 +1201,7 @@
   },
   {
     "ori_id": 201,
-    "nombre": "CLÍNICA PRIVADA DEL SOL ",
+    "nombre": "- CLÍNICA PRIVADA DEL SOL ",
     "loc_id": 2181,
     "tp_id": 4
   },
@@ -1231,7 +1231,7 @@
   },
   {
     "ori_id": 206,
-    "nombre": "CLÍNICA PRIVADA VÉLEZ SARSFIELD ",
+    "nombre": "- CLÍNICA PRIVADA VÉLEZ SARSFIELD ",
     "loc_id": 2181,
     "tp_id": 111
   },
@@ -1261,7 +1261,7 @@
   },
   {
     "ori_id": 211,
-    "nombre": "CLINICA PRIVADA VELEZ SARSFIELD (EX CLINICA CARAFF",
+    "nombre": "- CLINICA PRIVADA VELEZ SARSFIELD ",
     "loc_id": 2181,
     "tp_id": 111
   },
@@ -1861,7 +1861,7 @@
   },
   {
     "ori_id": 312,
-    "nombre": "SANATORIO FRANCÉS ",
+    "nombre": " - SANATORIO FRANCÉS",
     "loc_id": 2181,
     "tp_id": 111
   },
@@ -2377,13 +2377,13 @@
   },
   {
     "ori_id": 398,
-    "nombre": "CLÍNICA DE OJOS MALDONADO BAS ",
+    "nombre": "- CLÍNICA DE OJOS MALDONADO BAS ",
     "loc_id": 2181,
     "tp_id": 103
   },
   {
     "ori_id": 399,
-    "nombre": "CLÍNICA DE OJOS MALDONADO BAS (ZONA NORTE)",
+    "nombre": "- CLÍNICA DE OJOS MALDONADO BAS (ZONA NORTE)",
     "loc_id": 2181,
     "tp_id": 103
   },
@@ -2977,9 +2977,9 @@
   },
   {
     "ori_id": 498,
-    "nombre": "CENTRO GALVEZ DIAGNOSTICO POR IMÁGENES (CERRO)",
+    "nombre": "CENTRO GALVEZ ",
     "loc_id": 2181,
-    "tp_id": 178
+    "tp_id": 12132
   },
   {
     "ori_id": 499,
@@ -8047,7 +8047,7 @@
   },
   {
     "ori_id": 1345,
-    "nombre": "CIRCULO ODONTOLOGICO DE SGO DEL ESTERO",
+    "nombre": "- Circulo Odontologico de Sgo Del Estero",
     "loc_id": 1249,
     "tp_id": 231
   },
@@ -8062,6 +8062,12 @@
     "nombre": "CÍRCULO ODONTOLÓGICO DE VILLA MERCEDES",
     "loc_id": 1986,
     "tp_id": 151
+  },
+  {
+    "ori_id": 1348,
+    "nombre": "Lezcano Florencia Aylen ",
+    "loc_id": 2117,
+    "tp_id": 12230
   },
   {
     "ori_id": 1349,
@@ -8377,7 +8383,7 @@
   },
   {
     "ori_id": 1401,
-    "nombre": "INSTITUTO ONCOLÓGICO DE CÓRDOBA (IONC)",
+    "nombre": "- INSTITUTO ONCOLÓGICO DE CÓRDOBA (IONC)",
     "loc_id": 2181,
     "tp_id": 102
   },
@@ -8389,19 +8395,19 @@
   },
   {
     "ori_id": 1403,
-    "nombre": "OPTICA BELLA VISTA",
+    "nombre": "Optica Bella Vista",
     "loc_id": 1248,
     "tp_id": 106
   },
   {
     "ori_id": 1404,
-    "nombre": "OPTICA BELLA VISTA",
+    "nombre": "Optica Bella Vista",
     "loc_id": 1249,
     "tp_id": 106
   },
   {
     "ori_id": 1405,
-    "nombre": "ÓPTICA BELLA VISTA",
+    "nombre": "Optica Bella Vista",
     "loc_id": 1249,
     "tp_id": 106
   },
@@ -9397,7 +9403,7 @@
   },
   {
     "ori_id": 1573,
-    "nombre": "HOSPITAL ITALIANO ",
+    "nombre": " - HOSPITAL ITALIANO",
     "loc_id": 2181,
     "tp_id": 4
   },
@@ -9421,7 +9427,7 @@
   },
   {
     "ori_id": 1579,
-    "nombre": "CLINICA PRIVADA DEL PRADO S R L ",
+    "nombre": "- Sanatorio Cordoba (ex clinica privada del prado)",
     "loc_id": 2181,
     "tp_id": 111
   },
@@ -9775,7 +9781,7 @@
   },
   {
     "ori_id": 1652,
-    "nombre": "COLEGIO MEDICO GREMIAL DE LA RIOJA",
+    "nombre": "Colegio Medico Gremial de la Rioja",
     "loc_id": 1963,
     "tp_id": 114
   },
@@ -9835,7 +9841,7 @@
   },
   {
     "ori_id": 1663,
-    "nombre": "Sanatorio Duartes Quiros",
+    "nombre": "- Sanatorio Duartes Quiros",
     "loc_id": 2181,
     "tp_id": 111
   },
@@ -9895,7 +9901,7 @@
   },
   {
     "ori_id": 1702,
-    "nombre": "COLEGIO MEDICO DE JUJUY ",
+    "nombre": "- COLEGIO MEDICO DE JUJUY ",
     "loc_id": 2188,
     "tp_id": 114
   },
@@ -9952,6 +9958,12 @@
     "nombre": "COMUNA VILLA CIUDAD PARQUE LOS REARTES",
     "loc_id": 2825,
     "tp_id": 102
+  },
+  {
+    "ori_id": 1774,
+    "nombre": "GIODA BIBIANA PATRICIA",
+    "loc_id": 1243,
+    "tp_id": 177
   },
   {
     "ori_id": 1786,
@@ -10273,7 +10285,7 @@
   },
   {
     "ori_id": 2000,
-    "nombre": "INSTITUTO TRAUMATOLOGICO DE CORDOBA S.A ",
+    "nombre": "- INSTITUTO TRAUMATOLOGICO DE CORDOBA S.A ",
     "loc_id": 2181,
     "tp_id": 4
   },
@@ -10590,6 +10602,12 @@
     "tp_id": 165
   },
   {
+    "ori_id": 2485,
+    "nombre": "SANCHEZ GABRIELA ROXANA ",
+    "loc_id": 2181,
+    "tp_id": 174
+  },
+  {
     "ori_id": 2496,
     "nombre": "SOLIANI MARIA NATALIA ",
     "loc_id": 2181,
@@ -10854,6 +10872,12 @@
     "tp_id": 2537
   },
   {
+    "ori_id": 2870,
+    "nombre": "LOPEZ VANINA",
+    "loc_id": 2181,
+    "tp_id": 174
+  },
+  {
     "ori_id": 2871,
     "nombre": "BENAVIDEZ ANALIA DEL VALLE",
     "loc_id": 2181,
@@ -11004,6 +11028,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 3153,
+    "nombre": "ARROYO DOSCH NATALIA SOLEDAD",
+    "loc_id": 1550,
+    "tp_id": 174
+  },
+  {
     "ori_id": 3159,
     "nombre": "ZANOTTI GUSTAVO ",
     "loc_id": 1920,
@@ -11017,9 +11047,9 @@
   },
   {
     "ori_id": 3167,
-    "nombre": "GARCIA LOURDES MARIA",
+    "nombre": "GARCIA FANTINI MARIA LOURDES",
     "loc_id": 2181,
-    "tp_id": 215
+    "tp_id": 174
   },
   {
     "ori_id": 3170,
@@ -11226,6 +11256,12 @@
     "tp_id": 149
   },
   {
+    "ori_id": 3564,
+    "nombre": "GIORGETTA JOSEFINA",
+    "loc_id": 1769,
+    "tp_id": 174
+  },
+  {
     "ori_id": 3567,
     "nombre": "BOFFA MIRNA ALEJANDRA ",
     "loc_id": 1986,
@@ -11358,6 +11394,12 @@
     "tp_id": 215
   },
   {
+    "ori_id": 3768,
+    "nombre": "RODRIGUEZ BOSCHERO RICARDO MAURICIO ",
+    "loc_id": 2203,
+    "tp_id": 174
+  },
+  {
     "ori_id": 3774,
     "nombre": "VILLALBA ANA VIRGINIA ",
     "loc_id": 2189,
@@ -11379,6 +11421,12 @@
     "ori_id": 3790,
     "nombre": "PROMEDON S.A",
     "loc_id": 2181,
+    "tp_id": 2537
+  },
+  {
+    "ori_id": 3792,
+    "nombre": "FUNDACION JOSE GUIDO JALIL",
+    "loc_id": 1275,
     "tp_id": 2537
   },
   {
@@ -11470,6 +11518,12 @@
     "nombre": "A.P.A.D.I.M ",
     "loc_id": 1795,
     "tp_id": 174
+  },
+  {
+    "ori_id": 3981,
+    "nombre": "MEDINA MILENA LUCIA ",
+    "loc_id": 2181,
+    "tp_id": 215
   },
   {
     "ori_id": 3988,
@@ -11632,6 +11686,18 @@
     "nombre": "ABBA JULIO ALBERTO",
     "loc_id": 2181,
     "tp_id": 217
+  },
+  {
+    "ori_id": 4231,
+    "nombre": "MAMMI MARIA LAURA ",
+    "loc_id": 1899,
+    "tp_id": 174
+  },
+  {
+    "ori_id": 4235,
+    "nombre": "Lopez Maria Paz ",
+    "loc_id": 2425,
+    "tp_id": 173
   },
   {
     "ori_id": 4237,
@@ -12120,10 +12186,16 @@
     "tp_id": 174
   },
   {
+    "ori_id": 4899,
+    "nombre": "Martinez Emanuel",
+    "loc_id": 3082,
+    "tp_id": 258
+  },
+  {
     "ori_id": 4909,
-    "nombre": "RENAL BANDA SRL ",
+    "nombre": "Renal Banda ",
     "loc_id": 1248,
-    "tp_id": 2537
+    "tp_id": 111
   },
   {
     "ori_id": 4911,
@@ -12162,6 +12234,12 @@
     "tp_id": 2537
   },
   {
+    "ori_id": 4955,
+    "nombre": "Centro de Diagnostico Ecografico",
+    "loc_id": 2423,
+    "tp_id": 102
+  },
+  {
     "ori_id": 4968,
     "nombre": "GEREZ GISELLA ANABEL",
     "loc_id": 1249,
@@ -12198,16 +12276,16 @@
     "tp_id": 134
   },
   {
-    "ori_id": 5022,
-    "nombre": "SIGNA DIAGNOSTICO POR IMAGENES",
-    "loc_id": 1985,
-    "tp_id": 234
-  },
-  {
     "ori_id": 5030,
     "nombre": "OXECOR SRL",
     "loc_id": 2181,
     "tp_id": 2537
+  },
+  {
+    "ori_id": 5033,
+    "nombre": "GP Diagnostico",
+    "loc_id": 2153,
+    "tp_id": 102
   },
   {
     "ori_id": 5039,
@@ -12268,6 +12346,12 @@
     "nombre": "ROSTER S.A. ",
     "loc_id": 2181,
     "tp_id": 110
+  },
+  {
+    "ori_id": 5121,
+    "nombre": "CEJAS CAMILA AGUSTINA ",
+    "loc_id": 1416,
+    "tp_id": 174
   },
   {
     "ori_id": 5125,
@@ -12352,6 +12436,12 @@
     "nombre": "BIOCOR MEDICAL",
     "loc_id": 1254,
     "tp_id": 2537
+  },
+  {
+    "ori_id": 5308,
+    "nombre": "Vittal",
+    "loc_id": 1963,
+    "tp_id": 110
   },
   {
     "ori_id": 5332,
@@ -12440,8 +12530,8 @@
   {
     "ori_id": 5463,
     "nombre": "MUNICIPALIDAD DE LA PALESTINA ",
-    "loc_id": 2181,
-    "tp_id": 102
+    "loc_id": 1920,
+    "tp_id": 176
   },
   {
     "ori_id": 5474,
@@ -12742,6 +12832,12 @@
     "nombre": "Optica ZOOM ",
     "loc_id": 3082,
     "tp_id": 106
+  },
+  {
+    "ori_id": 6001,
+    "nombre": "Neuro Alianza ",
+    "loc_id": 3082,
+    "tp_id": 12132
   },
   {
     "ori_id": 6009,
@@ -13146,6 +13242,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 6912,
+    "nombre": "ROMERO LEONARDO JAVIER",
+    "loc_id": 1963,
+    "tp_id": 164
+  },
+  {
     "ori_id": 6954,
     "nombre": "Abdala Ricardo Javier ",
     "loc_id": 1249,
@@ -13548,6 +13650,12 @@
     "tp_id": 102
   },
   {
+    "ori_id": 7741,
+    "nombre": "Aspakifi",
+    "loc_id": 2391,
+    "tp_id": 114
+  },
+  {
     "ori_id": 7747,
     "nombre": "ROBERT SILVANA RAQUEL - DIGOR ",
     "loc_id": 1716,
@@ -13914,6 +14022,12 @@
     "tp_id": 217
   },
   {
+    "ori_id": 8320,
+    "nombre": "PEREZ ALTAMIRANO LAURA BELEN",
+    "loc_id": 1892,
+    "tp_id": 174
+  },
+  {
     "ori_id": 8330,
     "nombre": "JORRAT MERCEDES MABEL ",
     "loc_id": 2189,
@@ -13923,7 +14037,7 @@
     "ori_id": 8338,
     "nombre": "MUNICIPALIDAD DE LAS VARILLAS ",
     "loc_id": 1588,
-    "tp_id": 102
+    "tp_id": 176
   },
   {
     "ori_id": 8343,
@@ -13948,6 +14062,12 @@
     "nombre": "MONTALI MARIA ESPERANZA ",
     "loc_id": 1249,
     "tp_id": 231
+  },
+  {
+    "ori_id": 8383,
+    "nombre": "PASTORINO NICOLAS IGNACIO ",
+    "loc_id": 2181,
+    "tp_id": 102
   },
   {
     "ori_id": 8405,
@@ -14064,6 +14184,12 @@
     "tp_id": 102
   },
   {
+    "ori_id": 8606,
+    "nombre": "Paez Velazco Analia ",
+    "loc_id": 2203,
+    "tp_id": 252
+  },
+  {
     "ori_id": 8622,
     "nombre": "FEMEX ",
     "loc_id": 2181,
@@ -14077,7 +14203,7 @@
   },
   {
     "ori_id": 8659,
-    "nombre": "CENTRO NEFROLOGICO NOROESTE SOC COL ",
+    "nombre": "Centro Nefrologico Noroeste ",
     "loc_id": 1249,
     "tp_id": 12132
   },
@@ -14400,6 +14526,12 @@
     "tp_id": 102
   },
   {
+    "ori_id": 9077,
+    "nombre": "KLEBER CARMEN SORAYA",
+    "loc_id": 2181,
+    "tp_id": 174
+  },
+  {
     "ori_id": 9088,
     "nombre": "BASUALDO FERREYRA MARIA GABRIELA DEL V",
     "loc_id": 1651,
@@ -14518,6 +14650,12 @@
     "nombre": "Sanatorio Laprida ",
     "loc_id": 2423,
     "tp_id": 111
+  },
+  {
+    "ori_id": 9374,
+    "nombre": "Arborio Sandra Melina ",
+    "loc_id": 2436,
+    "tp_id": 239
   },
   {
     "ori_id": 9433,
@@ -14708,8 +14846,8 @@
   {
     "ori_id": 9777,
     "nombre": "OLOCCO SILVANA",
-    "loc_id": 1795,
-    "tp_id": 102
+    "loc_id": 2181,
+    "tp_id": 174
   },
   {
     "ori_id": 9779,
@@ -14761,9 +14899,9 @@
   },
   {
     "ori_id": 9839,
-    "nombre": "Marianela Lopez ",
-    "loc_id": 1716,
-    "tp_id": 177
+    "nombre": "Lopez Marianela ",
+    "loc_id": 2189,
+    "tp_id": 239
   },
   {
     "ori_id": 9842,
@@ -15993,7 +16131,7 @@
     "ori_id": 10622,
     "nombre": "GISELLA PEREYRA ",
     "loc_id": 2181,
-    "tp_id": 177
+    "tp_id": 174
   },
   {
     "ori_id": 10627,
@@ -16086,10 +16224,22 @@
     "tp_id": 165
   },
   {
+    "ori_id": 11061,
+    "nombre": "BROQUEN BOSCH ADELA MARIA ",
+    "loc_id": 2436,
+    "tp_id": 174
+  },
+  {
     "ori_id": 11063,
     "nombre": "LUDUEÑA MILAGROS CAROLINA ",
     "loc_id": 1341,
     "tp_id": 148
+  },
+  {
+    "ori_id": 11081,
+    "nombre": "Clinica de Ojos SRL ",
+    "loc_id": 2391,
+    "tp_id": 111
   },
   {
     "ori_id": 11094,
@@ -16122,10 +16272,46 @@
     "tp_id": 215
   },
   {
+    "ori_id": 11195,
+    "nombre": "Centro de Oncologia ",
+    "loc_id": 2391,
+    "tp_id": 111
+  },
+  {
     "ori_id": 11221,
     "nombre": "LOBOS CENTENO MARIA BELEN ",
     "loc_id": 2181,
     "tp_id": 215
+  },
+  {
+    "ori_id": 11234,
+    "nombre": "Farmacia Vitamina ",
+    "loc_id": 1998,
+    "tp_id": 12219
+  },
+  {
+    "ori_id": 11235,
+    "nombre": "Farmalab",
+    "loc_id": 1998,
+    "tp_id": 7
+  },
+  {
+    "ori_id": 11236,
+    "nombre": "Farmacia Cuesta ",
+    "loc_id": 2012,
+    "tp_id": 7
+  },
+  {
+    "ori_id": 11237,
+    "nombre": "Farmacia del Pueblo ",
+    "loc_id": 2012,
+    "tp_id": 7
+  },
+  {
+    "ori_id": 11238,
+    "nombre": "Farmacia Express",
+    "loc_id": 2012,
+    "tp_id": 7
   },
   {
     "ori_id": 11255,
@@ -16218,6 +16404,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 11408,
+    "nombre": "LUBRINA LEONARDO CARLOS ",
+    "loc_id": 2423,
+    "tp_id": 2537
+  },
+  {
     "ori_id": 11443,
     "nombre": "Salassa Rodolfo ",
     "loc_id": 2420,
@@ -16266,6 +16458,12 @@
     "tp_id": 4
   },
   {
+    "ori_id": 11616,
+    "nombre": "MARRONE MYRIAM NOEMI",
+    "loc_id": 2181,
+    "tp_id": 174
+  },
+  {
     "ori_id": 11623,
     "nombre": "Lic. Torres Lombardo Natalia",
     "loc_id": 1770,
@@ -16308,6 +16506,12 @@
     "tp_id": 148
   },
   {
+    "ori_id": 11820,
+    "nombre": "DEMARIA MARIA SOL ",
+    "loc_id": 1716,
+    "tp_id": 174
+  },
+  {
     "ori_id": 11823,
     "nombre": "CARDIO HEMODINAMIA SRL",
     "loc_id": 1249,
@@ -16336,6 +16540,12 @@
     "nombre": "COLICA AMIUNE FABRIZIO",
     "loc_id": 2181,
     "tp_id": 215
+  },
+  {
+    "ori_id": 11932,
+    "nombre": "Quinteros Farias Maria Laura",
+    "loc_id": 2436,
+    "tp_id": 239
   },
   {
     "ori_id": 11969,
@@ -16410,6 +16620,12 @@
     "tp_id": 102
   },
   {
+    "ori_id": 12274,
+    "nombre": "Gomez Maria Fernanda",
+    "loc_id": 2189,
+    "tp_id": 169
+  },
+  {
     "ori_id": 12312,
     "nombre": "SARMIENTO MARÍA FLORENCIA ",
     "loc_id": 2181,
@@ -16419,6 +16635,12 @@
     "ori_id": 12317,
     "nombre": "MURTA LEIRIA ANTONELLA",
     "loc_id": 2181,
+    "tp_id": 174
+  },
+  {
+    "ori_id": 12468,
+    "nombre": "LUNA ROCIO PAMELA JUANA ",
+    "loc_id": 1301,
     "tp_id": 174
   },
   {
@@ -16617,7 +16839,7 @@
     "ori_id": 12705,
     "nombre": "GARCIA LOURDES MARIA",
     "loc_id": 2181,
-    "tp_id": 215
+    "tp_id": 174
   },
   {
     "ori_id": 12740,
@@ -16648,6 +16870,12 @@
     "nombre": "URES SUAREZ TALIA ",
     "loc_id": 2181,
     "tp_id": 215
+  },
+  {
+    "ori_id": 13256,
+    "nombre": "Centro Medico Las Flores",
+    "loc_id": 2181,
+    "tp_id": 102
   },
   {
     "ori_id": 13355,
@@ -16692,6 +16920,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 13570,
+    "nombre": "CIPADI",
+    "loc_id": 3082,
+    "tp_id": 12132
+  },
+  {
     "ori_id": 13639,
     "nombre": "PFMSA SOCIEDAD ANONIMA",
     "loc_id": 1254,
@@ -16716,10 +16950,34 @@
     "tp_id": 174
   },
   {
+    "ori_id": 13820,
+    "nombre": "Oliver Martinez Maria Fatima",
+    "loc_id": 2203,
+    "tp_id": 252
+  },
+  {
+    "ori_id": 14012,
+    "nombre": "MUNICIPALIDAD DE ETRURIA",
+    "loc_id": 2348,
+    "tp_id": 176
+  },
+  {
     "ori_id": 14052,
     "nombre": "Clínica Privada Chilecito ",
     "loc_id": 2153,
     "tp_id": 111
+  },
+  {
+    "ori_id": 14066,
+    "nombre": "Optica Bella Vista",
+    "loc_id": 2014,
+    "tp_id": 106
+  },
+  {
+    "ori_id": 14122,
+    "nombre": "Saravia Sally Jaquelina ",
+    "loc_id": 2203,
+    "tp_id": 252
   },
   {
     "ori_id": 14164,
@@ -16743,13 +17001,19 @@
     "ori_id": 14259,
     "nombre": "MUNICIPALIDAD DE PASCO",
     "loc_id": 2359,
-    "tp_id": 102
+    "tp_id": 176
   },
   {
     "ori_id": 14290,
     "nombre": "ADRIANA HEREDIA- NO USAR",
     "loc_id": 1625,
     "tp_id": 215
+  },
+  {
+    "ori_id": 14322,
+    "nombre": "MUNICIPALIDAD DE TICINO ",
+    "loc_id": 2067,
+    "tp_id": 176
   },
   {
     "ori_id": 14323,
@@ -16974,6 +17238,18 @@
     "tp_id": 236
   },
   {
+    "ori_id": 15700,
+    "nombre": "REFORSAL",
+    "loc_id": 3082,
+    "tp_id": 176
+  },
+  {
+    "ori_id": 15795,
+    "nombre": "Colegio de Bioquimicos de la Pcia de Corrientes ",
+    "loc_id": 3141,
+    "tp_id": 114
+  },
+  {
     "ori_id": 15868,
     "nombre": "HOSPITAL MUNICIPAL SAN ROQUE",
     "loc_id": 2181,
@@ -17016,6 +17292,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 15948,
+    "nombre": "TARITOLAY CECILIA MICAELA ",
+    "loc_id": 2203,
+    "tp_id": 174
+  },
+  {
     "ori_id": 15963,
     "nombre": "SANCHEZ ANALIA DEL VALLE",
     "loc_id": 2181,
@@ -17046,10 +17328,22 @@
     "tp_id": 127
   },
   {
+    "ori_id": 16309,
+    "nombre": "Gonzalez Elizabeth Carolina ",
+    "loc_id": 2203,
+    "tp_id": 252
+  },
+  {
     "ori_id": 16408,
     "nombre": "LUZ MEDICA SA ",
     "loc_id": 2189,
     "tp_id": 111
+  },
+  {
+    "ori_id": 16433,
+    "nombre": "Laboratorio Lace Villa Maria",
+    "loc_id": 1920,
+    "tp_id": 12199
   },
   {
     "ori_id": 16520,
@@ -17122,6 +17416,12 @@
     "nombre": "Cardellino Ricardo",
     "loc_id": 1779,
     "tp_id": 148
+  },
+  {
+    "ori_id": 17304,
+    "nombre": "Chit Maria Alejandra",
+    "loc_id": 2189,
+    "tp_id": 169
   },
   {
     "ori_id": 17325,
@@ -17224,6 +17524,12 @@
     "nombre": "CASTILLO MICAELA MARISEL",
     "loc_id": 2203,
     "tp_id": 174
+  },
+  {
+    "ori_id": 19058,
+    "nombre": "TC 2000 Diagnostico por Imágenes",
+    "loc_id": 4369,
+    "tp_id": 102
   },
   {
     "ori_id": 19100,
@@ -19656,6 +19962,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 21015,
+    "nombre": "ASTRADA ANALIA VIRGINIA ",
+    "loc_id": 1550,
+    "tp_id": 174
+  },
+  {
     "ori_id": 21046,
     "nombre": "CENTRO CARDIOVASCULAR LABOULAYE ",
     "loc_id": 3036,
@@ -19684,6 +19996,12 @@
     "nombre": "Javurek Maria Alejandra ",
     "loc_id": 1416,
     "tp_id": 148
+  },
+  {
+    "ori_id": 21270,
+    "nombre": "Circulo Odontologico Departamento Union ",
+    "loc_id": 1358,
+    "tp_id": 114
   },
   {
     "ori_id": 21417,
@@ -19716,6 +20034,12 @@
     "tp_id": 217
   },
   {
+    "ori_id": 21630,
+    "nombre": "Farmacia Flora",
+    "loc_id": 2926,
+    "tp_id": 7
+  },
+  {
     "ori_id": 21734,
     "nombre": "GONZALEZ CARINA PAULA ",
     "loc_id": 2181,
@@ -19738,6 +20062,12 @@
     "nombre": "CONTRERAS CARINA TERESA ",
     "loc_id": 1986,
     "tp_id": 151
+  },
+  {
+    "ori_id": 21934,
+    "nombre": "Colegio de Psicologos Provincia de La Pampa ",
+    "loc_id": 2391,
+    "tp_id": 114
   },
   {
     "ori_id": 21969,
@@ -19786,6 +20116,12 @@
     "nombre": "Gualda Micaela Natalia",
     "loc_id": 2181,
     "tp_id": 134
+  },
+  {
+    "ori_id": 22616,
+    "nombre": "VALIENTE ANA CRISTINA ",
+    "loc_id": 1644,
+    "tp_id": 174
   },
   {
     "ori_id": 22623,
@@ -19851,6 +20187,12 @@
     "ori_id": 22854,
     "nombre": "LAZZA LUISINA IMELDA",
     "loc_id": 1532,
+    "tp_id": 174
+  },
+  {
+    "ori_id": 22876,
+    "nombre": "BAZAN MARCELO DANIEL",
+    "loc_id": 2181,
     "tp_id": 174
   },
   {
@@ -19948,6 +20290,12 @@
     "nombre": "CABRAL DANIELA BELEN",
     "loc_id": 2181,
     "tp_id": 174
+  },
+  {
+    "ori_id": 23636,
+    "nombre": "Instituto Polymedic ",
+    "loc_id": 2391,
+    "tp_id": 111
   },
   {
     "ori_id": 23661,
@@ -20100,6 +20448,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 25180,
+    "nombre": "Carballeira Felipe",
+    "loc_id": 2117,
+    "tp_id": 12230
+  },
+  {
     "ori_id": 25196,
     "nombre": "BRESSAN ELIANA MARIA",
     "loc_id": 1985,
@@ -20196,6 +20550,12 @@
     "tp_id": 148
   },
   {
+    "ori_id": 26055,
+    "nombre": "MORALES PAULA SOLEDAD ",
+    "loc_id": 2181,
+    "tp_id": 174
+  },
+  {
     "ori_id": 26068,
     "nombre": "GLOCKNITZER CAMILA",
     "loc_id": 2181,
@@ -20206,6 +20566,12 @@
     "nombre": "Hospital Italiano ",
     "loc_id": 2423,
     "tp_id": 111
+  },
+  {
+    "ori_id": 26123,
+    "nombre": "Vicentin Lucila Soledad ",
+    "loc_id": 2423,
+    "tp_id": 12204
   },
   {
     "ori_id": 26420,
@@ -20236,6 +20602,12 @@
     "nombre": "CENTRO PRIVADO DEL DIAGNOSTICO",
     "loc_id": 1770,
     "tp_id": 218
+  },
+  {
+    "ori_id": 26553,
+    "nombre": "Pacheco Maria Sofia ",
+    "loc_id": 2189,
+    "tp_id": 240
   },
   {
     "ori_id": 26631,
@@ -20286,6 +20658,12 @@
     "tp_id": 2537
   },
   {
+    "ori_id": 27263,
+    "nombre": "ESTEBAN MARIA AGUSTINA",
+    "loc_id": 2181,
+    "tp_id": 174
+  },
+  {
     "ori_id": 27502,
     "nombre": "Cimo Consultorio LV ",
     "loc_id": 1588,
@@ -20302,6 +20680,18 @@
     "nombre": "GHISI CELINA",
     "loc_id": 2181,
     "tp_id": 174
+  },
+  {
+    "ori_id": 27642,
+    "nombre": "PERNICONE ERICA EDITH ",
+    "loc_id": 1784,
+    "tp_id": 174
+  },
+  {
+    "ori_id": 27706,
+    "nombre": "Rodriguez Yamila",
+    "loc_id": 2203,
+    "tp_id": 252
   },
   {
     "ori_id": 27740,
@@ -20338,6 +20728,18 @@
     "nombre": "ACLISA",
     "loc_id": 2075,
     "tp_id": 114
+  },
+  {
+    "ori_id": 28164,
+    "nombre": "Clinica Modelo",
+    "loc_id": 2391,
+    "tp_id": 111
+  },
+  {
+    "ori_id": 28237,
+    "nombre": "MEDINA BEATRIZ ROSARIO DEL HUERTO ",
+    "loc_id": 2181,
+    "tp_id": 174
   },
   {
     "ori_id": 28251,
@@ -20430,6 +20832,12 @@
     "tp_id": 148
   },
   {
+    "ori_id": 28551,
+    "nombre": "Isa Zanoni Aldana ",
+    "loc_id": 1249,
+    "tp_id": 229
+  },
+  {
     "ori_id": 28669,
     "nombre": "Axis Rehabilitacion Funcional ",
     "loc_id": 1925,
@@ -20485,9 +20893,9 @@
   },
   {
     "ori_id": 29009,
-    "nombre": "LECOUSER S.A. ",
+    "nombre": "Aireh ",
     "loc_id": 2181,
-    "tp_id": 174
+    "tp_id": 12132
   },
   {
     "ori_id": 29064,
@@ -20502,10 +20910,28 @@
     "tp_id": 172
   },
   {
+    "ori_id": 29137,
+    "nombre": "VEDIA MARIA DEL ROSARIO ",
+    "loc_id": 2203,
+    "tp_id": 174
+  },
+  {
     "ori_id": 29138,
     "nombre": "DROGXEN ",
     "loc_id": 2181,
     "tp_id": 2537
+  },
+  {
+    "ori_id": 29141,
+    "nombre": "CABRERA BRENDA ABIGAIL",
+    "loc_id": 1301,
+    "tp_id": 174
+  },
+  {
+    "ori_id": 29253,
+    "nombre": "Rojas Nestor Carlos ",
+    "loc_id": 4369,
+    "tp_id": 12223
   },
   {
     "ori_id": 29309,
@@ -20688,6 +21114,12 @@
     "tp_id": 165
   },
   {
+    "ori_id": 30832,
+    "nombre": "Velazquez Diego Alejandro ",
+    "loc_id": 2189,
+    "tp_id": 169
+  },
+  {
     "ori_id": 30909,
     "nombre": "Rupil Federico",
     "loc_id": 1532,
@@ -20722,6 +21154,12 @@
     "nombre": "LUIS FERNANDEZ LAURA ROCIO",
     "loc_id": 2203,
     "tp_id": 174
+  },
+  {
+    "ori_id": 31120,
+    "nombre": "Clinica de la Vision",
+    "loc_id": 1961,
+    "tp_id": 111
   },
   {
     "ori_id": 31166,
@@ -20790,6 +21228,12 @@
     "tp_id": 111
   },
   {
+    "ori_id": 31798,
+    "nombre": "Leal Alviz Patricia Maribel ",
+    "loc_id": 1972,
+    "tp_id": 149
+  },
+  {
     "ori_id": 31963,
     "nombre": "ORTOPEDIA GNERAL GUEMES ",
     "loc_id": 2203,
@@ -20826,10 +21270,22 @@
     "tp_id": 174
   },
   {
+    "ori_id": 32247,
+    "nombre": "Centro Privado Rehabilitacion SRL ",
+    "loc_id": 2391,
+    "tp_id": 111
+  },
+  {
     "ori_id": 32300,
     "nombre": "CIRCULO ODONTOLOGICO DE JUJUY ",
     "loc_id": 2188,
     "tp_id": 166
+  },
+  {
+    "ori_id": 32372,
+    "nombre": "Asociacion Rosarina de Anestesia, Analgesia y Reanimacion ",
+    "loc_id": 2423,
+    "tp_id": 114
   },
   {
     "ori_id": 32399,
@@ -20982,6 +21438,18 @@
     "tp_id": 2537
   },
   {
+    "ori_id": 33936,
+    "nombre": "PELLICER ADRIANA PATRICIA ",
+    "loc_id": 2181,
+    "tp_id": 174
+  },
+  {
+    "ori_id": 33968,
+    "nombre": "FALCIONE VILANOVA ANA GABRIELA",
+    "loc_id": 1249,
+    "tp_id": 174
+  },
+  {
     "ori_id": 33981,
     "nombre": "MEDINA MELINA LUCIA ",
     "loc_id": 1249,
@@ -21000,6 +21468,12 @@
     "tp_id": 148
   },
   {
+    "ori_id": 34451,
+    "nombre": "Colegio de Farmaceuticos de la Pcia de Santa Fe ",
+    "loc_id": 2423,
+    "tp_id": 7
+  },
+  {
     "ori_id": 34460,
     "nombre": "STANCICH MARIA INES ",
     "loc_id": 2181,
@@ -21010,6 +21484,12 @@
     "nombre": "DALMASSO ELBA LUCIA DE FATIMA ",
     "loc_id": 2181,
     "tp_id": 215
+  },
+  {
+    "ori_id": 34539,
+    "nombre": "Allende Martin Juan ",
+    "loc_id": 2075,
+    "tp_id": 12120
   },
   {
     "ori_id": 34650,
@@ -21210,6 +21690,12 @@
     "tp_id": 165
   },
   {
+    "ori_id": 36417,
+    "nombre": "VALDEMOROS PAULA",
+    "loc_id": 2940,
+    "tp_id": 258
+  },
+  {
     "ori_id": 36441,
     "nombre": "DONZINO VALENTINA ",
     "loc_id": 2420,
@@ -21234,6 +21720,30 @@
     "tp_id": 174
   },
   {
+    "ori_id": 36655,
+    "nombre": "CIM SOTELO",
+    "loc_id": 2028,
+    "tp_id": 102
+  },
+  {
+    "ori_id": 36657,
+    "nombre": "ITA ",
+    "loc_id": 1995,
+    "tp_id": 102
+  },
+  {
+    "ori_id": 36658,
+    "nombre": "Centro Medico de la Mujer ",
+    "loc_id": 1995,
+    "tp_id": 102
+  },
+  {
+    "ori_id": 36659,
+    "nombre": "Centro Medico Parra ",
+    "loc_id": 2012,
+    "tp_id": 102
+  },
+  {
     "ori_id": 36689,
     "nombre": "CIMFYR",
     "loc_id": 2391,
@@ -21250,6 +21760,12 @@
     "nombre": "MARSENGO MAYRA AILEN",
     "loc_id": 2181,
     "tp_id": 174
+  },
+  {
+    "ori_id": 36904,
+    "nombre": "CENTRO INTEGRAL DE SALUD BANDA",
+    "loc_id": 1248,
+    "tp_id": 176
   },
   {
     "ori_id": 37099,
@@ -21342,6 +21858,12 @@
     "tp_id": 165
   },
   {
+    "ori_id": 38546,
+    "nombre": "Carmona Carola Carina ",
+    "loc_id": 2203,
+    "tp_id": 252
+  },
+  {
     "ori_id": 38835,
     "nombre": "SARUBBI AGUSTINA",
     "loc_id": 1301,
@@ -21352,6 +21874,12 @@
     "nombre": "BELTRAN YESICA PAOLA",
     "loc_id": 1248,
     "tp_id": 174
+  },
+  {
+    "ori_id": 38875,
+    "nombre": "Juaregui Rocio del Milagro",
+    "loc_id": 2203,
+    "tp_id": 252
   },
   {
     "ori_id": 38879,
@@ -21397,7 +21925,7 @@
   },
   {
     "ori_id": 39395,
-    "nombre": "Farmacia del Huayco ",
+    "nombre": "HADDAD MARIA GRACIANA ",
     "loc_id": 1258,
     "tp_id": 7
   },
@@ -21424,6 +21952,12 @@
     "nombre": "Polacov Silvina Micaela ",
     "loc_id": 1301,
     "tp_id": 148
+  },
+  {
+    "ori_id": 39561,
+    "nombre": "STORNIOLO MICKAELA DEL VALLE",
+    "loc_id": 2181,
+    "tp_id": 174
   },
   {
     "ori_id": 39680,
@@ -21810,9 +22344,27 @@
     "tp_id": 174
   },
   {
+    "ori_id": 41040,
+    "nombre": "FUNDACION RUNAYAY ",
+    "loc_id": 1892,
+    "tp_id": 174
+  },
+  {
+    "ori_id": 41048,
+    "nombre": "BAUTY ",
+    "loc_id": 1629,
+    "tp_id": 174
+  },
+  {
     "ori_id": 41094,
     "nombre": "BECK ESTER CRISTINA ",
     "loc_id": 1903,
+    "tp_id": 174
+  },
+  {
+    "ori_id": 41114,
+    "nombre": "PODIO ROMINA SOLEDAD",
+    "loc_id": 1892,
     "tp_id": 174
   },
   {
@@ -21862,6 +22414,12 @@
     "nombre": "Clinica Argentina ",
     "loc_id": 2075,
     "tp_id": 102
+  },
+  {
+    "ori_id": 41737,
+    "nombre": "RUIZ ANALIA VERONICA",
+    "loc_id": 2181,
+    "tp_id": 174
   },
   {
     "ori_id": 42041,
@@ -21922,6 +22480,12 @@
     "nombre": "VEGA PALADINI FACUNDO ",
     "loc_id": 2181,
     "tp_id": 102
+  },
+  {
+    "ori_id": 42845,
+    "nombre": "NOVARO CLAUDIA ERICA VANESA ",
+    "loc_id": 1550,
+    "tp_id": 174
   },
   {
     "ori_id": 42921,
@@ -21985,9 +22549,9 @@
   },
   {
     "ori_id": 43694,
-    "nombre": "CORNEL RUTH DAIANA",
+    "nombre": "Coronel Ruth Daiana ",
     "loc_id": 1249,
-    "tp_id": 174
+    "tp_id": 179
   },
   {
     "ori_id": 43832,
@@ -22020,6 +22584,12 @@
     "tp_id": 176
   },
   {
+    "ori_id": 44115,
+    "nombre": "Dra. Giordano ",
+    "loc_id": 2391,
+    "tp_id": 111
+  },
+  {
     "ori_id": 44180,
     "nombre": "CIACCI MARIA GISELLE",
     "loc_id": 2181,
@@ -22030,6 +22600,12 @@
     "nombre": "Clavero Matias Horacio",
     "loc_id": 1301,
     "tp_id": 148
+  },
+  {
+    "ori_id": 44238,
+    "nombre": "FARFAN PERTUSSI NATALIA AMERICA ",
+    "loc_id": 2203,
+    "tp_id": 174
   },
   {
     "ori_id": 44252,
@@ -22048,6 +22624,12 @@
     "nombre": "PEREYRA NORMA ALEJANDRA ",
     "loc_id": 2181,
     "tp_id": 139
+  },
+  {
+    "ori_id": 44712,
+    "nombre": "GALLO MARIA BELEN ",
+    "loc_id": 2436,
+    "tp_id": 174
   },
   {
     "ori_id": 44753,
@@ -22092,10 +22674,34 @@
     "tp_id": 102
   },
   {
+    "ori_id": 45455,
+    "nombre": "Farmacia Garcia Roldan",
+    "loc_id": 2028,
+    "tp_id": 7
+  },
+  {
+    "ori_id": 45456,
+    "nombre": "Farmacia Express",
+    "loc_id": 2028,
+    "tp_id": 7
+  },
+  {
+    "ori_id": 45457,
+    "nombre": "Farmacia Pharmacon Loreto ",
+    "loc_id": 2028,
+    "tp_id": 7
+  },
+  {
     "ori_id": 45540,
     "nombre": "GIADAS MARIA ALEJANDRA",
     "loc_id": 2181,
     "tp_id": 102
+  },
+  {
+    "ori_id": 45544,
+    "nombre": "ALVAREZ BLANCO EVELYN MARIA DE LOS ANGELES",
+    "loc_id": 2164,
+    "tp_id": 129
   },
   {
     "ori_id": 45561,
@@ -22108,6 +22714,18 @@
     "nombre": "HOSPITAL BASE OSCAR H. COSTAS ",
     "loc_id": 1972,
     "tp_id": 4
+  },
+  {
+    "ori_id": 45622,
+    "nombre": "GONZALEZ ROSANA ANDREA",
+    "loc_id": 2203,
+    "tp_id": 174
+  },
+  {
+    "ori_id": 45677,
+    "nombre": "CARRASCO GABRIELA ANDREA",
+    "loc_id": 2394,
+    "tp_id": 174
   },
   {
     "ori_id": 45786,
@@ -22236,6 +22854,18 @@
     "tp_id": 174
   },
   {
+    "ori_id": 47256,
+    "nombre": "Sylabus ",
+    "loc_id": 2423,
+    "tp_id": 111
+  },
+  {
+    "ori_id": 47314,
+    "nombre": "Centro de Diagnostico por Imagen y Tratamiento",
+    "loc_id": 2391,
+    "tp_id": 111
+  },
+  {
     "ori_id": 47322,
     "nombre": "TRAUMACOR SRL ",
     "loc_id": 2181,
@@ -22278,6 +22908,18 @@
     "tp_id": 174
   },
   {
+    "ori_id": 47699,
+    "nombre": "ANACHURI GIMENA YANINA LUCIANA",
+    "loc_id": 2181,
+    "tp_id": 217
+  },
+  {
+    "ori_id": 47896,
+    "nombre": "Clinica Granaderos",
+    "loc_id": 3079,
+    "tp_id": 111
+  },
+  {
     "ori_id": 47931,
     "nombre": "GONZALEZ SOLEDAD",
     "loc_id": 1249,
@@ -22302,6 +22944,12 @@
     "tp_id": 114
   },
   {
+    "ori_id": 48293,
+    "nombre": "Castellanos Patricia Marcela",
+    "loc_id": 2425,
+    "tp_id": 169
+  },
+  {
     "ori_id": 48388,
     "nombre": "AEQUITAS",
     "loc_id": 1301,
@@ -22314,6 +22962,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 48501,
+    "nombre": "Gonzalo Javier Kiverling",
+    "loc_id": 2117,
+    "tp_id": 12230
+  },
+  {
     "ori_id": 48590,
     "nombre": "MUNICIPALIDAD DE BELL VILLE ",
     "loc_id": 1358,
@@ -22324,6 +22978,12 @@
     "nombre": "EMERVIDA",
     "loc_id": 2203,
     "tp_id": 176
+  },
+  {
+    "ori_id": 48725,
+    "nombre": "Del Carmen Diagnostico",
+    "loc_id": 4386,
+    "tp_id": 102
   },
   {
     "ori_id": 48756,
@@ -22353,6 +23013,12 @@
     "ori_id": 48849,
     "nombre": "CONFORTE AGUSTIN",
     "loc_id": 2181,
+    "tp_id": 174
+  },
+  {
+    "ori_id": 48927,
+    "nombre": "DEMARCO ROSARIO ",
+    "loc_id": 1892,
     "tp_id": 174
   },
   {
@@ -22402,6 +23068,12 @@
     "nombre": "Municipalidad de la Tordilla",
     "loc_id": 2181,
     "tp_id": 176
+  },
+  {
+    "ori_id": 49715,
+    "nombre": "Asociacion de Clinicas y Sanatorios del Chaco ",
+    "loc_id": 2117,
+    "tp_id": 111
   },
   {
     "ori_id": 49855,
@@ -22494,6 +23166,12 @@
     "tp_id": 7
   },
   {
+    "ori_id": 50585,
+    "nombre": "Centro Medico Las Vertientes",
+    "loc_id": 2423,
+    "tp_id": 102
+  },
+  {
     "ori_id": 50606,
     "nombre": "MOYA VALERIA ANAHI",
     "loc_id": 2181,
@@ -22536,6 +23214,12 @@
     "tp_id": 134
   },
   {
+    "ori_id": 50892,
+    "nombre": "Grupo Gamma ",
+    "loc_id": 2423,
+    "tp_id": 111
+  },
+  {
     "ori_id": 50926,
     "nombre": "VICTOR JOSE MILONI Y AIXA MAGALI TAVANTI SRL",
     "loc_id": 1986,
@@ -22546,6 +23230,12 @@
     "nombre": "INCUCAI ",
     "loc_id": 2064,
     "tp_id": 102
+  },
+  {
+    "ori_id": 51016,
+    "nombre": "COLLADO AGUSTINA BETSABE",
+    "loc_id": 2203,
+    "tp_id": 174
   },
   {
     "ori_id": 51046,
@@ -22563,7 +23253,7 @@
     "ori_id": 51053,
     "nombre": "MUNICIPALIDAD DE TANCACHA ",
     "loc_id": 1853,
-    "tp_id": 102
+    "tp_id": 176
   },
   {
     "ori_id": 51126,
@@ -22686,10 +23376,28 @@
     "tp_id": 4
   },
   {
+    "ori_id": 51845,
+    "nombre": "Sanatorio Plaza ",
+    "loc_id": 2423,
+    "tp_id": 111
+  },
+  {
     "ori_id": 51898,
     "nombre": "BUSTOS PAULA EMILCE ",
     "loc_id": 2181,
     "tp_id": 217
+  },
+  {
+    "ori_id": 51900,
+    "nombre": "Optica Schellhas",
+    "loc_id": 2404,
+    "tp_id": 106
+  },
+  {
+    "ori_id": 51904,
+    "nombre": "Colegio de Psicologos del Chaco ",
+    "loc_id": 2117,
+    "tp_id": 114
   },
   {
     "ori_id": 51962,
@@ -22740,10 +23448,22 @@
     "tp_id": 174
   },
   {
+    "ori_id": 52260,
+    "nombre": "Densita SRL ",
+    "loc_id": 2391,
+    "tp_id": 111
+  },
+  {
     "ori_id": 52279,
     "nombre": "Clinica 9 de Julio",
     "loc_id": 1976,
     "tp_id": 111
+  },
+  {
+    "ori_id": 52390,
+    "nombre": "Diagnostico Integral Medico ",
+    "loc_id": 1961,
+    "tp_id": 12132
   },
   {
     "ori_id": 52669,
@@ -22798,6 +23518,12 @@
     "nombre": "DOWMAT MIRANDA ROMINA NATASHA ",
     "loc_id": 2833,
     "tp_id": 173
+  },
+  {
+    "ori_id": 53322,
+    "nombre": "Hidalgo Victor Hugo ",
+    "loc_id": 1249,
+    "tp_id": 150
   },
   {
     "ori_id": 53573,
@@ -22876,6 +23602,12 @@
     "nombre": "Gigena Rocío Guadalupe",
     "loc_id": 1301,
     "tp_id": 217
+  },
+  {
+    "ori_id": 54205,
+    "nombre": "Centro Oftalmológico Dr. Venero-Rosales ",
+    "loc_id": 2391,
+    "tp_id": 111
   },
   {
     "ori_id": 54218,
@@ -23022,6 +23754,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 56097,
+    "nombre": "MUNICIPALIDAD DE ORDOÑEZ",
+    "loc_id": 1546,
+    "tp_id": 176
+  },
+  {
     "ori_id": 56109,
     "nombre": "OPTICA LUTZ FERRANDO",
     "loc_id": 1986,
@@ -23064,6 +23802,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 56625,
+    "nombre": "CERINO ANDREA VERONICA",
+    "loc_id": 2420,
+    "tp_id": 174
+  },
+  {
     "ori_id": 56628,
     "nombre": "MUNICIPALIDAD DE SANTA MARIA DE PUNILLA ",
     "loc_id": 2181,
@@ -23094,6 +23838,12 @@
     "tp_id": 4
   },
   {
+    "ori_id": 56927,
+    "nombre": "ARAYA VIRGINIA DAIANA ",
+    "loc_id": 1452,
+    "tp_id": 174
+  },
+  {
     "ori_id": 56936,
     "nombre": "LOPEZ GHISOLFI CONSTANZA GISEL",
     "loc_id": 2181,
@@ -23108,7 +23858,7 @@
   {
     "ori_id": 57239,
     "nombre": "Consultorios Tapia SRL",
-    "loc_id": 1249,
+    "loc_id": 2028,
     "tp_id": 102
   },
   {
@@ -23124,6 +23874,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 57514,
+    "nombre": "Instituto Megan ",
+    "loc_id": 2391,
+    "tp_id": 111
+  },
+  {
     "ori_id": 57542,
     "nombre": "CAVALLERO LUCIA MARIA ",
     "loc_id": 2203,
@@ -23133,7 +23889,13 @@
     "ori_id": 57618,
     "nombre": "SAEZ FLORENCIA SOLEDAD",
     "loc_id": 1986,
-    "tp_id": 236
+    "tp_id": 174
+  },
+  {
+    "ori_id": 57621,
+    "nombre": "Hospital Español",
+    "loc_id": 2423,
+    "tp_id": 111
   },
   {
     "ori_id": 57625,
@@ -23196,6 +23958,18 @@
     "tp_id": 140
   },
   {
+    "ori_id": 58143,
+    "nombre": "Juarez Ansonnaud Federico ",
+    "loc_id": 2189,
+    "tp_id": 169
+  },
+  {
+    "ori_id": 58202,
+    "nombre": "ZERPA ADRIANA PAOLA ",
+    "loc_id": 2203,
+    "tp_id": 174
+  },
+  {
     "ori_id": 58368,
     "nombre": "PASCUALI VERONICA ANALIA",
     "loc_id": 2181,
@@ -23238,6 +24012,12 @@
     "tp_id": 217
   },
   {
+    "ori_id": 58708,
+    "nombre": "Laboratorio Lem ",
+    "loc_id": 2423,
+    "tp_id": 12206
+  },
+  {
     "ori_id": 58749,
     "nombre": "ASOCIACION COLEGIO BIOQUIMICO DE LA PAMPA ",
     "loc_id": 2391,
@@ -23260,6 +24040,12 @@
     "nombre": "Petersen Pfister Ezequiel Sergio",
     "loc_id": 2203,
     "tp_id": 149
+  },
+  {
+    "ori_id": 59202,
+    "nombre": "COCCO NATALIA ",
+    "loc_id": 1769,
+    "tp_id": 174
   },
   {
     "ori_id": 59204,
@@ -23304,6 +24090,12 @@
     "tp_id": 148
   },
   {
+    "ori_id": 60068,
+    "nombre": "Dichiara Mauro Daniel ",
+    "loc_id": 1249,
+    "tp_id": 150
+  },
+  {
     "ori_id": 60099,
     "nombre": "HOSPITAL PUBLICO MATERNO INFANTIL SOCIEDAD DEL ESTADO ",
     "loc_id": 2203,
@@ -23320,6 +24112,12 @@
     "nombre": "CIRCULO ODONTOLOGICO DEL NORTE DE LA PCIA DE CORDA",
     "loc_id": 1532,
     "tp_id": 165
+  },
+  {
+    "ori_id": 60298,
+    "nombre": "FLORES YAMILA ELIANA",
+    "loc_id": 2203,
+    "tp_id": 174
   },
   {
     "ori_id": 60333,
@@ -23352,6 +24150,12 @@
     "tp_id": 177
   },
   {
+    "ori_id": 61091,
+    "nombre": "BAROFFIO LUCAS LUIS ",
+    "loc_id": 1444,
+    "tp_id": 174
+  },
+  {
     "ori_id": 61245,
     "nombre": "Cordoba Maria Vilma ",
     "loc_id": 1906,
@@ -23376,6 +24180,12 @@
     "tp_id": 148
   },
   {
+    "ori_id": 61697,
+    "nombre": "PINTOS MARIA ALICIA ",
+    "loc_id": 1249,
+    "tp_id": 174
+  },
+  {
     "ori_id": 61767,
     "nombre": "MUNICIPALIDAD DE IDIAZABAL",
     "loc_id": 2342,
@@ -23394,10 +24204,22 @@
     "tp_id": 102
   },
   {
+    "ori_id": 61849,
+    "nombre": "Sanatorio Aliare",
+    "loc_id": 2423,
+    "tp_id": 111
+  },
+  {
     "ori_id": 61942,
     "nombre": "COLEGIO DE PSICOLOGOS DE SAN LUIS ",
     "loc_id": 1985,
     "tp_id": 114
+  },
+  {
+    "ori_id": 61979,
+    "nombre": "TURKISH TEAM SAS",
+    "loc_id": 1864,
+    "tp_id": 2537
   },
   {
     "ori_id": 62089,
@@ -23445,13 +24267,19 @@
     "ori_id": 62691,
     "nombre": "MUNICIPALIDAD DE LA PLAYOSA ",
     "loc_id": 1566,
-    "tp_id": 102
+    "tp_id": 176
   },
   {
     "ori_id": 62694,
     "nombre": "NIEVAS CARLA DEL MILAGRO",
     "loc_id": 2181,
     "tp_id": 174
+  },
+  {
+    "ori_id": 62731,
+    "nombre": "Colegio de Kinesiologos de la Prov del Chaco",
+    "loc_id": 2117,
+    "tp_id": 114
   },
   {
     "ori_id": 62764,
@@ -23520,6 +24348,12 @@
     "tp_id": 114
   },
   {
+    "ori_id": 63212,
+    "nombre": "GONZALEZ MARCELA DE LOS ANGELES ",
+    "loc_id": 1977,
+    "tp_id": 174
+  },
+  {
     "ori_id": 63214,
     "nombre": "FAVOT CAROLINA",
     "loc_id": 2420,
@@ -23548,6 +24382,12 @@
     "nombre": "CASTELINI HERNAN LUIS ",
     "loc_id": 1249,
     "tp_id": 174
+  },
+  {
+    "ori_id": 63605,
+    "nombre": "Instituto Oftalmologico Dr. Cortina ",
+    "loc_id": 2391,
+    "tp_id": 111
   },
   {
     "ori_id": 63608,
@@ -23592,10 +24432,22 @@
     "tp_id": 139
   },
   {
+    "ori_id": 64038,
+    "nombre": "Consultorio Radiologico ",
+    "loc_id": 2391,
+    "tp_id": 102
+  },
+  {
     "ori_id": 64059,
     "nombre": "GAMMA IMPLANTES ",
     "loc_id": 2181,
     "tp_id": 2537
+  },
+  {
+    "ori_id": 64149,
+    "nombre": "Laboratorios Turner ",
+    "loc_id": 2423,
+    "tp_id": 12206
   },
   {
     "ori_id": 64182,
@@ -23640,6 +24492,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 64550,
+    "nombre": "Attimo Salud",
+    "loc_id": 3082,
+    "tp_id": 111
+  },
+  {
     "ori_id": 64560,
     "nombre": "SABINA AGOSTA ",
     "loc_id": 2181,
@@ -23655,6 +24513,12 @@
     "ori_id": 64744,
     "nombre": "BRIZUELA ANA CAROLINA ",
     "loc_id": 3074,
+    "tp_id": 174
+  },
+  {
+    "ori_id": 64882,
+    "nombre": "OLARIAGA VANESA DEL ROSARIO ",
+    "loc_id": 1644,
     "tp_id": 174
   },
   {
@@ -23820,6 +24684,12 @@
     "tp_id": 215
   },
   {
+    "ori_id": 67450,
+    "nombre": "Clinica Rivadavia ",
+    "loc_id": 3079,
+    "tp_id": 111
+  },
+  {
     "ori_id": 67581,
     "nombre": "BIASIN PATRICIA SUSANA",
     "loc_id": 2164,
@@ -23856,10 +24726,22 @@
     "tp_id": 215
   },
   {
+    "ori_id": 68432,
+    "nombre": "Ce. Ne. Di. ",
+    "loc_id": 1961,
+    "tp_id": 111
+  },
+  {
     "ori_id": 68433,
     "nombre": "RECIPE SRL",
     "loc_id": 2181,
     "tp_id": 102
+  },
+  {
+    "ori_id": 68441,
+    "nombre": "SUBSECRETARIA DE SALUD",
+    "loc_id": 1249,
+    "tp_id": 176
   },
   {
     "ori_id": 68474,
@@ -23875,9 +24757,15 @@
   },
   {
     "ori_id": 68516,
-    "nombre": "MAZZUCHI ADOLFO SEBASTIAN ",
+    "nombre": "Mazzuchi Adolfo Sebastian ",
     "loc_id": 2181,
     "tp_id": 217
+  },
+  {
+    "ori_id": 68784,
+    "nombre": "Juarez Villegas Maria de los Angeles",
+    "loc_id": 1249,
+    "tp_id": 231
   },
   {
     "ori_id": 68864,
@@ -23940,6 +24828,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 69364,
+    "nombre": "PONCE MARIA JOSE",
+    "loc_id": 2181,
+    "tp_id": 174
+  },
+  {
     "ori_id": 69369,
     "nombre": "CRUZ DIEGO FERNANDO ",
     "loc_id": 2188,
@@ -23998,6 +24892,12 @@
     "nombre": "CASTILLO JOSE HERNAN",
     "loc_id": 1249,
     "tp_id": 174
+  },
+  {
+    "ori_id": 70058,
+    "nombre": "Fu. Pa. Mei.",
+    "loc_id": 2391,
+    "tp_id": 111
   },
   {
     "ori_id": 70072,
@@ -24210,6 +25110,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 72026,
+    "nombre": "Asociacion de Clinicas y Sanatorios Neuquen ",
+    "loc_id": 2930,
+    "tp_id": 111
+  },
+  {
     "ori_id": 72063,
     "nombre": "GOMEZ ROMINA NATALIA",
     "loc_id": 2181,
@@ -24246,6 +25152,12 @@
     "tp_id": 114
   },
   {
+    "ori_id": 72733,
+    "nombre": "Cruz Daiana Romelia ",
+    "loc_id": 2203,
+    "tp_id": 252
+  },
+  {
     "ori_id": 72778,
     "nombre": "GALVAN ROMINA SOLEDAD ",
     "loc_id": 1248,
@@ -24256,6 +25168,12 @@
     "nombre": "CENTRO PRIVADO DE ARTROSCOPIA ",
     "loc_id": 2181,
     "tp_id": 4
+  },
+  {
+    "ori_id": 72904,
+    "nombre": "Tejada Heredia Analia ",
+    "loc_id": 3103,
+    "tp_id": 12120
   },
   {
     "ori_id": 72954,
@@ -24304,6 +25222,12 @@
     "nombre": "ORTOPEDIA Y CIENTIFICA GELING ",
     "loc_id": 2181,
     "tp_id": 2537
+  },
+  {
+    "ori_id": 73464,
+    "nombre": "FARFAN ANDREA FLORENCIA ",
+    "loc_id": 2203,
+    "tp_id": 174
   },
   {
     "ori_id": 73466,
@@ -24402,6 +25326,12 @@
     "tp_id": 111
   },
   {
+    "ori_id": 74259,
+    "nombre": "Clinica de Cuyo ",
+    "loc_id": 2940,
+    "tp_id": 111
+  },
+  {
     "ori_id": 74266,
     "nombre": "MUNDO OPTICO S.R.L",
     "loc_id": 1769,
@@ -24424,6 +25354,12 @@
     "nombre": "HOSPITAL ELEAZAR HERRERA MOTTA",
     "loc_id": 2153,
     "tp_id": 4
+  },
+  {
+    "ori_id": 74478,
+    "nombre": "Asociacion Chaqueña de Anestesiologia, Analgesia y Reanimacn",
+    "loc_id": 2117,
+    "tp_id": 114
   },
   {
     "ori_id": 74505,
@@ -24450,6 +25386,12 @@
     "tp_id": 7
   },
   {
+    "ori_id": 74738,
+    "nombre": "Clinica del Pilar ",
+    "loc_id": 2940,
+    "tp_id": 111
+  },
+  {
     "ori_id": 74843,
     "nombre": "HOSPITAL MUNICIPAL DE URGENCIAS3",
     "loc_id": 2181,
@@ -24460,6 +25402,12 @@
     "nombre": "LUZ NARELLA PIOVANO ",
     "loc_id": 1903,
     "tp_id": 177
+  },
+  {
+    "ori_id": 75486,
+    "nombre": "CASANOVA MARIA CELESTE",
+    "loc_id": 1248,
+    "tp_id": 174
   },
   {
     "ori_id": 75494,
@@ -24486,6 +25434,12 @@
     "tp_id": 102
   },
   {
+    "ori_id": 75614,
+    "nombre": "TOLOSA CECILIA NATALIA",
+    "loc_id": 1249,
+    "tp_id": 174
+  },
+  {
     "ori_id": 75626,
     "nombre": "CENESA SA NO USAR ",
     "loc_id": 2203,
@@ -24504,6 +25458,12 @@
     "tp_id": 139
   },
   {
+    "ori_id": 75762,
+    "nombre": "Kinesio Activa",
+    "loc_id": 3089,
+    "tp_id": 265
+  },
+  {
     "ori_id": 75813,
     "nombre": "ASOCIACION TUCUMANA DE ORTOPEDIA Y TRAUMATOLOGIA",
     "loc_id": 2189,
@@ -24513,6 +25473,12 @@
     "ori_id": 75854,
     "nombre": "VILLARREAL MARCELA LORENA ",
     "loc_id": 1301,
+    "tp_id": 174
+  },
+  {
+    "ori_id": 75870,
+    "nombre": "GALVAN CAMPOS MARIA BELEN ",
+    "loc_id": 2203,
     "tp_id": 174
   },
   {
@@ -24582,6 +25548,12 @@
     "tp_id": 7
   },
   {
+    "ori_id": 76658,
+    "nombre": "Farmacia Carvajal ",
+    "loc_id": 3095,
+    "tp_id": 7
+  },
+  {
     "ori_id": 76721,
     "nombre": "Arnedo Fabio",
     "loc_id": 2204,
@@ -24610,6 +25582,12 @@
     "nombre": "VITAMED SRL ",
     "loc_id": 2181,
     "tp_id": 176
+  },
+  {
+    "ori_id": 76959,
+    "nombre": "Solorzano Maria Emilia",
+    "loc_id": 3190,
+    "tp_id": 169
   },
   {
     "ori_id": 77042,
@@ -24648,16 +25626,28 @@
     "tp_id": 148
   },
   {
+    "ori_id": 77543,
+    "nombre": "BARRERA CESAR LUIS",
+    "loc_id": 2181,
+    "tp_id": 174
+  },
+  {
     "ori_id": 77544,
     "nombre": "ESTADO PROVINCIA DE SAN LUI ",
     "loc_id": 1985,
-    "tp_id": 102
+    "tp_id": 176
   },
   {
     "ori_id": 77590,
     "nombre": "ZELPHOS ",
     "loc_id": 2181,
     "tp_id": 2537
+  },
+  {
+    "ori_id": 77621,
+    "nombre": "Servicio Cirugia Cardiovascular ",
+    "loc_id": 2391,
+    "tp_id": 111
   },
   {
     "ori_id": 77737,
@@ -24750,6 +25740,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 78541,
+    "nombre": "LOPEZ BRENDA FLORENCIA",
+    "loc_id": 1899,
+    "tp_id": 174
+  },
+  {
     "ori_id": 78582,
     "nombre": " CLÍNICA MITRE DE LA CIUDAD DE AÑATUYA",
     "loc_id": 1995,
@@ -24832,6 +25828,12 @@
     "nombre": "ALTAMIRANO WUILLAN PATRICIA ",
     "loc_id": 1892,
     "tp_id": 165
+  },
+  {
+    "ori_id": 79303,
+    "nombre": "Circulo de Odontologos de General Roca",
+    "loc_id": 2398,
+    "tp_id": 114
   },
   {
     "ori_id": 79409,
@@ -24966,6 +25968,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 80706,
+    "nombre": "AMEOR ",
+    "loc_id": 2423,
+    "tp_id": 114
+  },
+  {
     "ori_id": 80820,
     "nombre": "PROGRAMA DEL SOL ASOCIACION CIVIL ",
     "loc_id": 2181,
@@ -25056,6 +26064,12 @@
     "tp_id": 140
   },
   {
+    "ori_id": 81736,
+    "nombre": "MEDICOR S.A.",
+    "loc_id": 2940,
+    "tp_id": 2537
+  },
+  {
     "ori_id": 81779,
     "nombre": "SECO JUAN PABLO ",
     "loc_id": 2181,
@@ -25084,6 +26098,12 @@
     "nombre": "PIA MARIA JOSE",
     "loc_id": 2181,
     "tp_id": 148
+  },
+  {
+    "ori_id": 82135,
+    "nombre": "Peralta Anibal Federico ",
+    "loc_id": 2423,
+    "tp_id": 12201
   },
   {
     "ori_id": 82151,
@@ -25212,6 +26232,12 @@
     "tp_id": 111
   },
   {
+    "ori_id": 83478,
+    "nombre": "BARBOZA GRISELDA ANALIA ",
+    "loc_id": 2164,
+    "tp_id": 174
+  },
+  {
     "ori_id": 83509,
     "nombre": "Sanatorio Americano ",
     "loc_id": 2423,
@@ -25242,10 +26268,28 @@
     "tp_id": 264
   },
   {
+    "ori_id": 83897,
+    "nombre": "TROGLIA CAMILA",
+    "loc_id": 2181,
+    "tp_id": 215
+  },
+  {
+    "ori_id": 84010,
+    "nombre": "Icardio S.A.S ",
+    "loc_id": 2391,
+    "tp_id": 111
+  },
+  {
     "ori_id": 84087,
     "nombre": "Hoyos Micaela Leonor",
     "loc_id": 2153,
     "tp_id": 167
+  },
+  {
+    "ori_id": 84111,
+    "nombre": "DEMARCHI CARINA DEL VALLE ",
+    "loc_id": 1769,
+    "tp_id": 174
   },
   {
     "ori_id": 84129,
@@ -25264,6 +26308,12 @@
     "nombre": "MATTEUCCI YACHELINI MARIA CELESTE ",
     "loc_id": 1249,
     "tp_id": 174
+  },
+  {
+    "ori_id": 84511,
+    "nombre": "Gonzalez Maria Vanesa ",
+    "loc_id": 2075,
+    "tp_id": 12120
   },
   {
     "ori_id": 84572,
@@ -25326,10 +26376,22 @@
     "tp_id": 174
   },
   {
+    "ori_id": 85493,
+    "nombre": "MORALES ALVAREZ SANTIAGO GABRIEL",
+    "loc_id": 4127,
+    "tp_id": 174
+  },
+  {
     "ori_id": 85785,
     "nombre": "NAHIR ARMAN ",
     "loc_id": 1766,
     "tp_id": 165
+  },
+  {
+    "ori_id": 85813,
+    "nombre": "Schenquer Dana",
+    "loc_id": 2423,
+    "tp_id": 12201
   },
   {
     "ori_id": 85831,
@@ -25348,6 +26410,12 @@
     "nombre": "Gonzalez Buceta Trinidad",
     "loc_id": 1241,
     "tp_id": 177
+  },
+  {
+    "ori_id": 86167,
+    "nombre": "RIVERO FRANCO EMMANUEL",
+    "loc_id": 2252,
+    "tp_id": 174
   },
   {
     "ori_id": 86286,
@@ -25392,6 +26460,12 @@
     "tp_id": 217
   },
   {
+    "ori_id": 86689,
+    "nombre": "Renal SRL ",
+    "loc_id": 2189,
+    "tp_id": 102
+  },
+  {
     "ori_id": 86770,
     "nombre": "COMUNA DE VILLA SAN ISIDRO",
     "loc_id": 2181,
@@ -25428,10 +26502,22 @@
     "tp_id": 225
   },
   {
+    "ori_id": 87220,
+    "nombre": "Circulo Odontologico Departamental Marcos Juarez",
+    "loc_id": 2358,
+    "tp_id": 114
+  },
+  {
     "ori_id": 87389,
     "nombre": "PALAVECINO MILAGROS SOLEDAD ",
     "loc_id": 1249,
     "tp_id": 174
+  },
+  {
+    "ori_id": 87474,
+    "nombre": "CDC Centro Medico S.A ",
+    "loc_id": 2940,
+    "tp_id": 111
   },
   {
     "ori_id": 87479,
@@ -25444,6 +26530,12 @@
     "nombre": "Giovanini Maria Belen ",
     "loc_id": 1301,
     "tp_id": 165
+  },
+  {
+    "ori_id": 87849,
+    "nombre": "Asociacion de CirugiaMendoza",
+    "loc_id": 2940,
+    "tp_id": 114
   },
   {
     "ori_id": 87882,
@@ -25462,6 +26554,12 @@
     "nombre": "ORTOPEDIA GAMA",
     "loc_id": 2181,
     "tp_id": 2537
+  },
+  {
+    "ori_id": 87994,
+    "nombre": "VILTE ESTRADA NOEL DEL ROCIO",
+    "loc_id": 2203,
+    "tp_id": 174
   },
   {
     "ori_id": 88038,
@@ -25564,6 +26662,12 @@
     "nombre": "Oitana Maria de los Angeles ",
     "loc_id": 2181,
     "tp_id": 165
+  },
+  {
+    "ori_id": 89231,
+    "nombre": "HUEPIL PRESTACIONES MEDICO EDUCATIVAS S.R.L.",
+    "loc_id": 1651,
+    "tp_id": 174
   },
   {
     "ori_id": 89244,
@@ -25704,6 +26808,12 @@
     "tp_id": 177
   },
   {
+    "ori_id": 90436,
+    "nombre": "GONZALEZ SANSO CAROLINA LEONOR",
+    "loc_id": 2181,
+    "tp_id": 174
+  },
+  {
     "ori_id": 90470,
     "nombre": "GOYCOECHEA JULIETA",
     "loc_id": 2181,
@@ -25722,6 +26832,12 @@
     "tp_id": 165
   },
   {
+    "ori_id": 90561,
+    "nombre": "Fundacion Oncologica de Mendoza ",
+    "loc_id": 2940,
+    "tp_id": 102
+  },
+  {
     "ori_id": 90566,
     "nombre": " Hache Adib Amira ",
     "loc_id": 2181,
@@ -25732,6 +26848,12 @@
     "nombre": "INGRATTA NARELA AILEN ",
     "loc_id": 2181,
     "tp_id": 177
+  },
+  {
+    "ori_id": 90692,
+    "nombre": "Colegio Medico de Corrientes",
+    "loc_id": 4369,
+    "tp_id": 114
   },
   {
     "ori_id": 90724,
@@ -25777,7 +26899,7 @@
   },
   {
     "ori_id": 91229,
-    "nombre": "Farmacia Virgen del Valle ",
+    "nombre": "DOMINGUEZ JOHANA GABRIELA ",
     "loc_id": 2216,
     "tp_id": 7
   },
@@ -25818,6 +26940,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 91700,
+    "nombre": "PUGLIE PERUSSIA MILAGROS",
+    "loc_id": 1769,
+    "tp_id": 215
+  },
+  {
     "ori_id": 91929,
     "nombre": "ECONOFARMA H.CENTRAL",
     "loc_id": 2940,
@@ -25852,6 +26980,12 @@
     "nombre": "ECONOFARMA LAS HERAS",
     "loc_id": 3084,
     "tp_id": 7
+  },
+  {
+    "ori_id": 92057,
+    "nombre": "ADAMI VIRGINIA DE LOURDES ",
+    "loc_id": 1677,
+    "tp_id": 174
   },
   {
     "ori_id": 92069,
@@ -25896,10 +27030,28 @@
     "tp_id": 149
   },
   {
+    "ori_id": 92526,
+    "nombre": "Kenko Kinesiologia",
+    "loc_id": 2436,
+    "tp_id": 102
+  },
+  {
+    "ori_id": 92684,
+    "nombre": "BRAVO SOFIA ",
+    "loc_id": 2420,
+    "tp_id": 174
+  },
+  {
     "ori_id": 92729,
     "nombre": "DISTRIBUIDORA MEDICA SRL",
     "loc_id": 2420,
     "tp_id": 7
+  },
+  {
+    "ori_id": 92735,
+    "nombre": "CGR-Imagenes Medicas",
+    "loc_id": 2423,
+    "tp_id": 102
   },
   {
     "ori_id": 92905,
@@ -25998,6 +27150,12 @@
     "tp_id": 240
   },
   {
+    "ori_id": 94393,
+    "nombre": "MORON DIEGO HORACIO ",
+    "loc_id": 2940,
+    "tp_id": 258
+  },
+  {
     "ori_id": 94421,
     "nombre": "GASTROTEX S.R.L.",
     "loc_id": 2181,
@@ -26052,9 +27210,27 @@
     "tp_id": 12206
   },
   {
+    "ori_id": 94946,
+    "nombre": "Clinica Winifreda ",
+    "loc_id": 3344,
+    "tp_id": 111
+  },
+  {
+    "ori_id": 95262,
+    "nombre": "PALACIOS ELIZABETH ZULEMA ",
+    "loc_id": 1986,
+    "tp_id": 174
+  },
+  {
     "ori_id": 95337,
     "nombre": "CAMPOLUNGO MELINA DEL CARMEN",
     "loc_id": 1532,
+    "tp_id": 174
+  },
+  {
+    "ori_id": 95416,
+    "nombre": "GOLLETTI MARIA JULIETA",
+    "loc_id": 1301,
     "tp_id": 174
   },
   {
@@ -26118,6 +27294,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 96407,
+    "nombre": "Colegio Bioquimico del Chaco",
+    "loc_id": 2117,
+    "tp_id": 114
+  },
+  {
     "ori_id": 96453,
     "nombre": "Sanatorio Libertad",
     "loc_id": 1249,
@@ -26134,6 +27316,12 @@
     "nombre": "TOSCANO ANABEL GEORGINA ",
     "loc_id": 1249,
     "tp_id": 231
+  },
+  {
+    "ori_id": 96577,
+    "nombre": "Ponce Daiana Casandra ",
+    "loc_id": 2203,
+    "tp_id": 252
   },
   {
     "ori_id": 96584,
@@ -26160,6 +27348,12 @@
     "tp_id": 169
   },
   {
+    "ori_id": 96852,
+    "nombre": "Magi Centro Integral",
+    "loc_id": 2940,
+    "tp_id": 102
+  },
+  {
     "ori_id": 97128,
     "nombre": "SUAREZ PAPPALARDO SILVANA ",
     "loc_id": 1249,
@@ -26184,6 +27378,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 97371,
+    "nombre": "Diagnosis ",
+    "loc_id": 2391,
+    "tp_id": 111
+  },
+  {
     "ori_id": 97374,
     "nombre": "SAAVEDRA AYELEN ANTONELLA ",
     "loc_id": 1249,
@@ -26194,6 +27394,12 @@
     "nombre": "SERRA VERONICA MARIA",
     "loc_id": 2420,
     "tp_id": 165
+  },
+  {
+    "ori_id": 97474,
+    "nombre": "HOSPITAL INTERZONAL DE NIÑOS EVA PERON",
+    "loc_id": 2164,
+    "tp_id": 176
   },
   {
     "ori_id": 97495,
@@ -26250,6 +27456,18 @@
     "tp_id": 4
   },
   {
+    "ori_id": 97785,
+    "nombre": "Aguirre Carpanchay Cristina Belén ",
+    "loc_id": 2394,
+    "tp_id": 253
+  },
+  {
+    "ori_id": 98009,
+    "nombre": "MUNICIPALIDAD DE DALMACIO VELEZ ",
+    "loc_id": 2068,
+    "tp_id": 176
+  },
+  {
     "ori_id": 98100,
     "nombre": "FARMACIA DEL PIEDEMONTE ",
     "loc_id": 2403,
@@ -26296,6 +27514,18 @@
     "nombre": "FARMACIA SAN RAFAEL III ",
     "loc_id": 2185,
     "tp_id": 7
+  },
+  {
+    "ori_id": 98278,
+    "nombre": "Asociacion Rionegrina de Anestesia, Analgesia y Reanimacion ",
+    "loc_id": 2398,
+    "tp_id": 114
+  },
+  {
+    "ori_id": 98334,
+    "nombre": "RAMOS JESICA MERCEDES ",
+    "loc_id": 1968,
+    "tp_id": 174
   },
   {
     "ori_id": 98344,
@@ -26376,6 +27606,18 @@
     "tp_id": 111
   },
   {
+    "ori_id": 99004,
+    "nombre": "Clinica Modelo SA ",
+    "loc_id": 2391,
+    "tp_id": 111
+  },
+  {
+    "ori_id": 99016,
+    "nombre": "MARIA MATER - NO USAR ",
+    "loc_id": 2391,
+    "tp_id": 111
+  },
+  {
     "ori_id": 99058,
     "nombre": "Asociacion de Clinicas y Sanatorios La Pampa",
     "loc_id": 2391,
@@ -26386,6 +27628,12 @@
     "nombre": "MOLINA SANDRA ISABEL",
     "loc_id": 2189,
     "tp_id": 240
+  },
+  {
+    "ori_id": 99161,
+    "nombre": "MUNICIPALIDAD DE JAMES CRAIK",
+    "loc_id": 1525,
+    "tp_id": 176
   },
   {
     "ori_id": 99185,
@@ -26404,6 +27652,12 @@
     "nombre": "HOSPITAL RAMON CARRILLO ",
     "loc_id": 1985,
     "tp_id": 4
+  },
+  {
+    "ori_id": 99406,
+    "nombre": "Trovatelli Maria Julieta",
+    "loc_id": 3079,
+    "tp_id": 259
   },
   {
     "ori_id": 99424,
@@ -26442,6 +27696,12 @@
     "tp_id": 114
   },
   {
+    "ori_id": 99567,
+    "nombre": "CLINICA MODELO SA ",
+    "loc_id": 2391,
+    "tp_id": 111
+  },
+  {
     "ori_id": 99582,
     "nombre": "VILTE SILVANA YANINA",
     "loc_id": 2188,
@@ -26452,6 +27712,12 @@
     "nombre": "ASOCIACION SANJUANINA DE ANESTESIA ANALGESIA Y REANIMACION",
     "loc_id": 2075,
     "tp_id": 114
+  },
+  {
+    "ori_id": 99678,
+    "nombre": "María Mater ",
+    "loc_id": 2391,
+    "tp_id": 111
   },
   {
     "ori_id": 99743,
@@ -26466,6 +27732,12 @@
     "tp_id": 174
   },
   {
+    "ori_id": 99805,
+    "nombre": "Quispe Claudia Karen",
+    "loc_id": 2203,
+    "tp_id": 252
+  },
+  {
     "ori_id": 99905,
     "nombre": "ALBORNOZ SOFIA BELEN",
     "loc_id": 2203,
@@ -26476,6 +27748,12 @@
     "nombre": "DEL RIVERO CAMILA ",
     "loc_id": 2181,
     "tp_id": 174
+  },
+  {
+    "ori_id": 99927,
+    "nombre": "MUNICIPALIDAD DE CHARRAS",
+    "loc_id": 3124,
+    "tp_id": 176
   },
   {
     "ori_id": 99964,
@@ -26643,13 +27921,19 @@
     "ori_id": 131344,
     "nombre": "LUDUEÑA MARIA BELEN ",
     "loc_id": 2181,
-    "tp_id": 217
+    "tp_id": 174
   },
   {
     "ori_id": 132111,
     "nombre": "MARIA EUGENIA GUARINO ",
     "loc_id": 1301,
     "tp_id": 140
+  },
+  {
+    "ori_id": 135700,
+    "nombre": "CIPADI ODONTO ",
+    "loc_id": 3082,
+    "tp_id": 259
   },
   {
     "ori_id": 141414,
@@ -26704,6 +27988,12 @@
     "nombre": "FERRATO MANUELA ",
     "loc_id": 2181,
     "tp_id": 174
+  },
+  {
+    "ori_id": 165200,
+    "nombre": "Hospital Virgen de Fatima ",
+    "loc_id": 1963,
+    "tp_id": 111
   },
   {
     "ori_id": 167233,
@@ -27021,7 +28311,7 @@
     "ori_id": 234492,
     "nombre": "BARRAZA ANDREA LILIANA",
     "loc_id": 1249,
-    "tp_id": 174
+    "tp_id": 218
   },
   {
     "ori_id": 234493,
@@ -27345,7 +28635,7 @@
     "ori_id": 234549,
     "nombre": "GALETTO TRASLADOS (GALETTO FERNANDO)",
     "loc_id": 1301,
-    "tp_id": 139
+    "tp_id": 218
   },
   {
     "ori_id": 234550,
@@ -27944,7 +29234,7 @@
   {
     "ori_id": 234655,
     "nombre": "ALIVES RITA VERONICA",
-    "loc_id": 2181,
+    "loc_id": 1765,
     "tp_id": 174
   },
   {
@@ -28045,8 +29335,8 @@
   },
   {
     "ori_id": 234672,
-    "nombre": "ANDRADA MARIA EUGENIA",
-    "loc_id": 2181,
+    "nombre": "ANDRADA MARIA EUGENIA ",
+    "loc_id": 1892,
     "tp_id": 174
   },
   {
@@ -28100,7 +29390,7 @@
   {
     "ori_id": 234681,
     "nombre": "ARIDO SA",
-    "loc_id": 2181,
+    "loc_id": 1986,
     "tp_id": 174
   },
   {
@@ -28208,7 +29498,7 @@
   {
     "ori_id": 234699,
     "nombre": "BARRAZA ANDREA LILIANA",
-    "loc_id": 2181,
+    "loc_id": 1249,
     "tp_id": 174
   },
   {
@@ -28219,8 +29509,8 @@
   },
   {
     "ori_id": 234701,
-    "nombre": "BASUALDO MARIA CRISTINA",
-    "loc_id": 2181,
+    "nombre": "BASUALDO MARIA CRISTINA ",
+    "loc_id": 1248,
     "tp_id": 174
   },
   {
@@ -28268,7 +29558,7 @@
   {
     "ori_id": 234709,
     "nombre": "BERTOLINO CINTIA EDITH",
-    "loc_id": 2181,
+    "loc_id": 1766,
     "tp_id": 174
   },
   {
@@ -28387,14 +29677,14 @@
   },
   {
     "ori_id": 234729,
-    "nombre": "BRITOS SILVANA ANGELICA",
-    "loc_id": 2181,
+    "nombre": "BRITOS SILVANA ANGELICA ",
+    "loc_id": 1249,
     "tp_id": 174
   },
   {
     "ori_id": 234730,
     "nombre": "BRIZUELA PATRICIA ROMINA",
-    "loc_id": 2181,
+    "loc_id": 1249,
     "tp_id": 174
   },
   {
@@ -28693,7 +29983,7 @@
   },
   {
     "ori_id": 234780,
-    "nombre": "CENTRO MANOS UNIDAS (Giusto Nadia Soledad)",
+    "nombre": "GIUSTO NADIA SOLEDAD",
     "loc_id": 2181,
     "tp_id": 174
   },
@@ -28747,7 +30037,7 @@
   },
   {
     "ori_id": 234790,
-    "nombre": "CHOUX DEBORA EMILCE",
+    "nombre": "CHOUX DEBORA EMILCE ",
     "loc_id": 2181,
     "tp_id": 174
   },
@@ -28945,7 +30235,7 @@
   },
   {
     "ori_id": 234823,
-    "nombre": "DEL CAMPO MARIANELA GUADALUPE",
+    "nombre": "DEL CAMPO MARIANELA GUADALUPE ",
     "loc_id": 2181,
     "tp_id": 174
   },
@@ -29215,7 +30505,7 @@
   },
   {
     "ori_id": 234868,
-    "nombre": "FUENTES JESUS",
+    "nombre": "FUENTES JESUS LEANDRO ",
     "loc_id": 2181,
     "tp_id": 174
   },
@@ -29269,8 +30559,8 @@
   },
   {
     "ori_id": 234878,
-    "nombre": "GALETTO FERNANDO ",
-    "loc_id": 2181,
+    "nombre": "GALETTO FERNANDO MANUEL ",
+    "loc_id": 1301,
     "tp_id": 174
   },
   {
@@ -29738,7 +31028,7 @@
   {
     "ori_id": 234956,
     "nombre": "LEGUIZAMON LUCRECIA ISABEL",
-    "loc_id": 2181,
+    "loc_id": 1249,
     "tp_id": 174
   },
   {
@@ -29827,7 +31117,7 @@
   },
   {
     "ori_id": 234971,
-    "nombre": "LUCERO MARINA BELEN",
+    "nombre": "LUCERO MARINA BELEN ",
     "loc_id": 2181,
     "tp_id": 174
   },
@@ -31321,8 +32611,8 @@
   },
   {
     "ori_id": 235221,
-    "nombre": "VIEL JESSICA TAMARA",
-    "loc_id": 2181,
+    "nombre": "VIEL JESSICA TAMARA ",
+    "loc_id": 1532,
     "tp_id": 174
   },
   {
@@ -32013,7 +33303,7 @@
     "ori_id": 381433,
     "nombre": "ARIDO SA",
     "loc_id": 1986,
-    "tp_id": 4
+    "tp_id": 218
   },
   {
     "ori_id": 392791,
@@ -32106,6 +33396,12 @@
     "tp_id": 111
   },
   {
+    "ori_id": 478966,
+    "nombre": "Clinica Granaderos Odonto ",
+    "loc_id": 3079,
+    "tp_id": 259
+  },
+  {
     "ori_id": 483888,
     "nombre": "CIANA S.A.S ",
     "loc_id": 1301,
@@ -32122,6 +33418,12 @@
     "nombre": "CLINICA SAN GABRIEL ODONTO",
     "loc_id": 3101,
     "tp_id": 12120
+  },
+  {
+    "ori_id": 519378,
+    "nombre": "RECUPERO HOSP. PUBLICOS DE NEUQUEN",
+    "loc_id": 2930,
+    "tp_id": 176
   },
   {
     "ori_id": 531894,
@@ -32196,6 +33498,12 @@
     "tp_id": 231
   },
   {
+    "ori_id": 611379,
+    "nombre": "Instituto Cardiovascular",
+    "loc_id": 1961,
+    "tp_id": 111
+  },
+  {
     "ori_id": 627755,
     "nombre": "Centro Medico Bioquimico 9 de julio - ODONTO",
     "loc_id": 1985,
@@ -32212,6 +33520,12 @@
     "nombre": "CLINICA LA QUIACA ",
     "loc_id": 2188,
     "tp_id": 4
+  },
+  {
+    "ori_id": 643569,
+    "nombre": "QUINTANA SOLEDAD CINTIA ",
+    "loc_id": 2281,
+    "tp_id": 252
   },
   {
     "ori_id": 653573,
@@ -32262,6 +33576,12 @@
     "tp_id": 102
   },
   {
+    "ori_id": 707647,
+    "nombre": "CANOVA CLAUDIA ELIANA ",
+    "loc_id": 1769,
+    "tp_id": 174
+  },
+  {
     "ori_id": 707909,
     "nombre": "MUNICIPALIDAD DE SALSIPUEDES",
     "loc_id": 1780,
@@ -32280,6 +33600,42 @@
     "tp_id": 148
   },
   {
+    "ori_id": 720266,
+    "nombre": "Clinica Pasteur ",
+    "loc_id": 2930,
+    "tp_id": 111
+  },
+  {
+    "ori_id": 720267,
+    "nombre": "Clinica Pediatrica San Lucas",
+    "loc_id": 2930,
+    "tp_id": 111
+  },
+  {
+    "ori_id": 720268,
+    "nombre": "Consultorios Externos San Lucas ",
+    "loc_id": 2930,
+    "tp_id": 111
+  },
+  {
+    "ori_id": 720269,
+    "nombre": "Clinica de la Mujer San Lucas ",
+    "loc_id": 2930,
+    "tp_id": 111
+  },
+  {
+    "ori_id": 720270,
+    "nombre": "Clinica San Agustin ",
+    "loc_id": 2930,
+    "tp_id": 111
+  },
+  {
+    "ori_id": 720271,
+    "nombre": "Policlinico Neuquen ",
+    "loc_id": 2930,
+    "tp_id": 111
+  },
+  {
     "ori_id": 722009,
     "nombre": "ASOCACION SALTEÑA DE ORTOPEDIA Y TRAUMATOLOGIA",
     "loc_id": 2203,
@@ -32290,6 +33646,12 @@
     "nombre": "ABBA NATALIA LUCIA",
     "loc_id": 2420,
     "tp_id": 217
+  },
+  {
+    "ori_id": 740577,
+    "nombre": "CIM ODONTO",
+    "loc_id": 1301,
+    "tp_id": 165
   },
   {
     "ori_id": 741398,
@@ -32346,6 +33708,12 @@
     "tp_id": 149
   },
   {
+    "ori_id": 809411,
+    "nombre": "Bio ImplantImagenes ",
+    "loc_id": 2203,
+    "tp_id": 102
+  },
+  {
     "ori_id": 819805,
     "nombre": "SARMIENTO MARIANO ",
     "loc_id": 1249,
@@ -32368,6 +33736,12 @@
     "nombre": "Cejas Carolina Giselle",
     "loc_id": 1248,
     "tp_id": 231
+  },
+  {
+    "ori_id": 834804,
+    "nombre": "ORDONEZ GRIGUOL MACARENA ROCIO",
+    "loc_id": 1532,
+    "tp_id": 174
   },
   {
     "ori_id": 838908,
@@ -32394,6 +33768,12 @@
     "tp_id": 7
   },
   {
+    "ori_id": 883400,
+    "nombre": "Farmacia Adolfo Calle ",
+    "loc_id": 2185,
+    "tp_id": 7
+  },
+  {
     "ori_id": 888330,
     "nombre": "Farmacia Tacuari",
     "loc_id": 2185,
@@ -32410,6 +33790,12 @@
     "nombre": "ARTEMISIA ",
     "loc_id": 2203,
     "tp_id": 103
+  },
+  {
+    "ori_id": 915676,
+    "nombre": "Villalobos Walter ",
+    "loc_id": 2940,
+    "tp_id": 258
   },
   {
     "ori_id": 919299,

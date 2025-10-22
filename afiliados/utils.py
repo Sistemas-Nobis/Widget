@@ -114,8 +114,15 @@ def buscar_cobertura(coberturas):
 
     for cobertura in lista_coberturas:
         for registro in preexistencias:
-            patologia = registro["Patologia"].upper()
-            patologia = normalizar_texto(patologia)
+            print(registro["Patologia"])
+            patologia_value = registro["Patologia"]
+
+            # Verificar si el valor es válido
+            if pd.isna(patologia_value) or patologia_value == "" or str(patologia_value).strip() == "":
+                continue
+            else:
+                patologia = str(patologia_value).upper()
+                patologia = normalizar_texto(patologia)
 
             # Limpieza de la cobertura buscada
             cobertura_limpia = normalizar_texto(cobertura.replace("  ", "").replace(" B", "").replace("FALSEO","").replace("- ","").replace("-","").replace("NO USAR","").replace("_",""))

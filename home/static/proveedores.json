@@ -5646,7 +5646,7 @@
   },
   {
     "prov_id": 1502,
-    "Nombre": "Lic. Verónica Depetris",
+    "Nombre": "DEPETRIS VERONICA MARIA ",
     "CUIT": "27248572979"
   },
   {
@@ -16446,7 +16446,7 @@
   },
   {
     "prov_id": 72873,
-    "Nombre": "GARCIA FANTINI MARIA LOURDES",
+    "Nombre": "GARCIA LOURDES MARIA",
     "CUIT": "27377331430"
   },
   {
@@ -18196,7 +18196,7 @@
   },
   {
     "prov_id": 73702,
-    "Nombre": "MINISTERIO DE SALUD VILLA MERCEDES",
+    "Nombre": "ESTADO PROVINCIA DE SAN LUIS",
     "CUIT": "30673377544"
   },
   {
@@ -32386,7 +32386,7 @@
   },
   {
     "prov_id": 81257,
-    "Nombre": "TROILO-GUTIERREZ",
+    "Nombre": "TROILLO GUTIERREZ CENTRO PRIVADO DE MEDICINA NUC",
     "CUIT": "33658091439"
   },
   {
@@ -34190,6 +34190,11 @@
     "CUIT": "27203446549"
   },
   {
+    "prov_id": 118394,
+    "Nombre": "GONZALEZ SANCHEZ ANA MARIA",
+    "CUIT": "27387372674"
+  },
+  {
     "prov_id": 118399,
     "Nombre": "LEDESMA ALICIA ESTEFANIA",
     "CUIT": "27313055383"
@@ -34530,6 +34535,11 @@
     "CUIT": "27342187744"
   },
   {
+    "prov_id": 118546,
+    "Nombre": "HOSPITAL PUBLICO MATERNO INFANTIL SOCIEDAD DEL EST",
+    "CUIT": "30711560099"
+  },
+  {
     "prov_id": 118547,
     "Nombre": "TOSCO FIAMMA VALENTINA",
     "CUIT": "27365876075"
@@ -34836,7 +34846,7 @@
   },
   {
     "prov_id": 118654,
-    "Nombre": "HOSPITAL MUNICIPAL SAN ROQUE",
+    "Nombre": "MUNICIPALIDAD DE JUSTINIANO POSSE O. P. ",
     "CUIT": "30999115868"
   },
   {
@@ -37437,7 +37447,7 @@
   {
     "prov_id": 119316,
     "Nombre": "HENIN VALENTINA ",
-    "CUIT": "23384823424"
+    "CUIT": ""
   },
   {
     "prov_id": 119317,
@@ -38916,7 +38926,7 @@
   },
   {
     "prov_id": 119615,
-    "Nombre": "RECREAR SALUD - QUILIPOR DIEGO",
+    "Nombre": "QUIPILDOR DIEGO ISMAEL",
     "CUIT": "20295861003"
   },
   {
@@ -39201,7 +39211,7 @@
   },
   {
     "prov_id": 119672,
-    "Nombre": "TRANSPORTE MEDA (Meda Ileana Emilse)",
+    "Nombre": "MEDA ILIANA EMILSE",
     "CUIT": "27311058822"
   },
   {
@@ -39583,6 +39593,16 @@
     "prov_id": 119762,
     "Nombre": "NORTE VISION S.R.L. ",
     "CUIT": "30710750048"
+  },
+  {
+    "prov_id": 119773,
+    "Nombre": "CECENARRO ANA MARIA ",
+    "CUIT": "27126606430"
+  },
+  {
+    "prov_id": 119776,
+    "Nombre": "SARDA FEDERICO JOSE ",
+    "CUIT": "20285112266"
   },
   {
     "prov_id": 119779,
@@ -42686,7 +42706,7 @@
   },
   {
     "prov_id": 120647,
-    "Nombre": "MINISTERIO DE SALUD ",
+    "Nombre": "MINISTERIO DE SALUD JUJUY ",
     "CUIT": "30709668923"
   },
   {
@@ -43610,6 +43630,11 @@
     "CUIT": "27358462524"
   },
   {
+    "prov_id": 120911,
+    "Nombre": "PROSDOCIMO MARIA JOSE ",
+    "CUIT": "27411588136"
+  },
+  {
     "prov_id": 120914,
     "Nombre": "BONILLO CAROLINA INES ",
     "CUIT": "27276780633"
@@ -44123,6 +44148,11 @@
     "prov_id": 121092,
     "Nombre": "ASOCIACION CIVIL MONTE VIVO ",
     "CUIT": "30717028259"
+  },
+  {
+    "prov_id": 121094,
+    "Nombre": "ALVAREZ SOFIA NAZARENA",
+    "CUIT": "27416474295"
   },
   {
     "prov_id": 121111,
@@ -45470,6 +45500,11 @@
     "CUIT": "30691768038"
   },
   {
+    "prov_id": 121433,
+    "Nombre": "CENTRO DE REHABILITACION COGNITIA SRL ",
+    "CUIT": "30717122441"
+  },
+  {
     "prov_id": 121434,
     "Nombre": "DANGUS S.R.L. ",
     "CUIT": "30716043289"
@@ -45546,7 +45581,7 @@
   },
   {
     "prov_id": 121453,
-    "Nombre": "Dominguez Johana Gabriela ",
+    "Nombre": "DOMINGUEZ JOHANA GABRIELA ",
     "CUIT": "27314791229"
   },
   {
@@ -47098,6 +47133,11 @@
     "prov_id": 121832,
     "Nombre": "LEIVA ROCIO BELEN ",
     "CUIT": "27386479831"
+  },
+  {
+    "prov_id": 121833,
+    "Nombre": "ABREGU CAMPOS MARIA MONTSERRAT",
+    "CUIT": "27357412981"
   },
   {
     "prov_id": 121834,
@@ -54018,5 +54058,1530 @@
     "prov_id": 123694,
     "Nombre": "RUARTE ENRIQUE RAFAEL ",
     "CUIT": "20303095137"
+  },
+  {
+    "prov_id": 123700,
+    "Nombre": "MARTELLOTTO RODRIGO ",
+    "CUIT": "20323142212"
+  },
+  {
+    "prov_id": 123701,
+    "Nombre": "MARTINEZ SEBASTIAN ANIBAL ",
+    "CUIT": "20263144024"
+  },
+  {
+    "prov_id": 123703,
+    "Nombre": "LOPEZ MARIA PAZ ",
+    "CUIT": "27359204235"
+  },
+  {
+    "prov_id": 123704,
+    "Nombre": "CONESA ELISA ROMINA ",
+    "CUIT": "27348575762"
+  },
+  {
+    "prov_id": 123705,
+    "Nombre": "CIRCULO ODONTOLOGICO DEPARTAMENTO UNION ",
+    "CUIT": "30586921270"
+  },
+  {
+    "prov_id": 123706,
+    "Nombre": "CHIT MARIA ALEJANDRA",
+    "CUIT": "27249817304"
+  },
+  {
+    "prov_id": 123707,
+    "Nombre": "COLEGIO DE BIOQUIMICOS DE LA PROVINCIA DE CORRIENS",
+    "CUIT": "30708815795"
+  },
+  {
+    "prov_id": 123708,
+    "Nombre": "AGUIRRE CARPANCHAY CRISTINA BELEN ",
+    "CUIT": "27370097785"
+  },
+  {
+    "prov_id": 123709,
+    "Nombre": "ARBORIO SANDRA MELINA ",
+    "CUIT": "23391409374"
+  },
+  {
+    "prov_id": 123710,
+    "Nombre": "JUAREZ ANSONNAUD FEDERICO ",
+    "CUIT": "20377258143"
+  },
+  {
+    "prov_id": 123711,
+    "Nombre": "CDC CENTRO MEDICO S.A.",
+    "CUIT": "30716787474"
+  },
+  {
+    "prov_id": 123712,
+    "Nombre": "RODRIGUEZ YAMILA",
+    "CUIT": "27395027706"
+  },
+  {
+    "prov_id": 123713,
+    "Nombre": "PACHECO MARIA SOFIA ",
+    "CUIT": "27405326553"
+  },
+  {
+    "prov_id": 123714,
+    "Nombre": "COLEGIO DE FARMACEUTICOS DE LA PCIA DE STA FE 2 CO",
+    "CUIT": "30625134451"
+  },
+  {
+    "prov_id": 123718,
+    "Nombre": "ROMERO VALERIA NOEMI",
+    "CUIT": "27253277551"
+  },
+  {
+    "prov_id": 123719,
+    "Nombre": "VARGAS SERGIO ALEJANDRO ",
+    "CUIT": "20306927281"
+  },
+  {
+    "prov_id": 123720,
+    "Nombre": "SALOMOM EDGARD ALBERTO",
+    "CUIT": "20181830159"
+  },
+  {
+    "prov_id": 123721,
+    "Nombre": "TARANTINO CARLOS ANTONIO",
+    "CUIT": "20075738537"
+  },
+  {
+    "prov_id": 123722,
+    "Nombre": "PUGLIE PERUSSIA MILAGROS",
+    "CUIT": "27418791700"
+  },
+  {
+    "prov_id": 123723,
+    "Nombre": "COCCO NATALIA ",
+    "CUIT": "27405059202"
+  },
+  {
+    "prov_id": 123724,
+    "Nombre": "CASANOVA MARIA CELESTE",
+    "CUIT": "27341675486"
+  },
+  {
+    "prov_id": 123725,
+    "Nombre": "BAUTY ",
+    "CUIT": "30716241048"
+  },
+  {
+    "prov_id": 123726,
+    "Nombre": "HUEPIL PRESTACIONES MEDICO EDUCATIVAS S.R.L.",
+    "CUIT": "30715689231"
+  },
+  {
+    "prov_id": 123727,
+    "Nombre": "VEDIA MARIA DEL ROSARIO ",
+    "CUIT": "27177929137"
+  },
+  {
+    "prov_id": 123728,
+    "Nombre": "TARITOLAY CECILIA MICAELA ",
+    "CUIT": "27409115948"
+  },
+  {
+    "prov_id": 123729,
+    "Nombre": "PONCE MARIA JOSE C",
+    "CUIT": "23262769364"
+  },
+  {
+    "prov_id": 123730,
+    "Nombre": "SANCHEZ GABRIELA ROXANA ",
+    "CUIT": "27329902485"
+  },
+  {
+    "prov_id": 123731,
+    "Nombre": "KLEBER CARMEN SORAYA",
+    "CUIT": "27301909077"
+  },
+  {
+    "prov_id": 123732,
+    "Nombre": "CANOVA CLAUDIA ELIANA ",
+    "CUIT": "27336707647"
+  },
+  {
+    "prov_id": 123733,
+    "Nombre": "ASTRADA ANALIA VIRGINIA ",
+    "CUIT": "27317421015"
+  },
+  {
+    "prov_id": 123734,
+    "Nombre": "STORNIOLO MICKAELA DEL VALLE",
+    "CUIT": "27356739561"
+  },
+  {
+    "prov_id": 123735,
+    "Nombre": "FARFAN ANDREA FLORENCIA ",
+    "CUIT": "27429173464"
+  },
+  {
+    "prov_id": 123736,
+    "Nombre": "BAROFFIO LUCAS LUIS ",
+    "CUIT": "20272461091"
+  },
+  {
+    "prov_id": 123737,
+    "Nombre": "MUNICIPALIDAD DE ETRURIA",
+    "CUIT": "30999114012"
+  },
+  {
+    "prov_id": 123738,
+    "Nombre": "FARFAN PERTUSSI NATALIA AMERICA ",
+    "CUIT": "27270344238"
+  },
+  {
+    "prov_id": 123739,
+    "Nombre": "GOLLETTI MARIA JULIETA",
+    "CUIT": "27387295416"
+  },
+  {
+    "prov_id": 123740,
+    "Nombre": "MUNICIPALIDAD DE CHARRAS",
+    "CUIT": "30999099927"
+  },
+  {
+    "prov_id": 123741,
+    "Nombre": "SUBSECRETARIA DE SALUD",
+    "CUIT": "30675068441"
+  },
+  {
+    "prov_id": 123742,
+    "Nombre": "ESTEBAN MARIA AGUSTINA",
+    "CUIT": "27377327263"
+  },
+  {
+    "prov_id": 123747,
+    "Nombre": "SERRA ROMAN JOSE",
+    "CUIT": "20222445451"
+  },
+  {
+    "prov_id": 123748,
+    "Nombre": "PASTORINO NICOLAS IGNACIO ",
+    "CUIT": "20399348383"
+  },
+  {
+    "prov_id": 123749,
+    "Nombre": "VELASQUEZ LEANDRO JAVIER",
+    "CUIT": "20289960202"
+  },
+  {
+    "prov_id": 123773,
+    "Nombre": "BULGARELLI MICAELA",
+    "CUIT": "23347693324"
+  },
+  {
+    "prov_id": 123774,
+    "Nombre": "CAROCIO TRILLINI IGNACIO",
+    "CUIT": "20378521301"
+  },
+  {
+    "prov_id": 123776,
+    "Nombre": "MARTINEZ JOAQUIN FRANCISCO",
+    "CUIT": "20126131691"
+  },
+  {
+    "prov_id": 123777,
+    "Nombre": "IBARRA ENRIQUE OMAR ",
+    "CUIT": "20181445999"
+  },
+  {
+    "prov_id": 123778,
+    "Nombre": "ARRIETA ARIEL ALEJANDRO ",
+    "CUIT": "20236833829"
+  },
+  {
+    "prov_id": 123779,
+    "Nombre": "IBARRA MONICA ISABEL",
+    "CUIT": "24224651526"
+  },
+  {
+    "prov_id": 123780,
+    "Nombre": "VIDELA CECILIA ANDREA ",
+    "CUIT": "27220351160"
+  },
+  {
+    "prov_id": 123781,
+    "Nombre": "DIAZ KAREN JANET",
+    "CUIT": "27438803012"
+  },
+  {
+    "prov_id": 123782,
+    "Nombre": "EMPRESA PROVINCIAL DE LA ENERGIA DE SANTA FE",
+    "CUIT": "30545788167"
+  },
+  {
+    "prov_id": 123783,
+    "Nombre": "ROMERO LEONARDO JAVIER",
+    "CUIT": "20312266912"
+  },
+  {
+    "prov_id": 123785,
+    "Nombre": "VILLALBA FRANCO LAUTA ",
+    "CUIT": "20368162931"
+  },
+  {
+    "prov_id": 123786,
+    "Nombre": "PERCYLATAM S. R. L. ",
+    "CUIT": "30718456475"
+  },
+  {
+    "prov_id": 123787,
+    "Nombre": "ELIZAGARAY ELIZABETH GABRIELA ",
+    "CUIT": "27294469171"
+  },
+  {
+    "prov_id": 123788,
+    "Nombre": "CARRANZA LAUTARO",
+    "CUIT": "20397370616"
+  },
+  {
+    "prov_id": 123798,
+    "Nombre": "CLINICA DE CUYO S.A.",
+    "CUIT": "33708374259"
+  },
+  {
+    "prov_id": 123799,
+    "Nombre": "SARAVIA SALLY JAQUELINE ",
+    "CUIT": "27398900141"
+  },
+  {
+    "prov_id": 123800,
+    "Nombre": "LEAL PATRICIA MARIBEL ",
+    "CUIT": "27239531798"
+  },
+  {
+    "prov_id": 123801,
+    "Nombre": "JUAREZ VILLEGAS MARIA DE LOS ANGELES",
+    "CUIT": "27312968784"
+  },
+  {
+    "prov_id": 123802,
+    "Nombre": "S A I M Q SANATORIO PLAZA ",
+    "CUIT": "30545851845"
+  },
+  {
+    "prov_id": 123803,
+    "Nombre": "EL ESPAÑOL S A S",
+    "CUIT": "30701457621"
+  },
+  {
+    "prov_id": 123804,
+    "Nombre": "PONCE DAIANA CASANDRA ",
+    "CUIT": "27364196577"
+  },
+  {
+    "prov_id": 123805,
+    "Nombre": "CRUZ DAIANA ROMELIA ",
+    "CUIT": "27404672733"
+  },
+  {
+    "prov_id": 123806,
+    "Nombre": "LABORATORIO DE ANALISIS DRES TURNER S R L ",
+    "CUIT": "30674464149"
+  },
+  {
+    "prov_id": 123807,
+    "Nombre": "MORALES ALVAREZ SANTIAGO GABRIEL",
+    "CUIT": "20431885493"
+  },
+  {
+    "prov_id": 123808,
+    "Nombre": "ORDONEZ GRIGUOL MACARENA ROCIO",
+    "CUIT": "27414834804"
+  },
+  {
+    "prov_id": 123809,
+    "Nombre": "ZERPA ADRIANA PAOLA ",
+    "CUIT": "27310358202"
+  },
+  {
+    "prov_id": 123810,
+    "Nombre": "GONZALEZ ROSANA ANDREA",
+    "CUIT": "27226045622"
+  },
+  {
+    "prov_id": 123811,
+    "Nombre": "BRAVO SOFIA ",
+    "CUIT": "27374392684"
+  },
+  {
+    "prov_id": 123812,
+    "Nombre": "CENTRO INTEGRAL DE SALUD LA BANDA ",
+    "CUIT": "30715036904"
+  },
+  {
+    "prov_id": 123813,
+    "Nombre": "MUNICIPALIDAD DE TICINO ",
+    "CUIT": "30999114322"
+  },
+  {
+    "prov_id": 123814,
+    "Nombre": "MUNICIPALIDAD DE JAMES CRAIK",
+    "CUIT": "30999099161"
+  },
+  {
+    "prov_id": 123815,
+    "Nombre": "ANACHURI GIMENA YANINA LUCIANA",
+    "CUIT": "27416793153"
+  },
+  {
+    "prov_id": 123816,
+    "Nombre": "GARCIA FANTINI MARIA LOURDES",
+    "CUIT": "27333878963"
+  },
+  {
+    "prov_id": 123826,
+    "Nombre": "ORELO MARIELA SILVINA ",
+    "CUIT": "27180169909"
+  },
+  {
+    "prov_id": 123834,
+    "Nombre": "TEJADA HEREDIA ANALIA BEATRIZ ",
+    "CUIT": "23262872904"
+  },
+  {
+    "prov_id": 123835,
+    "Nombre": "ALLENDE MARTIN JUAN ",
+    "CUIT": "23255734539"
+  },
+  {
+    "prov_id": 123836,
+    "Nombre": "ISA ZANONI ALDANA ",
+    "CUIT": "27387328551"
+  },
+  {
+    "prov_id": 123837,
+    "Nombre": "UNIR S. A.",
+    "CUIT": "30717364550"
+  },
+  {
+    "prov_id": 123838,
+    "Nombre": "VICENTIN LUCILA SOLEDAD ",
+    "CUIT": "27296126123"
+  },
+  {
+    "prov_id": 123839,
+    "Nombre": "GONZALEZ ELIZABETH CAROLINA ",
+    "CUIT": "27346916309"
+  },
+  {
+    "prov_id": 123840,
+    "Nombre": "HIDALGO VICTOR HUGO ",
+    "CUIT": "20242405332"
+  },
+  {
+    "prov_id": 123841,
+    "Nombre": "CARBALLEIRA FELIPE",
+    "CUIT": "20372625180"
+  },
+  {
+    "prov_id": 123842,
+    "Nombre": "LEZCANO FLORENCIA AYLEN ",
+    "CUIT": "27427001348"
+  },
+  {
+    "prov_id": 123843,
+    "Nombre": "MARTINEZ MARIA FATIMA MICAELA ",
+    "CUIT": "27255713820"
+  },
+  {
+    "prov_id": 123844,
+    "Nombre": "ASOCIACION DE CLINICAS Y SANATORIOS DEL CHACO ",
+    "CUIT": "30558349715"
+  },
+  {
+    "prov_id": 123845,
+    "Nombre": "COLEGIO BIOQUIMICO DEL CHACO",
+    "CUIT": "30542696407"
+  },
+  {
+    "prov_id": 123846,
+    "Nombre": "KIVERLING GONZALO JAVIER",
+    "CUIT": "20337248501"
+  },
+  {
+    "prov_id": 123847,
+    "Nombre": "DEM SALUD S. A. ",
+    "CUIT": "30717767450"
+  },
+  {
+    "prov_id": 123848,
+    "Nombre": "TOLOSA CECILIA NATALIA",
+    "CUIT": "23290375614"
+  },
+  {
+    "prov_id": 123849,
+    "Nombre": "FALCIONE VILANOVA ANA GABRIELA",
+    "CUIT": "27349133968"
+  },
+  {
+    "prov_id": 123850,
+    "Nombre": "PODIO ROMINA SOLEDAD",
+    "CUIT": "23281841114"
+  },
+  {
+    "prov_id": 123851,
+    "Nombre": "PEREZ ALTAMIRANO LAURA BELEN",
+    "CUIT": "27361200832"
+  },
+  {
+    "prov_id": 123852,
+    "Nombre": "DEMARCO ROSARIO ",
+    "CUIT": "27402048927"
+  },
+  {
+    "prov_id": 123853,
+    "Nombre": "FUNDACION RUNAYAY ",
+    "CUIT": "30717441040"
+  },
+  {
+    "prov_id": 123854,
+    "Nombre": "CERINO ANDREA VERONICA",
+    "CUIT": "27265756625"
+  },
+  {
+    "prov_id": 123855,
+    "Nombre": "LEGUIZAMON LUCRECIA ISABEL",
+    "CUIT": "27384831457"
+  },
+  {
+    "prov_id": 123856,
+    "Nombre": "MORALES PAULA SOLEDAD ",
+    "CUIT": "27394226055"
+  },
+  {
+    "prov_id": 123857,
+    "Nombre": "LUNA ROCIO PAMELA JUANA ",
+    "CUIT": "27334112468"
+  },
+  {
+    "prov_id": 123858,
+    "Nombre": "ENTE DE RECUPERACION DE FONDOS PARA EL FORTALECI",
+    "CUIT": "30718615700"
+  },
+  {
+    "prov_id": 123859,
+    "Nombre": "CABRERA BRENDA ABIGAIL",
+    "CUIT": "27413229141"
+  },
+  {
+    "prov_id": 123860,
+    "Nombre": "HOSPITAL INTERZONAL DE NIÑOS EVA PERON",
+    "CUIT": "30707997474"
+  },
+  {
+    "prov_id": 123861,
+    "Nombre": "TROVATELLI MARIA JULIETA",
+    "CUIT": "27426699406"
+  },
+  {
+    "prov_id": 123862,
+    "Nombre": "FIDEICOMISO DE EXPLOTACION Y ADMINISTRACION DEL CO",
+    "CUIT": "30716961849"
+  },
+  {
+    "prov_id": 123863,
+    "Nombre": "SOLORZANO MARIA EMILIA",
+    "CUIT": "27301176959"
+  },
+  {
+    "prov_id": 123864,
+    "Nombre": "GALLO MARIA BELEN ",
+    "CUIT": "27305044712"
+  },
+  {
+    "prov_id": 123865,
+    "Nombre": "BARRERA CESAR LUIS",
+    "CUIT": "20343177543"
+  },
+  {
+    "prov_id": 123867,
+    "Nombre": "GALETTO ALEJANDRO ALBERTO ",
+    "CUIT": "20222338523"
+  },
+  {
+    "prov_id": 123868,
+    "Nombre": "GILIGROUP SAS ",
+    "CUIT": "30716576341"
+  },
+  {
+    "prov_id": 123876,
+    "Nombre": "GERGOLET LETICIA",
+    "CUIT": "23269288604"
+  },
+  {
+    "prov_id": 123878,
+    "Nombre": "CLINICA MODELO S A",
+    "CUIT": "30562828164"
+  },
+  {
+    "prov_id": 123880,
+    "Nombre": "D. Y P. SOCIEDAD POR ACCIONES SIMPLIFICADA",
+    "CUIT": "30716179644"
+  },
+  {
+    "prov_id": 123891,
+    "Nombre": "HIDALGO JUAN RAMON",
+    "CUIT": "20213271734"
+  },
+  {
+    "prov_id": 123892,
+    "Nombre": "DELGADO TERESA MARCELA",
+    "CUIT": "27242603392"
+  },
+  {
+    "prov_id": 123893,
+    "Nombre": "SERVICENTRO LOS VALLES S R L",
+    "CUIT": "30691800802"
+  },
+  {
+    "prov_id": 123894,
+    "Nombre": "TEJADA MARIA JULIANA",
+    "CUIT": "27338494187"
+  },
+  {
+    "prov_id": 123895,
+    "Nombre": "TORRES VILMA EUSEBIA",
+    "CUIT": "27406596988"
+  },
+  {
+    "prov_id": 123896,
+    "Nombre": "GERON PAOLA VANESA",
+    "CUIT": "27335824062"
+  },
+  {
+    "prov_id": 123897,
+    "Nombre": "MAXZUD MARTIN GUSTAVO ",
+    "CUIT": "20182042928"
+  },
+  {
+    "prov_id": 123898,
+    "Nombre": "VOTTERO MARIO GUSTAVO ",
+    "CUIT": "20278668968"
+  },
+  {
+    "prov_id": 123900,
+    "Nombre": "BROQUEN BOSCH ADELA MARIA ",
+    "CUIT": "27371711061"
+  },
+  {
+    "prov_id": 123902,
+    "Nombre": "SAFFIRO TECHNOLOGIES SRL",
+    "CUIT": "30716802953"
+  },
+  {
+    "prov_id": 123903,
+    "Nombre": "LOPEZ EDGARDO ARIEL ",
+    "CUIT": "20272238732"
+  },
+  {
+    "prov_id": 123904,
+    "Nombre": "GIORGETTA JOSEFINA",
+    "CUIT": "27358703564"
+  },
+  {
+    "prov_id": 123905,
+    "Nombre": "PALACIOS ELIZABETH ZULEMA ",
+    "CUIT": "27352795262"
+  },
+  {
+    "prov_id": 123906,
+    "Nombre": "DE PABLO CLAUDIA VANESA ",
+    "CUIT": "27351054552"
+  },
+  {
+    "prov_id": 123907,
+    "Nombre": "GONZALEZ SANSO CAROLINA LEONOR",
+    "CUIT": "27348390436"
+  },
+  {
+    "prov_id": 123908,
+    "Nombre": "JAUREGUI ROCIO DEL MILAGRO",
+    "CUIT": "27405238875"
+  },
+  {
+    "prov_id": 123909,
+    "Nombre": "CARMONA CAROLA CARINA ",
+    "CUIT": "27247938546"
+  },
+  {
+    "prov_id": 123910,
+    "Nombre": "MARTIN DANIEL JOSE",
+    "CUIT": "20282377021"
+  },
+  {
+    "prov_id": 123911,
+    "Nombre": "PAPELERIA JUNIN SRL ",
+    "CUIT": "30715756818"
+  },
+  {
+    "prov_id": 123914,
+    "Nombre": "SCHESI NATALIA ELIZABET ",
+    "CUIT": "27283527900"
+  },
+  {
+    "prov_id": 123915,
+    "Nombre": "COLEGIO DE KINESIOLOGOS DE LA PROVINCIA DEL CHACO ",
+    "CUIT": "30600062731"
+  },
+  {
+    "prov_id": 123916,
+    "Nombre": "NEURO ALIANZA S. A. ",
+    "CUIT": "30718406001"
+  },
+  {
+    "prov_id": 123919,
+    "Nombre": "MEMMO PABLO GABRIEL ",
+    "CUIT": "20265341811"
+  },
+  {
+    "prov_id": 123921,
+    "Nombre": "SANCHEZ MARIA EUGENIA ",
+    "CUIT": "27443282489"
+  },
+  {
+    "prov_id": 123922,
+    "Nombre": "AIBAR LUCIA ADELMA",
+    "CUIT": "27160294189"
+  },
+  {
+    "prov_id": 123923,
+    "Nombre": "ESCALANTE MARCOS ESTEBAN",
+    "CUIT": "20327479939"
+  },
+  {
+    "prov_id": 123924,
+    "Nombre": "ABRAHAM ALVARO ENRIQUE",
+    "CUIT": "20277268273"
+  },
+  {
+    "prov_id": 123925,
+    "Nombre": "VARGAS LUIS MANUEL",
+    "CUIT": "20106164569"
+  },
+  {
+    "prov_id": 123926,
+    "Nombre": "LA CASA DE LUCIO S. R. L. ",
+    "CUIT": "30718481887"
+  },
+  {
+    "prov_id": 123927,
+    "Nombre": "HG SIMON SRL",
+    "CUIT": "30712388435"
+  },
+  {
+    "prov_id": 123928,
+    "Nombre": "CASTRO LAURA FABIANA",
+    "CUIT": "27225151992"
+  },
+  {
+    "prov_id": 123929,
+    "Nombre": "GELARDI PATRICIA NOELIA ",
+    "CUIT": "23257238024"
+  },
+  {
+    "prov_id": 123930,
+    "Nombre": "SUMAMOS S. R. L.",
+    "CUIT": "30717465683"
+  },
+  {
+    "prov_id": 123938,
+    "Nombre": "SEBASTIAN BOHUYTRON ROSA MARIA",
+    "CUIT": "27940938797"
+  },
+  {
+    "prov_id": 123939,
+    "Nombre": "COLEGIO DE PSICOLOGOS PROVINCIA DE LA PAMPA ",
+    "CUIT": "30629621934"
+  },
+  {
+    "prov_id": 123949,
+    "Nombre": "GRUPO GESTER S.A.S. ",
+    "CUIT": "33717689599"
+  },
+  {
+    "prov_id": 123950,
+    "Nombre": "PRIZANT DAMIAN ARIEL",
+    "CUIT": "20290758921"
+  },
+  {
+    "prov_id": 123951,
+    "Nombre": "BOSQUE SERGIO ",
+    "CUIT": "20182523853"
+  },
+  {
+    "prov_id": 123952,
+    "Nombre": "PAPAGNI CLAUDIO ALEJANDRO ",
+    "CUIT": "20263058020"
+  },
+  {
+    "prov_id": 123953,
+    "Nombre": "SAS FRANCISCO AGUSTIN ",
+    "CUIT": "23420096119"
+  },
+  {
+    "prov_id": 123954,
+    "Nombre": "GONZALEZ MARIA VANESA ",
+    "CUIT": "27250884511"
+  },
+  {
+    "prov_id": 123955,
+    "Nombre": "SCHENQUER DANA",
+    "CUIT": "27232285813"
+  },
+  {
+    "prov_id": 123956,
+    "Nombre": "GIL JOSE LUIS ",
+    "CUIT": "23126687249"
+  },
+  {
+    "prov_id": 123957,
+    "Nombre": "FLOREZ GAMBARTE JOSE ALBANO ",
+    "CUIT": "20312539684"
+  },
+  {
+    "prov_id": 123964,
+    "Nombre": "DYCSA DISEÑO Y CONSTRUCCION SA",
+    "CUIT": "30634083800"
+  },
+  {
+    "prov_id": 123965,
+    "Nombre": "CONDORI MARCELO MIGUEL",
+    "CUIT": "20332891325"
+  },
+  {
+    "prov_id": 123966,
+    "Nombre": "DEL CAMPO EMILIANO",
+    "CUIT": "20291041249"
+  },
+  {
+    "prov_id": 123967,
+    "Nombre": "ESTACION DE SERVICIO SAN LORENZO CHICO S. R. L. ",
+    "CUIT": "30718334280"
+  },
+  {
+    "prov_id": 123968,
+    "Nombre": "CAPDEVILA LOHANA NEREA",
+    "CUIT": "23437051704"
+  },
+  {
+    "prov_id": 123969,
+    "Nombre": "ZERWI S. A. S.",
+    "CUIT": "30718100549"
+  },
+  {
+    "prov_id": 123970,
+    "Nombre": "SALOMON ADOLFO DANIEL ",
+    "CUIT": "20185026753"
+  },
+  {
+    "prov_id": 123971,
+    "Nombre": "MOLINILLO MELISA ALDANA ",
+    "CUIT": "27419374704"
+  },
+  {
+    "prov_id": 123972,
+    "Nombre": "B Y J HNOS S. A. S. ",
+    "CUIT": "30718830903"
+  },
+  {
+    "prov_id": 123973,
+    "Nombre": "LESCANO MARCELO IGNACIO ",
+    "CUIT": "20224175451"
+  },
+  {
+    "prov_id": 123975,
+    "Nombre": "ACOSTA DOMINGUEZ BRUNO VALENTIN ",
+    "CUIT": "20420063920"
+  },
+  {
+    "prov_id": 123977,
+    "Nombre": "PERALTA ANIBAL FEDERICO ",
+    "CUIT": "20256482135"
+  },
+  {
+    "prov_id": 123978,
+    "Nombre": "TACCHI CARLOS DANIEL",
+    "CUIT": "20211648725"
+  },
+  {
+    "prov_id": 123979,
+    "Nombre": "RUIZ ANALIA VERONICA C",
+    "CUIT": "27227941737"
+  },
+  {
+    "prov_id": 123980,
+    "Nombre": "MUNICIPALIDAD DE DALMACIO VELEZ ",
+    "CUIT": "30999098009"
+  },
+  {
+    "prov_id": 123981,
+    "Nombre": "VALDEMOROS PAULA",
+    "CUIT": "27263136417"
+  },
+  {
+    "prov_id": 123982,
+    "Nombre": "GAUNA ARMANDO MATIAS FABIAN ",
+    "CUIT": "20317330864"
+  },
+  {
+    "prov_id": 123983,
+    "Nombre": "LOBOS SANTIAGO OSCAR",
+    "CUIT": "20247439006"
+  },
+  {
+    "prov_id": 123984,
+    "Nombre": "NS FIAMBRERIA SAS ",
+    "CUIT": "30718831748"
+  },
+  {
+    "prov_id": 123985,
+    "Nombre": "VINCENTI ANA",
+    "CUIT": "27263286400"
+  },
+  {
+    "prov_id": 123987,
+    "Nombre": "ALFONZO LUCENA OCTAVIO ANDRES ",
+    "CUIT": "20371188712"
+  },
+  {
+    "prov_id": 123988,
+    "Nombre": "PUCHETA MARIA FLORENCIA ",
+    "CUIT": "27329751479"
+  },
+  {
+    "prov_id": 123989,
+    "Nombre": "GALLARDO GONZALO RAMIRO ",
+    "CUIT": "20367199505"
+  },
+  {
+    "prov_id": 123994,
+    "Nombre": "BELKYS S. A. S. ",
+    "CUIT": "30718547896"
+  },
+  {
+    "prov_id": 123995,
+    "Nombre": "GOMEZ MARIA FERNANDA",
+    "CUIT": "27286812274"
+  },
+  {
+    "prov_id": 123997,
+    "Nombre": "CASTELLANOS PATRICIA MARCELA",
+    "CUIT": "27180348293"
+  },
+  {
+    "prov_id": 123998,
+    "Nombre": "VELAZQUEZ DIEGO ALEJANDRO ",
+    "CUIT": "20341330832"
+  },
+  {
+    "prov_id": 123999,
+    "Nombre": "MARTINEZ EMANUEL ALEXANDER",
+    "CUIT": "23346104899"
+  },
+  {
+    "prov_id": 124000,
+    "Nombre": "MORERO LETICIA YAEL ",
+    "CUIT": "27325858708"
+  },
+  {
+    "prov_id": 124003,
+    "Nombre": "ARAYA VIRGINIA DAIANA ",
+    "CUIT": "27358756927"
+  },
+  {
+    "prov_id": 124004,
+    "Nombre": "ALVAREZ BLANCO EVELYN MARIA DE LOS ANGELES",
+    "CUIT": "27360145544"
+  },
+  {
+    "prov_id": 124017,
+    "Nombre": "COOPERATIVA REGIONAL DE ELECTRICIDAD DE OBRAS Y OD",
+    "CUIT": "30545719386"
+  },
+  {
+    "prov_id": 124021,
+    "Nombre": "HEINRICH PEDRO Y HEINRICH MARCOS SOCIEDAD SIMPLE",
+    "CUIT": "30716974258"
+  },
+  {
+    "prov_id": 124023,
+    "Nombre": "MAGGI MARIA MARCELA ",
+    "CUIT": "27167208881"
+  },
+  {
+    "prov_id": 124024,
+    "Nombre": "GRUPO CASONAS SRL ",
+    "CUIT": "30715522302"
+  },
+  {
+    "prov_id": 124025,
+    "Nombre": "KARLEN LEONARDO ALBERTO ",
+    "CUIT": "20292534664"
+  },
+  {
+    "prov_id": 124026,
+    "Nombre": "DEMARIA MARIA SOL ",
+    "CUIT": "27425111820"
+  },
+  {
+    "prov_id": 124027,
+    "Nombre": "DEMARCHI CARINA DEL VALLE ",
+    "CUIT": "27297684111"
+  },
+  {
+    "prov_id": 124028,
+    "Nombre": "BAGEVA S.A.S. ",
+    "CUIT": "30718892526"
+  },
+  {
+    "prov_id": 124030,
+    "Nombre": "IGUALADA ASTORGA MARIA VICTORIA ",
+    "CUIT": "27296212283"
+  },
+  {
+    "prov_id": 124032,
+    "Nombre": "LISICKI LITVIN CONSULTORES S.A. ",
+    "CUIT": "30663363014"
+  },
+  {
+    "prov_id": 124041,
+    "Nombre": "SALAZAR SILVIA MARIA",
+    "CUIT": "27175310334"
+  },
+  {
+    "prov_id": 124043,
+    "Nombre": "PERNICONE ERICA EDITH ",
+    "CUIT": "27269427642"
+  },
+  {
+    "prov_id": 124044,
+    "Nombre": "DIRECCION PROVINCIAL DE ADMINISTRACION DE LA SUBSA",
+    "CUIT": "30707519378"
+  },
+  {
+    "prov_id": 124045,
+    "Nombre": "MORON DIEGO HORACIO ",
+    "CUIT": "20218094393"
+  },
+  {
+    "prov_id": 124046,
+    "Nombre": "AMENGUAL ANTONIO ARIEL",
+    "CUIT": "20330621630"
+  },
+  {
+    "prov_id": 124047,
+    "Nombre": "BENCIVENGA EZEQUIEL EUGENIO ",
+    "CUIT": "20310568350"
+  },
+  {
+    "prov_id": 124048,
+    "Nombre": "T C 2000 DIAGNOSTICO POR IMAGENES SRL ",
+    "CUIT": "30649419058"
+  },
+  {
+    "prov_id": 124050,
+    "Nombre": "COLEGIO DE PSICÓLOGOS DEL CHACO ",
+    "CUIT": "30619351904"
+  },
+  {
+    "prov_id": 124051,
+    "Nombre": "INCOR EMERGENCIAS SRL ",
+    "CUIT": "30708605308"
+  },
+  {
+    "prov_id": 124052,
+    "Nombre": "ASOCIACION ROSARINA DE ANESTESIA, ANALGESIA Y RE) ",
+    "CUIT": "30624532372"
+  },
+  {
+    "prov_id": 124053,
+    "Nombre": "MAGI S. A. S. ",
+    "CUIT": "30718996852"
+  },
+  {
+    "prov_id": 124054,
+    "Nombre": "ROJAS NESTOR CARLOS ",
+    "CUIT": "20250529253"
+  },
+  {
+    "prov_id": 124055,
+    "Nombre": "VISOR PRO S.A.S.",
+    "CUIT": "30716413256"
+  },
+  {
+    "prov_id": 124058,
+    "Nombre": "MAMANI LUZCUBIR JUAN JESUS",
+    "CUIT": "20084680037"
+  },
+  {
+    "prov_id": 124059,
+    "Nombre": "LARRAUX CARLOS FELIPE ",
+    "CUIT": "20110805102"
+  },
+  {
+    "prov_id": 124060,
+    "Nombre": "BACHUR MATIAS RAUL",
+    "CUIT": "20303576666"
+  },
+  {
+    "prov_id": 124061,
+    "Nombre": "ARROYO LUIS ALBERTO ",
+    "CUIT": "20210744216"
+  },
+  {
+    "prov_id": 124062,
+    "Nombre": "SEGOVIA DIMAS AGUINALDO ",
+    "CUIT": "20260851331"
+  },
+  {
+    "prov_id": 124063,
+    "Nombre": "BERMUDEZ ISMAEL ",
+    "CUIT": "20232949997"
+  },
+  {
+    "prov_id": 124064,
+    "Nombre": "ESTACION DE SERVICIOS MARIA SRL ",
+    "CUIT": "33714208069"
+  },
+  {
+    "prov_id": 124065,
+    "Nombre": "IBAÑEZ SILVINA PAOLA",
+    "CUIT": "27213414475"
+  },
+  {
+    "prov_id": 124066,
+    "Nombre": "PRODUCCION S A",
+    "CUIT": "30685655329"
+  },
+  {
+    "prov_id": 124067,
+    "Nombre": "CARBONEL FLORENCIA ANA DEL VALLE",
+    "CUIT": "27373103263"
+  },
+  {
+    "prov_id": 124071,
+    "Nombre": "ANALIA PAEZ VELASCO ",
+    "CUIT": "27290608606"
+  },
+  {
+    "prov_id": 124072,
+    "Nombre": "ASOCIACION CHAQUEÑA DE ANESTESIOLOGIA,ANALGESIA YR",
+    "CUIT": "30686074478"
+  },
+  {
+    "prov_id": 124073,
+    "Nombre": "RENAL SRL ",
+    "CUIT": "33702386689"
+  },
+  {
+    "prov_id": 124074,
+    "Nombre": "ASOCIACION RIONEGRINA DE ANESTESIA, ANALGESIA Y RN",
+    "CUIT": "30672998278"
+  },
+  {
+    "prov_id": 124075,
+    "Nombre": "CONSULTORIO RADIOLOGICO SOCIEDAD ANONIMA",
+    "CUIT": "30642164038"
+  },
+  {
+    "prov_id": 124076,
+    "Nombre": "KD SRL",
+    "CUIT": "30716997371"
+  },
+  {
+    "prov_id": 124077,
+    "Nombre": "GRIMBERG GUILLERMO CARLOS ",
+    "CUIT": "20125200495"
+  },
+  {
+    "prov_id": 124078,
+    "Nombre": "PROFESIONES S R L ",
+    "CUIT": "33671611379"
+  },
+  {
+    "prov_id": 124079,
+    "Nombre": "SOSA MARIA PAOLA",
+    "CUIT": "27242418951"
+  },
+  {
+    "prov_id": 124081,
+    "Nombre": "GRAMAJO GABRIEL ",
+    "CUIT": "20213799658"
+  },
+  {
+    "prov_id": 124089,
+    "Nombre": "PINTOS MARIA ALICIA ",
+    "CUIT": "27324761697"
+  },
+  {
+    "prov_id": 124090,
+    "Nombre": "GRUPO GAMMA SA",
+    "CUIT": "30674950892"
+  },
+  {
+    "prov_id": 124091,
+    "Nombre": "INSTITUTO GAMMA SA",
+    "CUIT": "30579538909"
+  },
+  {
+    "prov_id": 124092,
+    "Nombre": "TERAPIA RADIANTE CUMBRES S. A.",
+    "CUIT": "30695402682"
+  },
+  {
+    "prov_id": 124093,
+    "Nombre": "LAS VERTIENTES SA ",
+    "CUIT": "30708250585"
+  },
+  {
+    "prov_id": 124100,
+    "Nombre": "ACORIA BETINA ADALIA",
+    "CUIT": "27320446401"
+  },
+  {
+    "prov_id": 124101,
+    "Nombre": "E-PRINT GRAFICA Y SERVICIOS SAS ",
+    "CUIT": "30716681463"
+  },
+  {
+    "prov_id": 124102,
+    "Nombre": "COSTUMBRES DE CAMPO SA",
+    "CUIT": "30711318948"
+  },
+  {
+    "prov_id": 124103,
+    "Nombre": "RUIZ DIAZ SOFIA ITATI ",
+    "CUIT": "27379214458"
+  },
+  {
+    "prov_id": 124104,
+    "Nombre": "CENTRO PRIVADO DE REHABILITACION S R L",
+    "CUIT": "30632432247"
+  },
+  {
+    "prov_id": 124105,
+    "Nombre": "VILLALOBOS WALTER RUBEN ",
+    "CUIT": "20110915676"
+  },
+  {
+    "prov_id": 124106,
+    "Nombre": "CENTRO DE ONCOLOGIA Y TERAPIA RADIANTE SA ",
+    "CUIT": "30648011195"
+  },
+  {
+    "prov_id": 124107,
+    "Nombre": "SUCESION DE ROSSI CARLOS ENRIQUE",
+    "CUIT": "20060692735"
+  },
+  {
+    "prov_id": 124108,
+    "Nombre": "SYLABUS S.R.L.",
+    "CUIT": "30714347256"
+  },
+  {
+    "prov_id": 124109,
+    "Nombre": "QUISPE CLAUDIA KAREN",
+    "CUIT": "27397399805"
+  },
+  {
+    "prov_id": 124110,
+    "Nombre": "FUNDACION PAMPEANA DE MEDICINA POR IMAGENES ",
+    "CUIT": "30671670058"
+  },
+  {
+    "prov_id": 124111,
+    "Nombre": "MELADO GRACIELA EVA ",
+    "CUIT": "23137057514"
+  },
+  {
+    "prov_id": 124112,
+    "Nombre": "DICHIARA MAURO DANIEL ",
+    "CUIT": "20255960068"
+  },
+  {
+    "prov_id": 124113,
+    "Nombre": "ICARDIO S. A. S.",
+    "CUIT": "30717784010"
+  },
+  {
+    "prov_id": 124114,
+    "Nombre": "ADAMI VIRGINIA DE LOURDES ",
+    "CUIT": "27368492057"
+  },
+  {
+    "prov_id": 124115,
+    "Nombre": "INSTITUTO POLYMEDIC S R L ",
+    "CUIT": "30601323636"
+  },
+  {
+    "prov_id": 124116,
+    "Nombre": "GIORDANO VERONICA EVANGELINA",
+    "CUIT": "27270144115"
+  },
+  {
+    "prov_id": 124117,
+    "Nombre": "CACERES RUBEN ANTONIO ",
+    "CUIT": "20112294946"
+  },
+  {
+    "prov_id": 124118,
+    "Nombre": "DENSITA SRL ",
+    "CUIT": "30714852260"
+  },
+  {
+    "prov_id": 124119,
+    "Nombre": "INSTITUTO OFTALMOLOGICO CORTINA S.R.L.",
+    "CUIT": "30710363605"
+  },
+  {
+    "prov_id": 124120,
+    "Nombre": "MRI SA",
+    "CUIT": "30693547314"
+  },
+  {
+    "prov_id": 124121,
+    "Nombre": "VENERO RAUL LEOPOLDO, VENERO JULIAN JOSE Y ORTIZ",
+    "CUIT": "30693554205"
+  },
+  {
+    "prov_id": 124122,
+    "Nombre": "CLINICA DE OJOS S R L ",
+    "CUIT": "30598411081"
+  },
+  {
+    "prov_id": 124123,
+    "Nombre": "MASINO DANIEL AUGUSTO ",
+    "CUIT": "20275794075"
+  },
+  {
+    "prov_id": 124124,
+    "Nombre": "CLINICA DE TRAUMATOLOGIA Y REHABILITACION SA",
+    "CUIT": "30621474738"
+  },
+  {
+    "prov_id": 124125,
+    "Nombre": "FUNDACION ONCOLOGICA MENDOZA",
+    "CUIT": "30711690561"
+  },
+  {
+    "prov_id": 124126,
+    "Nombre": "CLINICA DE LA VISION S.R.L. ",
+    "CUIT": "30710431120"
+  },
+  {
+    "prov_id": 124127,
+    "Nombre": "CENEDI S R L",
+    "CUIT": "30694868432"
+  },
+  {
+    "prov_id": 124128,
+    "Nombre": "RIGUTTO JORGE LUIS",
+    "CUIT": "20178377621"
+  },
+  {
+    "prov_id": 124129,
+    "Nombre": "VALIENTE ANA CRISTINA ",
+    "CUIT": "27213922616"
+  },
+  {
+    "prov_id": 124130,
+    "Nombre": "MAMMI MARIA LAURA ",
+    "CUIT": "27211104231"
+  },
+  {
+    "prov_id": 124132,
+    "Nombre": "PONCE MARIA VICTORIA",
+    "CUIT": "27301801748"
+  },
+  {
+    "prov_id": 124133,
+    "Nombre": "CATINI LUCIANO",
+    "CUIT": "20364529903"
+  },
+  {
+    "prov_id": 124134,
+    "Nombre": "COMPLEJO ALWA SAS ",
+    "CUIT": "30717914682"
+  },
+  {
+    "prov_id": 124135,
+    "Nombre": "HOTEL ARTAZA S.R.L. ",
+    "CUIT": "30714036633"
+  },
+  {
+    "prov_id": 124136,
+    "Nombre": "TOLOMEI GRISELDA TERESA ",
+    "CUIT": "23121038544"
+  },
+  {
+    "prov_id": 124137,
+    "Nombre": "HERCOR SAS",
+    "CUIT": "30717108511"
+  },
+  {
+    "prov_id": 124139,
+    "Nombre": "POTEL JUNOT SOFIA ",
+    "CUIT": "27401064236"
+  },
+  {
+    "prov_id": 124140,
+    "Nombre": "LIGNUM SA ",
+    "CUIT": "30712926909"
+  },
+  {
+    "prov_id": 124141,
+    "Nombre": "CISTERNA JOSE LUIS",
+    "CUIT": "20064433629"
+  },
+  {
+    "prov_id": 124142,
+    "Nombre": "BLUNNO DIEGO VICTORIO ",
+    "CUIT": "20214002591"
+  },
+  {
+    "prov_id": 124143,
+    "Nombre": "BUSTOS ALEJANDRO GABRIEL",
+    "CUIT": "20252675893"
+  },
+  {
+    "prov_id": 124144,
+    "Nombre": "ROMERO NAZARIO ALEJANDRO",
+    "CUIT": "20299664482"
+  },
+  {
+    "prov_id": 124145,
+    "Nombre": "NUEVO HOLDING BILBAO S. A.",
+    "CUIT": "33714829209"
+  },
+  {
+    "prov_id": 124146,
+    "Nombre": "CABRERA RICARDO ANDRES",
+    "CUIT": "20310565912"
+  },
+  {
+    "prov_id": 124147,
+    "Nombre": "QUINTANA SOLEDAD CINTIA ",
+    "CUIT": "27318643569"
+  },
+  {
+    "prov_id": 124148,
+    "Nombre": "SALVATIERRA MARIANO NICOLAS ",
+    "CUIT": "20270305114"
+  },
+  {
+    "prov_id": 124149,
+    "Nombre": "AZAR MARCELO JORGE",
+    "CUIT": "20257553508"
+  },
+  {
+    "prov_id": 124150,
+    "Nombre": "CANAL VERDE SRL ",
+    "CUIT": "33712048919"
+  },
+  {
+    "prov_id": 124151,
+    "Nombre": "FEDERACION DE BASQUETBOL DE LA PCIA DE CORDOBA",
+    "CUIT": "30682316116"
+  },
+  {
+    "prov_id": 124152,
+    "Nombre": "GREEN CITY SERVICIOS INTEGRALES S.R.L ",
+    "CUIT": "30717075575"
+  },
+  {
+    "prov_id": 124153,
+    "Nombre": "MATAFUEGOS Y SERVICIOS S.R.L. ",
+    "CUIT": "30716317311"
+  },
+  {
+    "prov_id": 124154,
+    "Nombre": "MAGNANO FERNANDO PABLO",
+    "CUIT": "20267970522"
+  },
+  {
+    "prov_id": 124158,
+    "Nombre": "LOPEZ BRENDA FLORENCIA",
+    "CUIT": "27402978541"
+  },
+  {
+    "prov_id": 124159,
+    "Nombre": "BARBOZA GRISELDA ANALIA ",
+    "CUIT": "27358983478"
+  },
+  {
+    "prov_id": 124160,
+    "Nombre": "COLLADO AGUSTINA BETSABE",
+    "CUIT": "27410951016"
+  },
+  {
+    "prov_id": 124161,
+    "Nombre": "DUR S. R. L.",
+    "CUIT": "33711142989"
+  },
+  {
+    "prov_id": 124162,
+    "Nombre": "FLOTAS COMERCIALES S R L",
+    "CUIT": "30708365161"
+  },
+  {
+    "prov_id": 124163,
+    "Nombre": "COLEGIO MEDICO DE CORRIENTES",
+    "CUIT": "30573190692"
+  },
+  {
+    "prov_id": 124164,
+    "Nombre": "NOVARO CLAUDIA ERICA VANESA ",
+    "CUIT": "27231942845"
+  },
+  {
+    "prov_id": 124166,
+    "Nombre": "RAMOS JESICA MERCEDES ",
+    "CUIT": "23366198334"
+  },
+  {
+    "prov_id": 124167,
+    "Nombre": "RODRIGUEZ BOSCHERO RICARDO MAURICIO ",
+    "CUIT": "20260303768"
+  },
+  {
+    "prov_id": 124168,
+    "Nombre": "VILTE ESTRADA NOEL DEL ROCIO",
+    "CUIT": "23387387994"
+  },
+  {
+    "prov_id": 124169,
+    "Nombre": "FLORES YAMILA ELIANA",
+    "CUIT": "27380360298"
+  },
+  {
+    "prov_id": 124170,
+    "Nombre": "CARRASCO GABRIELA ANDREA",
+    "CUIT": "27300145677"
+  },
+  {
+    "prov_id": 124171,
+    "Nombre": "GONZALEZ MARCELA DE LOS ANGELES ",
+    "CUIT": "27343863212"
+  },
+  {
+    "prov_id": 124172,
+    "Nombre": "MONTARO IVAN EMMANUEL ",
+    "CUIT": "23252747249"
+  },
+  {
+    "prov_id": 124176,
+    "Nombre": "ALEGRE KAREN MARIBEL",
+    "CUIT": "27386406354"
+  },
+  {
+    "prov_id": 124177,
+    "Nombre": "GOGGIANO ARIEL EDUARDO",
+    "CUIT": "20266861991"
   }
 ]

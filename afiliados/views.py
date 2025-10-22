@@ -14,7 +14,9 @@ from django.shortcuts import render
 from django.utils.safestring import mark_safe
 from django.conf import settings
 from collections import defaultdict
- 
+
+
+
 class BuscarAfiliadoView(View):
     template_name = 'ate_produccion.html'
  
@@ -366,7 +368,6 @@ class BuscarAfiliadoView(View):
         else:
             return render(request, self.template_name, {'error': f'Error en la solicitud. Código de estado: {response_afiliado.status_code}'}, status=500)
        
-
 
 class BuscarRetencionView(View):
     template_name = 'rete_produccion.html'
@@ -888,6 +889,7 @@ class MesaDeEntradaView(View):
                     expedientes_por_afiliado = defaultdict(list)
                     for exp in expedientes:
                         #print(exp.keys())
+                        #print(exp)
                         key = f"{exp['Nombre']}"
                         #key = f"{exp['Nombre']} ({exp['DNI']})"
                         expedientes_por_afiliado[key].append(exp)
@@ -1383,6 +1385,7 @@ def previsualizar_adjunto(request):
             return JsonResponse({"error": str(e)}, status=400)
     return JsonResponse({"error": "Método no permitido"}, status=405)
 
+
 @csrf_exempt
 def buscar_beneficiario(request):
     if request.method == "GET":
@@ -1417,4 +1420,107 @@ def buscar_beneficiario(request):
             return JsonResponse({'error': str(e)}, status=400)
     
     return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+
+import requests
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+@csrf_exempt
+def crear_remito(request, expediente_id):
+    if request.method == "POST":
+        try:
+            body = json.loads(request.body.decode("utf-8"))
+            sector_destino = body.get("sector_destino")
+            observaciones = body.get("observaciones", None)
+
+            if not sector_destino:
+                return JsonResponse({"error": "Debe indicar un sector destino"}, status=400)
+
+            api_url = f"https://api.nobis.com.ar/crear_remito/{expediente_id}"
+
+            payload = {
+                "sector_destino": sector_destino,
+                "observaciones": observaciones if observaciones else None
+            }
+
+            api_response = requests.post(api_url, json=payload)
+
+            if api_response.status_code != 200:
+                return JsonResponse({"error": "Error al crear remito en API externa"}, status=api_response.status_code)
+
+            data = api_response.json()
+            print(data)
+            return JsonResponse({
+                "mensaje": "Remito creado correctamente",
+                "data": data
+            })
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+
+from django.http import JsonResponse
+
+def obtener_destinos(request, sector_origen):
+    """
+    Devuelve los posibles sectores destino según el sector de origen.
+    No consulta API externa; usa un diccionario local.
+    """
+    try:
+        # Diccionario manual de rutas posibles
+        destinos_por_sector = {
+            9: [  # Agentes de Atención
+                {"id": 5, "nombre": "Gestión de Padrón"},
+                {"id": 14, "nombre": "Afiliaciones"},
+                {"id": 18, "nombre": "Gestión de Prestaciones"},
+                {"id": 21, "nombre": "Compras Medicas"},
+                {"id": 26, "nombre": "Auditor Presencial SZC"},
+                {"id": 27, "nombre": "Agente Interna"},
+                {"id": 28, "nombre": "Auditor Presencial SZN"},
+                {"id": 29, "nombre": "Auditor CAT"},
+                {"id": 30, "nombre": "Auditor Region la Chaya"},
+                {"id": 31, "nombre": "Auditor Región Centro"},
+                {"id": 33, "nombre": "Auditor Preferencial"},
+                {"id": 38, "nombre": "Carga App - Autorizado"},
+                {"id": 39, "nombre": "Carga App - Rechazado"},
+                {"id": 40, "nombre": "Auditor CAV"},
+                {"id": 41, "nombre": "Auditor Región Este"},
+                {"id": 42, "nombre": "Auditor Region Madre de Ciudades"},
+                {"id": 43, "nombre": "Auditor Region Jardin de la Rep"},
+                {"id": 44, "nombre": "Auditor Region La linda"},
+                {"id": 45, "nombre": "Soporte de Atención"},
+                {"id": 46, "nombre": "ACO Autorizados"},
+                {"id": 55, "nombre": "Fidelización y Continuidad"},
+                {"id": 56, "nombre": "Auditor odonto Centro"},
+                {"id": 57, "nombre": "Auditor odonto NOA"},
+                {"id": 59, "nombre": "Repositorio de tramites"},
+                {"id": 60, "nombre": "Repositorio de tramites rechazados"},
+                {"id": 61, "nombre": "Auditor reintegros APP"},
+                {"id": 68, "nombre": "Afiliaciones NOA"},
+                {"id": 70, "nombre": "Afiliaciones Centro y Cuyo"},
+                {"id": 73, "nombre": "Pendiente de pago"},
+                {"id": 74, "nombre": "Tramites Desestimados"},
+                {"id": 78, "nombre": "Rechazo Reintegro App"},
+            ],
+            55: [  # Fidelización y continuidad
+                {"id": 5, "nombre": "Gestión de Padrón"},
+                {"id": 60, "nombre": "Repositorio de tramites rechazados"},
+            ],
+            # Podés seguir agregando sectores aquí si es necesario
+        }
+
+        sector_origen = int(sector_origen)
+        destinos = destinos_por_sector.get(sector_origen, [])
+
+        if not destinos:
+            return JsonResponse({"error": "No hay destinos configurados para este sector"}, status=404)
+
+        return JsonResponse({"destinos": destinos})
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=400)
 

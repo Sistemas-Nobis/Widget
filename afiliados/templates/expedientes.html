@@ -244,6 +244,11 @@ tr:nth-child(odd) td {
 
 .btn-ver-detalle { padding: 4px 8px; line-height: 1; }
 
+.btn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 
 </style>
 </head>
@@ -384,6 +389,9 @@ tr:nth-child(odd) td {
             </div>
           </div>
           <div class="modal-footer">
+            <button type="button" class="btn btn-success" id="btnRemitos">
+              <i class="fa fa-truck"></i> Remitos
+            </button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
           </div>
         </div>
@@ -416,6 +424,105 @@ tr:nth-child(odd) td {
         </div>
     </div>
     </div>
+
+    <!-- Modal Crear Remito -->
+    <div class="modal fade" id="modalRemito" tabindex="-1" aria-labelledby="modalRemitoLabel">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-success text-white">
+            <h5 class="modal-title" id="modalRemitoLabel">Crear Remito</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <form id="formRemito" class="px-1">
+              
+              <!-- Número de expediente -->
+              <div class="mb-3 d-flex align-items-center justify-content-between">
+                <label class="form-label fw-bold mb-0 me-3" style="min-width: 160px;">Número de Expediente:</label>
+                <div id="remitoExpediente" class="flex-grow-1 form-control-plaintext border rounded p-2 bg-light text-dark"></div>
+              </div>
+
+              <!-- Sector actual -->
+              <div class="mb-3 d-flex align-items-center justify-content-between">
+                <label class="form-label fw-bold mb-0 me-3" style="min-width: 160px;">Sector actual:</label>
+                <div id="remitoSectorActual" class="flex-grow-1 form-control-plaintext border rounded p-2 bg-light text-dark"></div>
+              </div>
+
+              <!-- Destino -->
+              <div class="mb-3 d-flex align-items-center justify-content-between">
+                <label class="form-label fw-bold mb-0 me-3" style="min-width: 160px;">Destino:</label>
+                <select class="form-select flex-grow-1" id="remitoDestino" required>
+                  <option value="">Seleccione un destino...</option>
+                  <option value="Archivo">Archivo</option>
+                  <option value="Mesa de Entrada">Mesa de Entrada</option>
+                  <option value="Dirección">Dirección</option>
+                  <option value="Otros">Otros</option>
+                </select>
+              </div>
+
+              <!-- Observaciones -->
+              <div class="mb-3">
+                <label class="form-label fw-bold">Observaciones:</label>
+                <textarea 
+                  class="form-control" 
+                  id="remitoObservaciones" 
+                  rows="3" 
+                  maxlength="255" 
+                  placeholder="Ingrese observaciones (máx. 255 caracteres)">
+                </textarea>
+                <div class="text-end small text-muted">
+                  <span id="obsCount">0</span>/255
+                </div>
+              </div>
+
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="volverADetalle">
+              ← Volver
+            </button>
+            <button type="button" class="btn btn-primary" id="guardarRemito">
+              💾 Grabar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mini Modal de Notificación -->
+    <div class="modal fade" id="miniModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center" id="miniModalContent">
+          <div class="modal-body p-4">
+            <i id="miniModalIcon" class="fa-solid fa-circle-check fa-2x mb-3"></i>
+            <h5 id="miniModalTitulo" class="fw-bold mb-1">Éxito</h5>
+            <p id="miniModalMensaje" class="mb-0">Operación completada correctamente</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+    #miniModal .modal-content {
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      transition: all 0.3s ease-in-out;
+    }
+    #miniModal .modal-body {
+      font-family: 'Roboto', sans-serif;
+    }
+    #miniModal.mini-success #miniModalContent {
+      background-color: #e7f8ec;
+      color: #0e8c13;
+      border: 2px solid #0e8c13;
+    }
+    #miniModal.mini-error #miniModalContent {
+      background-color: #fdeaea;
+      color: #d92525;
+      border: 2px solid #d92525;
+    }
+    </style>
+
 
     <!-- Bootstrap 5 JS (para el modal) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -777,6 +884,197 @@ tr:nth-child(odd) td {
         setTimeout(aplicarFiltrosSobreTabla, 0);
       });
     });
+
+    // --- MODALES REMITO ---
+    let expedienteActual = null;
+
+    // Cuando se abre el detalle, guardamos el expediente activo
+    document.body.addEventListener('click', function(e) {
+      if (e.target && e.target.classList.contains('btn-ver-detalle')) {
+        const expId = e.target.getAttribute('data-exp-id');
+        const afiliadoIdx = e.target.getAttribute('data-afiliado-idx');
+        const exps = afiliados_data[afiliadoIdx][1];
+        const expediente = exps.find(exp => exp.expId == expId || exp.expId == parseInt(expId));
+
+        expedienteActual = expediente;
+
+        // --- Lógica del sector actual ---
+        const sectorId = parseInt(expediente.sectorId);
+        let sectorActualTexto = expediente.sectorNom || "Sin sector";
+
+        if (sectorId === 9) {
+          sectorActualTexto = "Agentes de Atención";
+        } else if (sectorId === 55) {
+          sectorActualTexto = "Fidelización y continuidad";
+        }
+
+        // Guardamos el texto corregido dentro del expediente actual
+        expedienteActual.sectorNom = sectorActualTexto;
+
+        // --- Manejo del botón Remitos ---
+        const btnRemitos = document.getElementById('btnRemitos');
+        if (sectorId === 9 || sectorId === 55) {
+          btnRemitos.disabled = false;
+          btnRemitos.title = "Crear remito";
+        } else {
+          btnRemitos.disabled = true;
+          btnRemitos.title = "No puede crear remito desde este sector";
+        }
+      }
+    });
+
+    // Botón "Remitos"
+    document.getElementById('btnRemitos').addEventListener('click', async () => {
+      if (!expedienteActual) return;
+
+      const destinoSelect = document.getElementById('remitoDestino');
+      destinoSelect.innerHTML = '<option value="">Cargando destinos...</option>';
+
+      // Llenamos datos fijos en labels
+      document.getElementById('remitoExpediente').textContent = expedienteActual.expedienteNro;
+      document.getElementById('remitoSectorActual').textContent = expedienteActual.sectorNom;
+
+      // Limpiamos observaciones
+      document.getElementById('remitoObservaciones').value = "";
+      document.getElementById('obsCount').textContent = "0";
+
+      // Ocultamos el modal de detalle
+      const detalleModal = bootstrap.Modal.getInstance(document.getElementById('detalleExpedienteModal'));
+      detalleModal.hide();
+
+      // --- Cargar destinos según sector origen ---
+      try {
+        const response = await fetch(`/obtener_destinos/${expedienteActual.sectorId}/`);
+        const data = await response.json();
+
+        if (!response.ok) throw new Error(data.error || "Error al cargar destinos");
+
+        // Armar opciones del select
+        const opciones = data.destinos
+          .map(dest => `<option value="${dest.id}">${dest.nombre}</option>`)
+          .join('');
+        destinoSelect.innerHTML = `<option value="">Seleccione un destino...</option>${opciones}`;
+      } catch (err) {
+        destinoSelect.innerHTML = '<option value="">Sin destinos disponibles</option>';
+        alert("⚠️ " + err.message);
+      }
+
+      // Mostrar el modal
+      const remitoModal = new bootstrap.Modal(document.getElementById('modalRemito'));
+      remitoModal.show();
+    });
+
+
+    // Contador de caracteres del campo observaciones
+    document.getElementById('remitoObservaciones').addEventListener('input', (e) => {
+      const len = e.target.value.length;
+      document.getElementById('obsCount').textContent = len;
+    });
+
+
+    // Botón "Volver" en el modal de remito
+    document.getElementById('volverADetalle').addEventListener('click', () => {
+      const remitoModal = bootstrap.Modal.getInstance(document.getElementById('modalRemito'));
+      remitoModal.hide();
+
+      const detalleModal = new bootstrap.Modal(document.getElementById('detalleExpedienteModal'));
+      detalleModal.show();
+    });
+
+    document.getElementById('guardarRemito').addEventListener('click', async () => {
+      const destinoSelect = document.getElementById('remitoDestino');
+      const destino = destinoSelect.value;
+      const observaciones = document.getElementById('remitoObservaciones').value.trim();
+
+      if (!destino) {
+        mostrarMiniModal("error", "Atención", "Debe seleccionar un destino antes de grabar.");
+        return;
+      }
+
+      try {
+        const csrftoken = getCookie('csrftoken');
+        const response = await fetch(`/crear_remito/${expedienteActual.expId}/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken
+          },
+          body: JSON.stringify({
+            sector_destino: parseInt(destino),
+            observaciones: observaciones || null
+          })
+        });
+
+        const text = await response.text();
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch {
+          throw new Error("Respuesta no válida del servidor");
+        }
+
+        if (!response.ok) {
+          throw new Error(data.error || "Error desconocido al crear el remito");
+        }
+
+        // Obtener el ID de remito desde la respuesta (puede venir como 'mRem_id' o dentro de 'data')
+        let remitoId = null;
+        if (data.mRem_id) {
+          remitoId = data.mRem_id;
+        } else if (data.data && data.data.mRem_id) {
+          remitoId = data.data.mRem_id;
+        }
+
+        // Cerrar modal actual
+        const remitoModal = bootstrap.Modal.getInstance(document.getElementById('modalRemito'));
+        remitoModal.hide();
+
+        // Mostrar mini modal con el ID del remito
+        if (remitoId) {
+          mostrarMiniModal("success", "Remito creado", `Se creó correctamente el remito Nº ${remitoId}.`);
+        } else {
+          mostrarMiniModal("success", "Remito creado", "Remito creado correctamente (sin ID devuelto).");
+        }
+
+      } catch (err) {
+        mostrarMiniModal("error", "Error", err.message);
+      }
+    });
+
+    // Mini modal de notificación
+    function mostrarMiniModal(tipo, titulo, mensaje) {
+      const modalEl = document.getElementById('miniModal');
+      const modalContent = document.getElementById('miniModalContent');
+      const icon = document.getElementById('miniModalIcon');
+      const titleEl = document.getElementById('miniModalTitulo');
+      const msgEl = document.getElementById('miniModalMensaje');
+
+      if (tipo === "success") {
+        modalEl.classList.add("mini-success");
+        modalEl.classList.remove("mini-error");
+        icon.className = "fa-solid fa-circle-check fa-2x mb-3";
+      } else {
+        modalEl.classList.add("mini-error");
+        modalEl.classList.remove("mini-success");
+        icon.className = "fa-solid fa-circle-xmark fa-2x mb-3";
+      }
+
+      titleEl.textContent = titulo;
+      msgEl.textContent = mensaje;
+
+      const bsModal = new bootstrap.Modal(modalEl, {
+        backdrop: "static",
+        keyboard: false
+      });
+      bsModal.show();
+
+      // Ocultar automáticamente a los 5 s
+      setTimeout(() => {
+        bsModal.hide();
+      }, 5000);
+    }
+
+
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
