@@ -1038,6 +1038,11 @@ tr:nth-child(odd) td {
           mostrarMiniModal("success", "Remito creado", "Remito creado correctamente (sin ID devuelto).");
         }
 
+        // Recargar automáticamente después de cerrar el mini modal
+        setTimeout(() => {
+          window.location.href = window.location.pathname;
+        }, 1000);
+
       } catch (err) {
         mostrarMiniModal("error", "Error", err.message);
       }
