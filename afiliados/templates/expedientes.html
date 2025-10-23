@@ -944,7 +944,8 @@ tr:nth-child(odd) td {
 
       // --- Cargar destinos según sector origen ---
       try {
-        const response = await fetch(`/obtener_destinos/${expedienteActual.sectorId}/`);
+        //const response = await fetch(`/obtener_destinos/${expedienteActual.sectorId}/`);
+        const response = await fetch(`/widget/obtener_destinos/${expedienteActual.sectorId}/`);
         const data = await response.json();
 
         if (!response.ok) throw new Error(data.error || "Error al cargar destinos");
@@ -993,7 +994,8 @@ tr:nth-child(odd) td {
 
       try {
         const csrftoken = getCookie('csrftoken');
-        const response = await fetch(`/crear_remito/${expedienteActual.expId}/`, {
+        //const response = await fetch(`/crear_remito/${expedienteActual.expId}/`, {
+        const response = await fetch(`/widget/crear_remito/${expedienteActual.expId}/`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
