@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import BuscarAfiliadoView, BuscarRetencionView, MesaDeEntradaView
 from .views import guardar_expediente, archivo_expediente, cotizar_actual, descargar_adjunto, previsualizar_adjunto, buscar_beneficiario, obtener_destinos, crear_remito
-
+from .views import obtener_generadores_api, obtener_generadores
 app_name = 'afiliados'
 
 urlpatterns = [
@@ -22,5 +22,7 @@ urlpatterns = [
 
     path('obtener_destinos/<int:sector_origen>/', obtener_destinos, name='obtener_destinos'),
     path('crear_remito/<int:expediente_id>/', crear_remito, name='crear_remito'),
+
+    path('obtener_generadores/<int:sector_origen>/', obtener_generadores_api, name='obtener_generadores'),
 
 ]

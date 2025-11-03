@@ -448,15 +448,17 @@ tr:nth-child(odd) td {
                 <div id="remitoSectorActual" class="flex-grow-1 form-control-plaintext border rounded p-2 bg-light text-dark"></div>
               </div>
 
+              <!-- Generadores -->
+              <div class="mb-3">
+                <label class="form-label fw-bold">Generador:</label>
+                <select class="form-select flex-grow-1" id="remitoGenerador" required>
+                </select>
+              </div>
+
               <!-- Destino -->
               <div class="mb-3">
                 <label class="form-label fw-bold">Destino:</label>
                 <select class="form-select flex-grow-1" id="remitoDestino" required>
-                  <option value="">Seleccione un destino...</option>
-                  <option value="Archivo">Archivo</option>
-                  <option value="Mesa de Entrada">Mesa de Entrada</option>
-                  <option value="Dirección">Dirección</option>
-                  <option value="Otros">Otros</option>
                 </select>
               </div>
 
@@ -515,6 +517,11 @@ tr:nth-child(odd) td {
       background-color: #e7f8ec;
       color: #0e8c13;
       border: 2px solid #0e8c13;
+    }
+    #miniModal.mini-warning #miniModalContent {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 2px solid #ffc107;
     }
     #miniModal.mini-error #miniModalContent {
       background-color: #fdeaea;
@@ -927,6 +934,9 @@ tr:nth-child(odd) td {
     document.getElementById('btnRemitos').addEventListener('click', async () => {
       if (!expedienteActual) return;
 
+      const generadorSelect = document.getElementById('remitoGenerador');
+      generadorSelect.innerHTML = '<option value="">Cargando generadores...</option>';
+
       const destinoSelect = document.getElementById('remitoDestino');
       destinoSelect.innerHTML = '<option value="">Cargando destinos...</option>';
 
@@ -941,6 +951,41 @@ tr:nth-child(odd) td {
       // Ocultamos el modal de detalle
       const detalleModal = bootstrap.Modal.getInstance(document.getElementById('detalleExpedienteModal'));
       detalleModal.hide();
+
+      // --- Cargar generadores según sector origen ---
+      try {
+        const response = await fetch(`/widget/obtener_generadores/${expedienteActual.sectorId}/`);
+        //const response = await fetch(`/obtener_generadores/${expedienteActual.sectorId}/`);
+        const data = await response.json();
+
+        // Obtener el contenedor del select de forma más segura
+        const generadorContainer = document.getElementById('remitoGenerador')?.closest('.mb-3');
+        
+        if (!generadorContainer) {
+          console.error("No se encontró el contenedor del generador");
+        } else {
+          // Verificar si hay datos válidos
+          if (!response.ok || !Array.isArray(data) || data.length === 0) {
+            // Ocultar el contenedor del select de generadores
+            generadorContainer.style.display = 'none';
+          } else {
+            // Mostrar el contenedor y cargar opciones
+            generadorContainer.style.display = 'block';
+            
+            const opciones = data
+              .map(gen => `<option value="${gen.mGen_id}">${gen.mGen_nom}</option>`)
+              .join('');
+            generadorSelect.innerHTML = `<option value="">Seleccione un generador...</option>${opciones}`;
+          }
+        }
+      } catch (err) {
+        // Ocultar el contenedor en caso de error
+        const generadorContainer = document.getElementById('remitoGenerador')?.closest('.mb-3');
+        if (generadorContainer) {
+          generadorContainer.style.display = 'none';
+        }
+        console.error("Error al cargar generadores:", err.message);
+      }
 
       // --- Cargar destinos según sector origen ---
       try {
@@ -985,6 +1030,8 @@ tr:nth-child(odd) td {
     document.getElementById('guardarRemito').addEventListener('click', async () => {
       const destinoSelect = document.getElementById('remitoDestino');
       const destino = destinoSelect.value;
+      const generadorSelect = document.getElementById('remitoGenerador');
+      const generador = generadorSelect.value;
       const observaciones = document.getElementById('remitoObservaciones').value.trim();
 
       if (!destino) {
@@ -994,17 +1041,21 @@ tr:nth-child(odd) td {
 
       try {
         const csrftoken = getCookie('csrftoken');
-        //const response = await fetch(`/crear_remito/${expedienteActual.expId}/`, {
+        
+        const requestBody = {
+          sector_destino: parseInt(destino),
+          generador_id: generador ? parseInt(generador) : 0,
+          observaciones: observaciones || null
+        };
+
         const response = await fetch(`/widget/crear_remito/${expedienteActual.expId}/`, {
+        //const response = await fetch(`/crear_remito/${expedienteActual.expId}/`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             "X-CSRFToken": csrftoken
           },
-          body: JSON.stringify({
-            sector_destino: parseInt(destino),
-            observaciones: observaciones || null
-          })
+          body: JSON.stringify(requestBody)
         });
 
         const text = await response.text();
@@ -1019,7 +1070,7 @@ tr:nth-child(odd) td {
           throw new Error(data.error || "Error desconocido al crear el remito");
         }
 
-        // Obtener el ID de remito desde la respuesta (puede venir como 'mRem_id' o dentro de 'data')
+        // Obtener el ID de remito desde la respuesta
         let remitoId = null;
         if (data.mRem_id) {
           remitoId = data.mRem_id;
@@ -1031,11 +1082,16 @@ tr:nth-child(odd) td {
         const remitoModal = bootstrap.Modal.getInstance(document.getElementById('modalRemito'));
         remitoModal.hide();
 
-        // Mostrar mini modal con el ID del remito
-        if (remitoId) {
-          mostrarMiniModal("success", "Remito creado", `Se creó correctamente el remito Nº ${remitoId}.`);
+        // Verificar si hay advertencia
+        if (data.advertencia) {
+          mostrarMiniModal("warning", "Advertencia", data.advertencia);
         } else {
-          mostrarMiniModal("success", "Remito creado", "Remito creado correctamente (sin ID devuelto).");
+          // Mostrar mini modal con el ID del remito
+          if (remitoId) {
+            mostrarMiniModal("success", "Remito creado", `Se creó correctamente el remito Nº ${remitoId}.`);
+          } else {
+            mostrarMiniModal("success", "Remito creado", "Remito creado correctamente (sin ID devuelto).");
+          }
         }
 
         // Recargar automáticamente después de cerrar el mini modal
@@ -1056,10 +1112,16 @@ tr:nth-child(odd) td {
       const titleEl = document.getElementById('miniModalTitulo');
       const msgEl = document.getElementById('miniModalMensaje');
 
+      // Remover todas las clases de tipo
+      modalEl.classList.remove("mini-success", "mini-error", "mini-warning");
+
       if (tipo === "success") {
         modalEl.classList.add("mini-success");
         modalEl.classList.remove("mini-error");
         icon.className = "fa-solid fa-circle-check fa-2x mb-3";
+      } else if (tipo === "warning") {
+        modalEl.classList.add("mini-warning");
+        icon.className = "fa-solid fa-triangle-exclamation fa-2x mb-3";
       } else {
         modalEl.classList.add("mini-error");
         modalEl.classList.remove("mini-success");

@@ -1433,6 +1433,7 @@ def crear_remito(request, expediente_id):
         try:
             body = json.loads(request.body.decode("utf-8"))
             sector_destino = body.get("sector_destino")
+            generador_id = body.get("generador_id", 0)
             observaciones = body.get("observaciones", None)
 
             if not sector_destino:
@@ -1451,11 +1452,43 @@ def crear_remito(request, expediente_id):
                 return JsonResponse({"error": "Error al crear remito en API externa"}, status=api_response.status_code)
 
             data = api_response.json()
-            print(data)
-            return JsonResponse({
+            #print(data)
+
+            #print(f"Remito ID: {data.get("mRem_id")}")
+
+            # Variable para almacenar advertencias
+            advertencia = None
+
+            # Si hay un generador_id válido (distinto de 0), llamar a la API de generador
+            if generador_id and generador_id != 0:
+                try:
+                    print(f"Expediente {expediente_id} y generador {generador_id}")
+                    generador_url = f"https://api.nobis.com.ar/generador_exp/{expediente_id}?generador_id={generador_id}"
+                    generador_response = requests.put(generador_url)
+                    
+                    if generador_response.status_code == 409:
+                        advertencia = f"Remito creado ID: {data.get("mRem_id")}, el generador actual es el mismo."
+                        print(f"Advertencia: {advertencia}")
+                    elif generador_response.status_code != 200:
+                        advertencia = f"Remito creado ID: {data.get("mRem_id")}, pero no se pudo asociar el generador al expediente."
+                        print(f"Advertencia: {advertencia}")
+                    else:
+                        print(f"Generador {generador_id} asignado correctamente al expediente {expediente_id}")
+                
+                except Exception as gen_error:
+                    advertencia = f"Remito creado, pero no se pudo asociar el generador al expediente: {str(gen_error)}"
+                    print(f"Advertencia: {advertencia}")
+
+            response_data = {
                 "mensaje": "Remito creado correctamente",
                 "data": data
-            })
+            }
+
+            # Agregar advertencia si existe
+            if advertencia:
+                response_data["advertencia"] = advertencia
+
+            return JsonResponse(response_data)
 
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
@@ -1524,3 +1557,96 @@ def obtener_destinos(request, sector_origen):
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=400)
 
+    
+def obtener_generadores(request, sector_origen):
+    """
+    Devuelve los posibles generadores según el sector de origen.
+    Usa un diccionario local basado en la imagen proporcionada.
+    """
+    try:
+        # Diccionario de generadores por sector
+        generadores_por_sector = {
+            9: [  # Agentes de Atención - 9
+                {"mGen_id": 60, "mGen_cod": "60", "mGen_nom": "CONTINUIDAD"},
+                {"mGen_id": 63, "mGen_cod": "63", "mGen_nom": "DESUNIFICACION"},
+                {"mGen_id": 65, "mGen_cod": "65", "mGen_nom": "DESCUENTO"},
+                {"mGen_id": 71, "mGen_cod": "71", "mGen_nom": "DEVOLUCION DE PLAN"},
+                {"mGen_id": 73, "mGen_cod": "73", "mGen_nom": "Crédito"},
+                {"mGen_id": 74, "mGen_cod": "74", "mGen_nom": "Débito"},
+                {"mGen_id": 75, "mGen_cod": "75", "mGen_nom": "Contado"},
+            ],
+            999: [  # Fidelización y continuidad - 55
+                {"mGen_id": 60, "mGen_cod": "60", "mGen_nom": "CONTINUIDAD"},
+                {"mGen_id": 63, "mGen_cod": "63", "mGen_nom": "DESUNIFICACION"},
+                {"mGen_id": 65, "mGen_cod": "65", "mGen_nom": "DESCUENTO"},
+                {"mGen_id": 71, "mGen_cod": "71", "mGen_nom": "DEVOLUCION DE PLAN"},
+                {"mGen_id": 73, "mGen_cod": "73", "mGen_nom": "Crédito"},
+                {"mGen_id": 74, "mGen_cod": "74", "mGen_nom": "Débito"},
+                {"mGen_id": 75, "mGen_cod": "75", "mGen_nom": "Contado"},
+            ],
+        }
+
+        sector_origen = int(sector_origen)
+        generadores = generadores_por_sector.get(sector_origen, [])
+
+        if not generadores:
+            return JsonResponse({"error": "No hay generadores configurados para este sector"}, status=404)
+
+        return JsonResponse(generadores, safe=False)
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=400)
+    
+
+def obtener_generadores_api(request, sector_origen):
+    """
+    Devuelve los posibles generadores según el sector de origen.
+    - Si sector_origen = 9 → tipos 37 y 38
+    - Si sector_origen = 55 → tipo 38
+    """
+
+    try:
+        # Determinar URL según sector_origen
+        if sector_origen == 9:
+            api_url = "https://api.nobis.com.ar/generadores/37,38"
+        elif sector_origen == 55:
+            api_url = "https://api.nobis.com.ar/generadores/38"
+        else:
+            return JsonResponse({
+                "error": f"No se definen generadores para el sector de origen {sector_origen}"
+            }, status=400)
+
+        # Llamada a la API
+        api_response = requests.get(api_url, timeout=10)
+
+        if api_response.status_code != 200:
+            return JsonResponse({"error": "No se pudo obtener los generadores"}, status=404)
+
+        # Parsear JSON
+        data = api_response.json()
+        if not data or not isinstance(data, list):
+            return JsonResponse({"error": "No se encontraron generadores"}, status=404)
+
+        # Formatear resultado
+        generadores = [
+            {
+                "mGen_id": item.get("mGen_id"),
+                "mGen_cod": item.get("mGen_cod"),
+                "mGen_nom": item.get("mGen_nom"),
+                "mTipoGen_id": item.get("mTipoGen_id"),
+                "mTipoGen_nom": item.get("mTipoGen_nom")
+            }
+            for item in data
+        ]
+
+        if not generadores:
+            return JsonResponse({"error": "No hay generadores disponibles"}, status=404)
+
+        return JsonResponse(generadores, safe=False)
+
+    except requests.exceptions.RequestException as e:
+        return JsonResponse({"error": f"Error de conexión con la API: {e}"}, status=500)
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=400)
+    
