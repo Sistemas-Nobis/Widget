@@ -1467,10 +1467,10 @@ def crear_remito(request, expediente_id):
                     generador_response = requests.put(generador_url)
                     
                     if generador_response.status_code == 409:
-                        advertencia = f"Remito creado ID: {data.get("mRem_id")}, el generador actual es el mismo."
+                        advertencia = f"Remito creado ID: {data.get('mRem_id')}, el generador actual es el mismo."
                         print(f"Advertencia: {advertencia}")
                     elif generador_response.status_code != 200:
-                        advertencia = f"Remito creado ID: {data.get("mRem_id")}, pero no se pudo asociar el generador al expediente."
+                        advertencia = f"Remito creado ID: {data.get('mRem_id')}, pero no se pudo asociar el generador al expediente."
                         print(f"Advertencia: {advertencia}")
                     else:
                         print(f"Generador {generador_id} asignado correctamente al expediente {expediente_id}")
