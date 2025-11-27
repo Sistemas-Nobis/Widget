@@ -114,7 +114,7 @@ def buscar_cobertura(coberturas):
 
     for cobertura in lista_coberturas:
         for registro in preexistencias:
-            print(registro["Patologia"])
+            #print(registro["Patologia"])
             patologia_value = registro["Patologia"]
 
             # Verificar si el valor es válido

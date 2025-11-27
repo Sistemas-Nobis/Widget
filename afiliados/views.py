@@ -628,17 +628,17 @@ class BuscarRetencionView(View):
  
                         if afiliado.get("esTitular"):
                             # Tomar tipo de beneficiario del titular
-                            print(nro_afi)
+                            #print(nro_afi)
 
                             url_tipoben = f"https://api.nobis.com.ar/tipo_ben/{nro_afi}"
                             response_tipoben = requests.get(url_tipoben, headers=headers_interno)
 
                             if response_tipoben.status_code == 200:
                                 data_tipoben = response_tipoben.json()
-                                print(nro_afi)
+                                #print(nro_afi)
 
                                 tipo_beneficiario = data_tipoben[0].get("tipoBen_nom") #DNI de agente de cuenta
-                                print(f"Tipo afi: {tipo_beneficiario}")
+                                #print(f"Tipo afi: {tipo_beneficiario}")
 
                                 if tipo_beneficiario:
                                     convenio_id = condicion_grupal(tipo_beneficiario) # Reevaluar convenio y matchear con el ID del html
@@ -696,17 +696,22 @@ class BuscarRetencionView(View):
                             patologias_id = data_p[0].get('id_cobertura_especial')
                             
                             if patologia != None:
-                                #print(patologia)
+                                #print(f"Patologia: {patologia}")
                                 busqueda = buscar_cobertura(patologia)
-                                #print(busqueda)
+                                #print(f"Primera busqueda: {busqueda}")
                                 if busqueda == []:
-                                    #print(f"Segunda busqueda: {patologias_id}")
+                                    #print(f"PB = [] -> Iniciando segunda busqueda por ID: {patologias_id}")
                                     busqueda = buscar_preexistencias(patologias_id)
-                                    #print(busqueda)
+                                    #print(f"Resultado de busqueda de preexistencias: {busqueda}")
                                 
-                                afiliado_info['Patologias'] = busqueda
-                                afiliado_info['Cobertura_especial'] = patologia
-                                #print("Encontrado.")
+                                if busqueda == "No se encontraron coincidencias.":
+                                    afiliado_info['Patologias'] = []
+                                    afiliado_info['Cobertura_especial'] = patologia
+                                    #print("No se encontraron coincidencias de homologación. - Cobertura especial:", patologia)
+                                else:
+                                    afiliado_info['Patologias'] = busqueda
+                                    afiliado_info['Cobertura_especial'] = patologia
+                                    #print(f"Encontrado: {busqueda} - Cob: {patologia}")
                             else:
                                 afiliado_info['Cobertura_especial'] = 'Sin cobertura especial'
                                 #print("SIN COBERTURA ESPECIAL")
