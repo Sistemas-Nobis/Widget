@@ -539,6 +539,7 @@
         // Función para abrir el modal
         function openModal(provincia, fecha_alta, estado, patologias) {
             console.log('OK:', provincia, fecha_alta, estado, patologias);
+            
             var etiquetas;
             if (typeof patologias === 'string' && patologias.trim() !== '') {
                 etiquetas = patologias; // Es una cadena válida
@@ -1116,11 +1117,13 @@
             const provincia = document.getElementById('provincias').value;
             const convenio = document.getElementById('convenio').value;
             const planSelect = document.getElementById('plan');
+
+            //console.log(provincia, convenio);
             
             // Opciones de planes disponibles
-            // 1 RD -> 2 RD
-            // 2 MT -> 1 MT
-            // 3 PP -> 0 PP
+            // 1 RD -> 2 RD -> TODOS
+            // 2 MT -> 1 MT -> SIN B150
+            // 3 PP -> 0 PP -> SIN B150 NI B300
             const planesDisponibles = {
                 'BUENOS_AIRES': {
                     '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
@@ -1133,12 +1136,12 @@
                     '0': ['B200', 'N200', 'N400', 'N500']
                 },
                 'CHACO': {
-                    '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
+                    '2': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
                     '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
                     '0': ['B200', 'N200', 'N400', 'N500']
                 },
                 'CHUBUT': {
-                    '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
+                    '2': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
                     '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
                     '0': ['B200', 'N200', 'N400', 'N500']
                 },
@@ -1148,17 +1151,17 @@
                     '0': ['B200', 'N200', 'N400', 'N500']
                 },
                 'CORRIENTES': {
-                    '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
+                    '2': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
                     '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
                     '0': ['B200', 'N200', 'N400', 'N500']
                 },
                 'ENTRE_RIOS': {
-                    '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
+                    '2': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
                     '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
                     '0': ['B200', 'N200', 'N400', 'N500']
                 },
                 'FORMOSA': {
-                    '2': ['B200', 'B300', 'N200', 'N400', 'N500'],
+                    '2': ['B150', 'B200', 'B300', 'N200', 'N400', 'N500'],
                     '1': ['B200', 'B300', 'N200', 'N400', 'N500'],
                     '0': ['B200', 'N200', 'N400', 'N500']
                 },
@@ -1352,6 +1355,7 @@
 
                 // Calcular el total grupal al cargar la página
                 calcularTotalGrupal();
+                actualizarPlanes(); // Asegura que los planes estén actualizados al abrir el modal
 
                 // Calcular el total grupal al seleccionar o deseleccionar opciones
                 $(document).on('select2:select select2:unselect', '.mi-select', function () {

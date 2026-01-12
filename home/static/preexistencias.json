@@ -1,96 +1,96 @@
 [
     {
-        "Costo_mensual": 4463,
+        "Costo_mensual": 4680,
         "ID": 1,
         "Patologia": "VITILIGO"
     },
     {
-        "Costo_mensual": 13614,
+        "Costo_mensual": 14952,
         "ID": 2,
         "Patologia": "HTA"
     },
     {
-        "Costo_mensual": 11597,
+        "Costo_mensual": 12160,
         "ID": 3,
         "Patologia": "AMIGDALITIS SIN TRATAR"
     },
     {
-        "Costo_mensual": 10593,
+        "Costo_mensual": 11107,
         "ID": 4,
         "Patologia": "DISFONIA"
     },
     {
-        "Costo_mensual": 21428,
+        "Costo_mensual": 23533,
         "ID": 5,
         "Patologia": "MIGRAÑA"
     },
     {
-        "Costo_mensual": 14925,
+        "Costo_mensual": 15650,
         "ID": 6,
         "Patologia": "CIRUGIA BARIATRICA PREVIA"
     },
     {
-        "Costo_mensual": 17261,
+        "Costo_mensual": 18100,
         "ID": 7,
         "Patologia": "ANSIEDAD"
     },
     {
-        "Costo_mensual": 17367,
+        "Costo_mensual": 18211,
         "ID": 8,
         "Patologia": "ANEMIA"
     },
     {
-        "Costo_mensual": 19320,
+        "Costo_mensual": 20258,
         "ID": 9,
         "Patologia": "HIPOTIROIDISMO"
     },
     {
-        "Costo_mensual": 34629,
+        "Costo_mensual": 36311,
         "ID": 10,
         "Patologia": "DEPRESIÓN"
     },
     {
-        "Costo_mensual": 25490,
+        "Costo_mensual": 26728,
         "ID": 11,
-        "Patologia": "INSUFICIENCIA RESP NASAL (septumplastia/turbinectomia)"
+        "Patologia": "RINITIS"
     },
     {
-        "Costo_mensual": 35226,
+        "Costo_mensual": 36937,
         "ID": 12,
         "Patologia": "DIABETES TIPO 2 CON METFORMINA"
     },
     {
-        "Costo_mensual": 38111,
+        "Costo_mensual": 39963,
         "ID": 13,
         "Patologia": "CELIAQUÍA"
     },
     {
-        "Costo_mensual": 80142,
+        "Costo_mensual": 88019,
         "ID": 14,
         "Patologia": "PUBERTAD PRECOZ"
     },
     {
-        "Costo_mensual": 94168,
+        "Costo_mensual": 103423,
         "ID": 15,
         "Patologia": "ASMA"
     },
     {
-        "Costo_mensual": 60015,
+        "Costo_mensual": 62930,
         "ID": 16,
         "Patologia": "EXCESO DE H DE CRECIMIENTO (Gigantismo)"
     },
     {
-        "Costo_mensual": 63333,
+        "Costo_mensual": 66409,
         "ID": 17,
         "Patologia": "ABORTO A REPETICIÓN"
     },
     {
-        "Costo_mensual": 76226,
+        "Costo_mensual": 79929,
         "ID": 18,
         "Patologia": "GLAUCOMA"
     },
     {
-        "Costo_mensual": 48446,
+        "Costo_mensual": 50800,
         "ID": 19,
         "Patologia": "E. VISUALES (Miopia Astigmatismo Hipermetropia MAYOR A 2,5 Diop.)"
     },
@@ -100,428 +100,433 @@
         "Patologia": "E. VISUALES (Miopia Astigmatismo Hipermetropia MENOR A 2,5 Diop.)"
     },
     {
-        "Costo_mensual": 79840,
+        "Costo_mensual": 83718,
         "ID": 21,
         "Patologia": "HEPATITIS AUTOINMUNE/ CIRROSIS/INSUFICIENCIA"
     },
     {
-        "Costo_mensual": 106687,
+        "Costo_mensual": 111869,
         "ID": 22,
         "Patologia": "NODULOS MAMA/tiroideos/Partes blandas No tratados"
     },
     {
-        "Costo_mensual": 122934,
+        "Costo_mensual": 128905,
         "ID": 23,
         "Patologia": "INFECCIÓN POR HPV"
     },
     {
-        "Costo_mensual": 131797,
+        "Costo_mensual": 138199,
         "ID": 24,
         "Patologia": "MIASTENIA GRAVIS"
     },
     {
-        "Costo_mensual": 133405,
+        "Costo_mensual": 139885,
         "ID": 25,
         "Patologia": "ALTERACIÓN DE LA PROLACTINA"
     },
     {
-        "Costo_mensual": 140180,
+        "Costo_mensual": 146988,
         "ID": 26,
         "Patologia": "SIND GENETICO (TODAS AQUELLAS PATOLOGIAS POR CAUSAS GENE.)"
     },
     {
-        "Costo_mensual": 133405,
+        "Costo_mensual": 139885,
         "ID": 27,
         "Patologia": "ARTROSIS/Osteopenia/Osteoporosis"
     },
     {
-        "Costo_mensual": 133405,
+        "Costo_mensual": 139885,
         "ID": 28,
         "Patologia": "EMBARAZO ECTOPICO"
     },
     {
-        "Costo_mensual": 151605,
+        "Costo_mensual": 158969,
         "ID": 29,
         "Patologia": "SINDROME NEFROTICO"
     },
     {
-        "Costo_mensual": 151605,
+        "Costo_mensual": 158969,
         "ID": 30,
         "Patologia": "GLOMERULONEFRITIS"
     },
     {
-        "Costo_mensual": 152564,
+        "Costo_mensual": 159975,
         "ID": 31,
         "Patologia": "ESTRABISMO EN NIÑOS"
     },
     {
-        "Costo_mensual": 152564,
+        "Costo_mensual": 159975,
         "ID": 32,
         "Patologia": "INSUFICIENCIA VENTILATORIO NASAL / PLASTICA"
     },
     {
-        "Costo_mensual": 515191,
+        "Costo_mensual": 540215,
         "ID": 33,
         "Patologia": "FERTILIDAD"
     },
     {
-        "Costo_mensual": 489752,
+        "Costo_mensual": 513541,
         "ID": 34,
         "Patologia": "INSUFICIENCIA CARDIACA"
     },
     {
-        "Costo_mensual": 179473,
+        "Costo_mensual": 188191,
         "ID": 35,
         "Patologia": "LITIASIS VESICULAR (cirugía)"
     },
     {
-        "Costo_mensual": 182507,
+        "Costo_mensual": 191372,
         "ID": 36,
         "Patologia": "LESION LIG/TENDÓN/CARTÍLAGO/ART(GENERAL)"
     },
     {
-        "Costo_mensual": 190713,
+        "Costo_mensual": 199976,
         "ID": 37,
         "Patologia": "MIOMAS UTERINOS"
     },
     {
-        "Costo_mensual": 190713,
+        "Costo_mensual": 199976,
         "ID": 38,
         "Patologia": "QUISTES DE OVARIO"
     },
     {
-        "Costo_mensual": 190713,
+        "Costo_mensual": 199976,
         "ID": 39,
         "Patologia": "HIPERPLASIA BENIGNA DE PRÓSTATA"
     },
     {
-        "Costo_mensual": 197827,
+        "Costo_mensual": 207435,
         "ID": 40,
         "Patologia": "CATARATA unilateral"
     },
     {
-        "Costo_mensual": 203840,
+        "Costo_mensual": 213740,
         "ID": 41,
         "Patologia": "PMI NIÑO (bebes entre 0 y 3m)"
     },
     {
-        "Costo_mensual": 211902,
+        "Costo_mensual": 222195,
         "ID": 42,
         "Patologia": "ALZHEIMER/DETERIORO COGNITIVO"
     },
     {
-        "Costo_mensual": 211902,
+        "Costo_mensual": 222195,
         "ID": 43,
         "Patologia": "MACULOPATÍA"
     },
     {
-        "Costo_mensual": 247754,
+        "Costo_mensual": 259788,
         "ID": 44,
         "Patologia": "TROMBOSIS VENOSA PROFUNDA"
     },
     {
-        "Costo_mensual": 248932,
+        "Costo_mensual": 261023,
         "ID": 45,
         "Patologia": "BULIMIA/ANOREXIA"
     },
     {
-        "Costo_mensual": 1816713,
+        "Costo_mensual": 1904955,
         "ID": 46,
         "Patologia": "Tratamiento Canabis /Epilepsia Refractaria"
     },
     {
-        "Costo_mensual": 71609,
+        "Costo_mensual": 75088,
         "ID": 47,
         "Patologia": "Epilepsia"
     },
     {
-        "Costo_mensual": 340706,
+        "Costo_mensual": 357255,
         "ID": 48,
         "Patologia": "B24"
     },
     {
-        "Costo_mensual": 379182,
+        "Costo_mensual": 397599,
         "ID": 49,
         "Patologia": "SIND ANTIFOSFOLIPIDICO"
     },
     {
-        "Costo_mensual": 381162,
+        "Costo_mensual": 399676,
         "ID": 50,
         "Patologia": "INCONTINENCIA DE ORINA CIRUGÍA"
     },
     {
-        "Costo_mensual": 423799,
+        "Costo_mensual": 444384,
         "ID": 51,
         "Patologia": "MONORRENO"
     },
     {
-        "Costo_mensual": 431489,
+        "Costo_mensual": 452447,
         "ID": 52,
         "Patologia": "IMC de 33 a 39,99"
     },
     {
-        "Costo_mensual": 445423,
+        "Costo_mensual": 467058,
         "ID": 53,
         "Patologia": "IMC de 30 a 32,99 (45 años o mas)"
     },
     {
-        "Costo_mensual": 445504,
+        "Costo_mensual": 467143,
         "ID": 54,
         "Patologia": "CÁNCER DE MAMA CON TAMOXIFENO"
     },
     {
-        "Costo_mensual": 457686,
+        "Costo_mensual": 479916,
         "ID": 55,
         "Patologia": "QUERATOCONO"
     },
     {
-        "Costo_mensual": 457686,
+        "Costo_mensual": 479916,
         "ID": 56,
         "Patologia": "LITIASIS / CÁLCULOS / RIÑÓN NO TRATADO"
     },
     {
-        "Costo_mensual": 466180,
+        "Costo_mensual": 488823,
         "ID": 57,
         "Patologia": "MALFORMACIONES OSEAS"
     },
     {
-        "Costo_mensual": 529744,
+        "Costo_mensual": 555475,
         "ID": 58,
         "Patologia": "EMBARAZO DE ALTO RIESGO"
     },
     {
-        "Costo_mensual": 562010,
+        "Costo_mensual": 589308,
         "ID": 59,
         "Patologia": "EPOC"
     },
     {
-        "Costo_mensual": 571748,
+        "Costo_mensual": 599519,
         "ID": 60,
         "Patologia": "HIPERTIROIDISMO"
     },
     {
-        "Costo_mensual": 571748,
+        "Costo_mensual": 599519,
         "ID": 61,
         "Patologia": "COLITIS ULCEROSA"
     },
     {
-        "Costo_mensual": 571748,
+        "Costo_mensual": 599519,
         "ID": 62,
         "Patologia": "ARRITMIA CARDÍACA"
     },
     {
-        "Costo_mensual": 609861,
+        "Costo_mensual": 639484,
         "ID": 63,
         "Patologia": "DIABETES TIPO 2 CON LIRAGLUTIDE O SIMILAR"
     },
     {
-        "Costo_mensual": 635274,
+        "Costo_mensual": 666130,
         "ID": 64,
         "Patologia": "ENFERMEDAD DE CROHN"
     },
     {
-        "Costo_mensual": 635703,
+        "Costo_mensual": 666580,
         "ID": 65,
         "Patologia": "ENDOMETRIOSIS"
     },
     {
-        "Costo_mensual": 635703,
+        "Costo_mensual": 666580,
         "ID": 66,
         "Patologia": "SIND BRONQUIAL OBSTRUCTIVO RECURRENTE"
     },
     {
-        "Costo_mensual": 147393,
+        "Costo_mensual": 154552,
         "ID": 67,
         "Patologia": "LECHES MEDICAMENTOSAS"
     },
     {
-        "Costo_mensual": 952907,
+        "Costo_mensual": 999192,
         "ID": 68,
         "Patologia": "HERNIA DE DISCO TRATADA Y SIN TRATAR"
     },
     {
-        "Costo_mensual": 952907,
+        "Costo_mensual": 999192,
         "ID": 69,
         "Patologia": "IMC mayor a 40"
     },
     {
-        "Costo_mensual": 952907,
+        "Costo_mensual": 999192,
         "ID": 70,
         "Patologia": "CARDIOPATIA ISQUEMICA / STENT"
     },
     {
-        "Costo_mensual": 1143487,
+        "Costo_mensual": 1199029,
         "ID": 71,
         "Patologia": "INSULINEMIA/ RESISTENCIA A LA INSULINA"
     },
     {
-        "Costo_mensual": 1143487,
+        "Costo_mensual": 1199029,
         "ID": 72,
         "Patologia": "DROGODEPENDENCIA"
     },
     {
-        "Costo_mensual": 1143487,
+        "Costo_mensual": 1199029,
         "ID": 73,
         "Patologia": "NEURALGIA DEL TRIGEMINO"
     },
     {
-        "Costo_mensual": 1273079,
+        "Costo_mensual": 1334915,
         "ID": 74,
         "Patologia": "PSORIASIS"
     },
     {
-        "Costo_mensual": 1334068,
+        "Costo_mensual": 1398866,
         "ID": 75,
         "Patologia": "FIBROSIS PULMONAR"
     },
     {
-        "Costo_mensual": 1392411,
+        "Costo_mensual": 1460043,
         "ID": 76,
         "Patologia": "FIBROSIS QUISTICA DEL PÁNCREAS"
     },
     {
-        "Costo_mensual": 1448418,
+        "Costo_mensual": 1518771,
         "ID": 77,
         "Patologia": "ESCOLIOSIS"
     },
     {
-        "Costo_mensual": 1483299,
+        "Costo_mensual": 1555346,
         "ID": 78,
         "Patologia": "LEUCEMIA CRÓNICA"
     },
     {
-        "Costo_mensual": 1715230,
+        "Costo_mensual": 1798542,
         "ID": 79,
         "Patologia": "DIÁLISIS"
     },
     {
-        "Costo_mensual": 1779961,
+        "Costo_mensual": 1866417,
         "ID": 80,
         "Patologia": "DISCAPACIDAD INTELECTUAL"
     },
     {
-        "Costo_mensual": 1905809,
+        "Costo_mensual": 1998378,
         "ID": 81,
         "Patologia": "DISCAPACIDAD PSÍQUICA"
     },
     {
-        "Costo_mensual": 1905809,
+        "Costo_mensual": 1998378,
         "ID": 82,
         "Patologia": "INSUFICIENCIA RENAL"
     },
     {
-        "Costo_mensual": 2096394,
+        "Costo_mensual": 2198220,
         "ID": 83,
         "Patologia": "DISCAPACIDAD FÍSICA O MOTORA"
     },
     {
-        "Costo_mensual": 2286975,
+        "Costo_mensual": 2398058,
         "ID": 84,
         "Patologia": "DISCAPACIDAD SENSORIAL: VISUAL AUDITIVA DEL LEN"
     },
     {
-        "Costo_mensual": 2286975,
+        "Costo_mensual": 2398058,
         "ID": 85,
         "Patologia": "DIABETES TIPO 1"
     },
     {
-        "Costo_mensual": 2668141,
+        "Costo_mensual": 2797738,
         "ID": 86,
         "Patologia": "CÁNCER/ONCOLÓGICO CUALQUIER TIPO"
     },
     {
-        "Costo_mensual": 2966599,
+        "Costo_mensual": 3110693,
         "ID": 87,
         "Patologia": "MIELOMA"
     },
     {
-        "Costo_mensual": 457391,
+        "Costo_mensual": 479607,
         "ID": 88,
         "Patologia": "PMI MADRE "
     },
     {
-        "Costo_mensual": 3430467,
+        "Costo_mensual": 3597092,
         "ID": 89,
         "Patologia": "ESCLEROSIS LATERAL AMIOTROFICA ELA"
     },
     {
-        "Costo_mensual": 3811631,
+        "Costo_mensual": 3996770,
         "ID": 90,
         "Patologia": "CARDIOPATIA CONGÉNITA"
     },
     {
-        "Costo_mensual": 3811631,
+        "Costo_mensual": 3996770,
         "ID": 91,
         "Patologia": "HEPATITIS B / C"
     },
     {
-        "Costo_mensual": 3811631,
+        "Costo_mensual": 3996770,
         "ID": 92,
         "Patologia": "DERMATOMIOSITIS/ESCLERODERMIA"
     },
     {
-        "Costo_mensual": 3811631,
+        "Costo_mensual": 3996770,
         "ID": 93,
         "Patologia": "LUPUS"
     },
     {
-        "Costo_mensual": 3811631,
+        "Costo_mensual": 3996770,
         "ID": 94,
         "Patologia": "ARTRITIS REUMATOIDEA"
     },
     {
-        "Costo_mensual": 3811631,
+        "Costo_mensual": 3996770,
         "ID": 95,
         "Patologia": "SIND DE SJOGREN"
     },
     {
-        "Costo_mensual": 3811631,
+        "Costo_mensual": 3996770,
         "ID": 96,
         "Patologia": "DÉFICIT H DE CRECIMIENTO"
     },
     {
-        "Costo_mensual": 3811631,
+        "Costo_mensual": 3996770,
         "ID": 97,
         "Patologia": "TRASPLANTE RENAL"
     },
     {
-        "Costo_mensual": 4083891,
+        "Costo_mensual": 4282254,
         "ID": 98,
         "Patologia": "FISTULA / ANEURISMA /MALFORMACIÓN ARTERIO VENOSA"
     },
     {
-        "Costo_mensual": 4237996,
+        "Costo_mensual": 4443844,
         "ID": 99,
         "Patologia": "TRANSGENERO"
     },
     {
-        "Costo_mensual": 4237996,
+        "Costo_mensual": 4443844,
         "ID": 100,
         "Patologia": "PARKINSON"
     },
     {
-        "Costo_mensual": 5717440,
+        "Costo_mensual": 5995148,
         "ID": 101,
         "Patologia": "TRASPLANTE HEPÁTICO"
     },
     {
-        "Costo_mensual": 7623258,
+        "Costo_mensual": 7993535,
         "ID": 102,
         "Patologia": "IMPLANTE COCLEAR"
     },
     {
-        "Costo_mensual": 9747384,
+        "Costo_mensual": 10220834,
         "ID": 103,
         "Patologia": "HEMOFILIA Enf de Von Willebrand"
     },
     {
-        "Costo_mensual": 189808,
+        "Costo_mensual": 199028,
         "ID": 104,
         "Patologia": "OTROS DIAGNOSTICOS (VALOR DE REF COLECISTECTOMIA POR LAPARO)"
     },
     {
-        "Costo_mensual": 108581,
+        "Costo_mensual": 113855,
         "ID": 105,
         "Patologia": "CPAP / SAOS"
+    },
+    {
+        "Costo_mensual": 0,
+        "ID": 106,
+        "Patologia": "LABIO LEPORINO"
     }
 ]

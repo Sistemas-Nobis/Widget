@@ -512,7 +512,7 @@ class BuscarRetencionView(View):
                     titular = row["Parentesco"]
                     if titular == "TITULAR":
                         condicion_inicial = row["Condicion"]
-                        #print(condicion_inicial)
+                        #print(f"Condición inicial: {condicion_inicial}")
                         break
 
                 # Tomar DNI del titular
@@ -664,6 +664,7 @@ class BuscarRetencionView(View):
                             # Provincia
                             if 'provincia' in df_afiliado_extra.columns:
                                 provincia = df_afiliado_extra['provincia'].iloc[0]
+                                #print(f"Provincia inicial: {provincia}")
                                 afiliado_info['Provincia'] = provincia
                             else:
                                 afiliado_info['Provincia'] = 'Sin provincia'
