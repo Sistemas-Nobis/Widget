@@ -370,8 +370,9 @@ class BuscarAfiliadoView(View):
        
 
 class BuscarRetencionView(View):
-    template_name = 'rete_produccion.html'
- 
+    #template_name = 'rete_produccion.html'
+    template_name = 'rete_reserva.html'
+
     def obtener_token_wise(self):
         """
         Obtener el token desde el caché o actualizarlo si no existe o ha expirado.
@@ -544,6 +545,9 @@ class BuscarRetencionView(View):
                     response_deuda = requests.get(url_deuda, headers=headers)
                     if response_deuda.status_code == 200:
                         data_deuda = response_deuda.json()
+                        #print(f"Datos de deuda: {data_deuda}")
+
+                        #print(f"dni buscado: {dni_aux}")
                         total_deuda = 0
                         for deuda in data_deuda:
                             fecvenc_dt = datetime.strptime(deuda.get("fecven"), "%d/%m/%Y")
@@ -573,6 +577,8 @@ class BuscarRetencionView(View):
                             # Bonificacion / Recargo
                             porcentaje = data_bf[0].get("porcentaje")
                             if porcentaje is not None:
+                                # Magnitud para el input "Vigente": bonificación (negativa) -> magnitud; recargo (positivo) -> 0
+                                data_bf[0]["bonif_vigente_valor"] = abs(porcentaje) if porcentaje < 0 else 0
                                 #print(porcentaje)
                                 porcentaje = f"{porcentaje / 100:.0%}"
                                 #print(porcentaje.replace("-",""))
@@ -595,6 +601,7 @@ class BuscarRetencionView(View):
 
                             else:
                                 data_bf[0]["peri_hasta"] = 0
+                                data_bf[0]["bonif_vigente_valor"] = 0
 
                             forma_de_pago_bonif.append(data_bf[0])
                             #print(data_bf[0])
@@ -805,7 +812,7 @@ class BuscarRetencionView(View):
                 #print(resultados_combinados)
 
                 # Renderiza la plantilla con ambos conjuntos de datos
-                return render(request, self.template_name, {'data': resultados_combinados, 'data_aportes': all_aportes, 'data_fpago': forma_de_pago_bonif, "convenio_id": convenio_id, "convenio_nom":condicion_inicial, "tipo_nom":tipo_beneficiario})
+                return render(request, self.template_name, {'data': resultados_combinados, 'data_aportes': all_aportes, 'data_fpago': forma_de_pago_bonif, "convenio_id": convenio_id, "convenio_nom":condicion_inicial, "tipo_nom":tipo_beneficiario, "grupo": grupo})
             
             else:
                 return render(request, self.template_name, {'error': 'No se encontraron datos para el DNI proporcionado.'}, status=404)
@@ -1653,6 +1660,81 @@ def obtener_generadores_api(request, sector_origen):
     except requests.exceptions.RequestException as e:
         return JsonResponse({"error": f"Error de conexión con la API: {e}"}, status=500)
 
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=400)
+
+
+@csrf_exempt
+def cargar_bonificacion_externa(request, grupo):
+    """
+    Carga una bonificación/descuento en el sistema externo (10.4.5.3:5000).
+    El porcentaje proviene del input "Manual (Cotizar)" del cotizador de retención.
+    'modo' es fijo = "forzar".
+    """
+    if request.method != "POST":
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+    try:
+        body = json.loads(request.body.decode("utf-8"))
+        observacion = body.get("observacion", "alta externa")
+        tramos = body.get("tramos")  # opcional: [{peri_desde, peri_hasta, porcentaje}, ...]
+
+        api_token = os.environ.get("BONIF_API_TOKEN", "")
+        headers = {"Content-Type": "application/json", "X-API-Token": api_token}
+        api_url = f"https://bonificaciones.nobis.com.ar/api/individuales/{grupo}/insertar"
+
+        def _insertar(peri_desde, peri_hasta, porcentaje):
+            payload = {
+                "peri_desde": peri_desde,
+                "peri_hasta": peri_hasta,
+                "porcentaje": porcentaje,
+                "modo": "forzar",            # fijo, no visible al usuario
+                "observacion": observacion,
+            }
+            r = requests.post(api_url, json=payload, headers=headers, timeout=15)
+            ok = r.status_code in (200, 201)
+            return {
+                "ok": ok,
+                "peri_desde": peri_desde,
+                "peri_hasta": peri_hasta,
+                "porcentaje": porcentaje,
+                "detalle": (None if ok else r.text),
+            }
+
+        # --- Modo escalonado: varios tramos, "seguir y reportar" ---
+        if tramos:
+            resultados = [
+                _insertar(t.get("peri_desde"), t.get("peri_hasta"), t.get("porcentaje"))
+                for t in tramos
+            ]
+            fallidos = [x for x in resultados if not x["ok"]]
+            return JsonResponse(
+                {
+                    "resultados": resultados,
+                    "ok": len(fallidos) == 0,
+                    "cargados": len(resultados) - len(fallidos),
+                    "fallidos": len(fallidos),
+                },
+                status=(200 if not fallidos else 207),
+            )
+
+        # --- Modo único (retrocompatible) ---
+        peri_desde = body.get("peri_desde")
+        peri_hasta = body.get("peri_hasta")
+        porcentaje = body.get("porcentaje")
+        if not peri_desde or not peri_hasta:
+            return JsonResponse({"error": "Debe indicar período desde y hasta"}, status=400)
+
+        res = _insertar(peri_desde, peri_hasta, porcentaje)
+        if not res["ok"]:
+            return JsonResponse(
+                {"error": "Error al cargar bonificación en sistema externo", "detalle": res["detalle"]},
+                status=400)
+
+        return JsonResponse({"mensaje": "Bonificación cargada correctamente"})
+
+    except requests.exceptions.RequestException as e:
+        return JsonResponse({"error": f"Error de conexión con la API: {e}"}, status=500)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=400)
     

@@ -3,6 +3,13 @@ import os
  
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Carga variables de entorno desde .env (ver .env.example)
+try:
+    from dotenv import load_dotenv
+    load_dotenv(BASE_DIR / '.env')
+except ImportError:
+    pass
  
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-8xv_ta*-1dryi#afggy2!h)(^q&)7t_v%uw56ls=o+w0iihv=_'

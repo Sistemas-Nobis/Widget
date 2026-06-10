@@ -158,6 +158,267 @@
             z-index: 1001;
         }
 
+        /* ===== Modal de carga de bonificación (encima del modal de cotización) ===== */
+        #bonif-api-modal-overlay { z-index: 1050; }
+        #bonif-api-modal {
+            z-index: 1100;
+            width: 350px;
+            height: 300px;          /* alto fijo: el resize del textarea NO cambia el tamaño del modal */
+            max-height: 92vh;
+            padding: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+        }
+        #bonif-api-modal .modal-content {
+            padding: 0;
+            gap: 0;
+            height: 100%;
+            box-sizing: border-box;
+            overflow-y: auto;       /* scroll interno cuando el contenido crece (no agranda el modal) */
+        }
+
+        /* Encabezado (fijo arriba al hacer scroll) */
+        .bonif-api-header {
+            position: sticky;
+            top: 0;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #008000, #00a000);
+            color: #ffffff;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+        .bonif-api-header h3 { margin: 0; font-size: 0.95em; font-weight: 700; }
+        .bonif-api-header svg { flex-shrink: 0; }
+
+        /* Formulario */
+        .bonif-api-form { display: flex; flex-direction: column; gap: 8px; padding: 10px 16px 4px 16px; }
+        .bonif-field { display: flex; flex-direction: column; text-align: left; }
+        .bonif-field-row { display: flex; gap: 8px; }
+        .bonif-field-row .bonif-field { flex: 1; min-width: 0; }
+
+        #bonif-api-modal .bonif-field label {
+            font-weight: 600;
+            font-size: 0.72em;
+            color: #006b00;
+            margin: 0 0 3px 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        #bonif-api-modal .bonif-field input,
+        #bonif-api-modal .bonif-field textarea {
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 36px;
+            padding: 6px 10px;
+            margin: 0;
+            border: 1px solid #cfd8cf;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.85em;
+            color: #1a1a1a;
+            background-color: #ffffff;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+        #bonif-api-modal .bonif-field input:focus,
+        #bonif-api-modal .bonif-field textarea:focus {
+            outline: none;
+            border-color: #008000;
+            box-shadow: 0 0 0 3px rgba(0, 128, 0, 0.18);
+        }
+
+        /* Observación: redimensionable verticalmente por el usuario */
+        #bonif-api-modal #api_observacion {
+            height: 36px;
+            max-height: 200px;
+            resize: vertical;
+            overflow: auto;
+            line-height: 1.3;
+        }
+        .bonif-char-count {
+            align-self: flex-end;
+            font-size: 0.68em;
+            color: #8a948a;
+            margin-top: 2px;
+        }
+        .bonif-char-count.limit { color: #c62828; font-weight: 700; }
+
+        /* Selector de mes/año dentro del modal (sin el picker nativo del navegador) */
+        .bonif-month { position: relative; }
+        .bonif-month-display { cursor: pointer; }
+        .bonif-month-display::placeholder { color: #9aa39a; }
+        .bonif-month-pop {
+            display: none;
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            width: 200px;
+            background: #ffffff;
+            border: 1px solid #cfd8cf;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+            padding: 8px;
+            z-index: 6;
+        }
+        .bonif-month-pop.open { display: block; }
+        .bonif-month.align-right .bonif-month-pop { left: auto; right: 0; }
+        .bonif-month-pop-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+        .bonif-month-pop-head button {
+            border: none; background: #eef6ee; color: #006b00;
+            border-radius: 6px; width: 24px; height: 24px;
+            cursor: pointer; font-weight: 700; line-height: 1;
+        }
+        .bonif-month-pop-head button:hover { background: #dceadc; }
+        .bonif-month-pop-head span { font-weight: 700; font-size: 0.85em; color: #006b00; }
+        .bonif-month-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+        .bonif-month-grid button {
+            border: none; background: #f4f7f4; color: #1a1a1a;
+            border-radius: 6px; padding: 6px 0;
+            font-size: 0.72em; cursor: pointer; text-transform: capitalize;
+            transition: background-color 0.12s ease;
+        }
+        .bonif-month-grid button:hover { background: #dceadc; }
+        .bonif-month-grid button.selected { background: #008000; color: #ffffff; font-weight: 700; }
+        .bonif-month-pop-foot { display: flex; justify-content: space-between; margin-top: 6px; }
+        .bonif-month-pop-foot button { border: none; background: none; color: #008000; font-size: 0.72em; cursor: pointer; font-weight: 600; }
+
+        /* Porcentaje readonly: distinto de un input normal y de uno deshabilitado */
+        .bonif-pct-wrap { position: relative; }
+        #bonif-api-modal #api_porcentaje {
+            background-color: #eef6ee;
+            color: #006b00;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            padding-right: 26px;
+            cursor: default;
+        }
+        .bonif-pct-suffix {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8em;
+            font-weight: 700;
+            color: #006b00;
+            pointer-events: none;
+        }
+
+        /* Botón Enviar (muestra el resultado dentro del propio botón: cargando / ✔ / ✕) */
+        .bonif-api-submit {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: calc(100% - 32px);
+            height: 42px;
+            margin: 4px 16px 16px 16px;
+            border: none;
+            border-radius: 8px;
+            background-color: #008000;
+            color: #ffffff;
+            font-size: 0.92em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.15s ease, transform 0.1s ease;
+        }
+        .bonif-api-submit:hover:not(:disabled) { background-color: #006b00; }
+        .bonif-api-submit:active:not(:disabled) { transform: scale(0.98); }
+        .bonif-api-submit:disabled { cursor: default; }
+        .bonif-api-submit.is-ok { background-color: #008000; }
+        .bonif-api-submit.is-error { background-color: #c62828; }
+        .bonif-api-submit.is-error:hover:not(:disabled) { background-color: #a91f1f; }
+
+        .bonif-copy-err {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 6px;
+            padding: 3px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.18);
+            cursor: pointer;
+        }
+        .bonif-copy-err:hover { background: rgba(255, 255, 255, 0.34); }
+
+        .btn-spinner {
+            width: 15px; height: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.45);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            display: inline-block;
+            animation: bonif-spin 0.6s linear infinite;
+        }
+        @keyframes bonif-spin { to { transform: rotate(360deg); } }
+
+        @media (prefers-reduced-motion: reduce) {
+            .btn-spinner { animation-duration: 1.5s; }
+            .bonif-api-submit:active:not(:disabled) { transform: none; }
+        }
+
+        /* Botón disparador junto al input "Manual (Cotizar)" */
+        .bonif-api-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 4px;
+            cursor: pointer;
+            border: none;
+            background-color: #008000;
+            color: #ffffff;
+            border-radius: 6px;
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+            transition: background-color 0.15s ease;
+        }
+        .bonif-api-btn:hover { background-color: #006b00; }
+
+        /* Dos inputs de bonificación (Vigente + Manual) + botón, en una sola fila */
+        .bonif-inputs-row { display: flex; align-items: flex-end; gap: 4px; }
+        .bonif-field-mini { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+        .bonif-field-mini input { width: 100%; box-sizing: border-box; }
+        .bonif-mini { font-size: 0.62em; font-weight: 700; color: #006b00; text-transform: uppercase; }
+        .bonif-api-submit.is-blocked { opacity: 0.55; }
+
+        /* Modo escalonado: switch (en el título) + editor de tramos */
+        .bonif-title-row { display: flex; align-items: center; justify-content: space-between; }
+        .switch-escalonado { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 700; font-size: 0.7em; color: #ffffff; text-transform: uppercase; }
+        .switch-escalonado input { display: none; }
+        .switch-escalonado .switch-slider { position: relative; width: 30px; height: 16px; background: rgba(255,255,255,0.4); border-radius: 10px; transition: background-color .15s ease; flex-shrink: 0; }
+        .switch-escalonado .switch-slider::before { content: ''; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; background: #fff; border-radius: 50%; transition: transform .15s ease; }
+        .switch-escalonado input:checked + .switch-slider { background: #A2C617; }
+        .switch-escalonado input:checked + .switch-slider::before { transform: translateX(14px); }
+        #tramos-editor { display: flex; flex-direction: column; gap: 4px; align-items: stretch; text-align: left; }
+        #tramos-editor .tramo-inicio-field { width: 100%; flex-direction: row; align-items: center; gap: 6px; }
+        #tramos-editor .tramo-inicio-field label { margin: 0; white-space: nowrap; }
+        #tramos-editor .tramo-inicio-field .bonif-month-display { flex: 1 1 auto; min-width: 0; box-sizing: border-box; padding: 4px 6px; border: 1px solid #cfd8cf; border-radius: 6px; font-size: 0.85em; }
+        #tramos-editor .tramo-inicio-field .bonif-month-pop { left: auto; right: 0; }
+        #tramos-list { display: flex; flex-direction: column; gap: 4px; }
+        .tramo-row { display: flex; align-items: center; gap: 6px; }
+        .tramo-cell { flex: 0 0 auto; display: flex; align-items: center; gap: 2px; background: #ffffff; border: 1px solid #cfd8cf; border-radius: 6px; padding: 1px 5px; transition: border-color .15s ease, box-shadow .15s ease; }
+        .tramo-cell:focus-within { border-color: #008000; box-shadow: 0 0 0 2px rgba(0,128,0,0.18); }
+        .tramo-cell input { width: 34px; min-width: 0; border: none; background: transparent; outline: none; font-size: 0.86em; font-weight: 700; padding: 3px 0; text-align: right; color: #1a1a1a; }
+        .tramo-cell .tramo-lbl { font-size: 0.6em; font-weight: 700; color: #6b7a6b; }
+        .tramo-periodo { flex: 1 1 auto; min-width: 0; font-size: 0.62em; color: #006b00; font-weight: 700; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .tramo-del { flex: 0 0 auto; border: none; background: transparent; color: #c62828; cursor: pointer; font-size: 1em; line-height: 1; padding: 2px 3px; }
+        .tramo-del:hover { color: #8e1b1b; }
+        .tramos-actions { display: flex; align-items: center; justify-content: space-between; margin-top: 2px; }
+        .bonif-mini-btn { border: 1px dashed #008000; background: #eef6ee; color: #006b00; border-radius: 6px; padding: 3px 10px; font-size: 0.72em; font-weight: 700; cursor: pointer; }
+        #resultados-cotizacion .tramo-result-head { background-color: #eef6ee !important; color: #006b00 !important; font-size: 0.72em; font-weight: 700; }
+        .bonif-tramos-card { border: 1px solid #d6e4d6; border-radius: 10px; overflow: hidden; }
+        .bonif-tramos-head { display: flex; align-items: center; justify-content: space-between; background: #eef6ee; color: #006b00; font-weight: 700; font-size: 0.72em; text-transform: uppercase; letter-spacing: 0.3px; padding: 6px 10px; }
+        .bonif-tramos-count { background: #008000; color: #fff; border-radius: 10px; min-width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.95em; padding: 0 5px; }
+        .bonif-tramo-item { display: flex; align-items: center; gap: 8px; padding: 6px 10px; font-size: 0.82em; border-top: 1px solid #f0f4f0; }
+        .bonif-tramo-idx { flex: 0 0 auto; width: 18px; height: 18px; border-radius: 50%; background: #eef6ee; color: #006b00; font-weight: 700; font-size: 0.78em; display: inline-flex; align-items: center; justify-content: center; }
+        .bonif-tramo-per { flex: 1 1 auto; color: #1a1a1a; }
+        .bonif-tramo-pct { flex: 0 0 auto; background: #008000; color: #fff; font-weight: 700; border-radius: 6px; padding: 1px 8px; font-size: 0.92em; }
+        .bonif-tramos-foot { font-size: 0.68em; color: #6b7a6b; padding: 5px 10px; background: #fafdfa; border-top: 1px solid #f0f4f0; text-align: center; }
+
         a{
             background-color: #008000;
             color: white;
@@ -745,7 +1006,7 @@
                     <thead>
                         {% if data_fpago %}
                             {% for x in data_fpago %}
-                                <tr><th colspan="2">Bonificaciones</th></tr>
+                                <tr><th colspan="2"><div class="bonif-title-row"><span>Bonificaciones</span><label class="switch-escalonado"><span class="switch-text">Escalonado</span><input type="checkbox" id="escalonado_switch" onchange="toggleEscalonado(this.checked)"><span class="switch-slider"></span></label></div></th></tr>
                                     
                                 <tr>
                                     <th>Último registro</th>
@@ -757,7 +1018,32 @@
                                         <th style="background-color: #ffffff; color: black; font-size: 0.7em;" id="sin_bonif">
                                             - Sin registros -
                                         </th>
-                                        <th style="background-color: #ffffff; color: black;"><input type="number" min="0" id="bonif_manual" name="bonif_manual" value="0" oninput="this.value = Math.min(Math.max(this.value, 0), 100)"></th>
+                                        <th style="background-color: #ffffff; color: black;">
+                                            <div class="bonif-inputs-row">
+                                                <div class="bonif-field-mini">
+                                                    <label class="bonif-mini" for="bonif_vigente">Vigente</label>
+                                                    <input type="number" min="0" max="100" id="bonif_vigente" name="bonif_vigente" value="{{ x.bonif_vigente_valor|default:0 }}" oninput="this.value = Math.min(Math.max(this.value, 0), 100)">
+                                                </div>
+                                                <div class="bonif-field-mini">
+                                                    <label class="bonif-mini" for="bonif_manual">Nuevo</label>
+                                                    <input type="number" min="0" max="100" id="bonif_manual" name="bonif_manual" value="0" oninput="this.value = Math.min(Math.max(this.value, 0), 100)">
+                                                </div>
+                                                <button type="button" class="bonif-api-btn" title="Enviar a Gecros" aria-label="Cargar bonificación en sistema externo" onclick="openBonifApiModal()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></button>
+                                            </div>
+                                            <div id="tramos-editor" style="display:none;">
+                                                <div class="bonif-field bonif-month tramo-inicio-field" data-target="tramo_inicio">
+                                                    <label class="bonif-mini" for="tramo_inicio_display">Mes inicio</label>
+                                                    <input type="text" id="tramo_inicio_display" class="bonif-month-display" readonly placeholder="Seleccionar" onclick="toggleMonthPicker('tramo_inicio')">
+                                                    <input type="hidden" id="tramo_inicio">
+                                                    <div class="bonif-month-pop" id="tramo_inicio_pop"></div>
+                                                </div>
+                                                <div id="tramos-list"></div>
+                                                <div class="tramos-actions">
+                                                    <button type="button" class="bonif-mini-btn" onclick="addTramo()">+ tramo</button>
+                                                    <button type="button" class="bonif-api-btn tramos-gecros-btn" title="Enviar tramos a Gecros" aria-label="Cargar tramos en sistema externo" onclick="openBonifApiModal()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></button>
+                                                </div>
+                                            </div>
+                                        </th>
                                     </tr>
                                 {% else %}
                                     <tr>
@@ -769,12 +1055,37 @@
                                                 ⓘ
                                             </span>
                                         </th>
-                                        <th style="background-color: #ffffff; color: black;"><input type="number" min="0" id="bonif_manual" name="bonif_manual" value="0" oninput="this.value = Math.min(Math.max(this.value, 0), 100)"></th>
+                                        <th style="background-color: #ffffff; color: black;">
+                                            <div class="bonif-inputs-row">
+                                                <div class="bonif-field-mini">
+                                                    <label class="bonif-mini" for="bonif_vigente">Vigente</label>
+                                                    <input type="number" min="0" max="100" id="bonif_vigente" name="bonif_vigente" value="{{ x.bonif_vigente_valor|default:0 }}" oninput="this.value = Math.min(Math.max(this.value, 0), 100)">
+                                                </div>
+                                                <div class="bonif-field-mini">
+                                                    <label class="bonif-mini" for="bonif_manual">Nuevo</label>
+                                                    <input type="number" min="0" max="100" id="bonif_manual" name="bonif_manual" value="0" oninput="this.value = Math.min(Math.max(this.value, 0), 100)">
+                                                </div>
+                                                <button type="button" class="bonif-api-btn" title="Enviar a Gecros" aria-label="Cargar bonificación en sistema externo" onclick="openBonifApiModal()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></button>
+                                            </div>
+                                            <div id="tramos-editor" style="display:none;">
+                                                <div class="bonif-field bonif-month tramo-inicio-field" data-target="tramo_inicio">
+                                                    <label class="bonif-mini" for="tramo_inicio_display">Mes inicio</label>
+                                                    <input type="text" id="tramo_inicio_display" class="bonif-month-display" readonly placeholder="Seleccionar" onclick="toggleMonthPicker('tramo_inicio')">
+                                                    <input type="hidden" id="tramo_inicio">
+                                                    <div class="bonif-month-pop" id="tramo_inicio_pop"></div>
+                                                </div>
+                                                <div id="tramos-list"></div>
+                                                <div class="tramos-actions">
+                                                    <button type="button" class="bonif-mini-btn" onclick="addTramo()">+ tramo</button>
+                                                    <button type="button" class="bonif-api-btn tramos-gecros-btn" title="Enviar tramos a Gecros" aria-label="Cargar tramos en sistema externo" onclick="openBonifApiModal()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></button>
+                                                </div>
+                                            </div>
+                                        </th>
                                     </tr>
                                 {% endif %}
                             {% endfor %}
                         {% else %}
-                            <tr><th colspan="2">Bonificaciones</th></tr>
+                            <tr><th colspan="2"><div class="bonif-title-row"><span>Bonificaciones</span><label class="switch-escalonado"><span class="switch-text">Escalonado</span><input type="checkbox" id="escalonado_switch" onchange="toggleEscalonado(this.checked)"><span class="switch-slider"></span></label></div></th></tr>
                                 
                             <tr>
                                 <th>Último registro</th>
@@ -785,7 +1096,32 @@
                                 <th style="background-color: #ffffff; color: black; font-size: 0.7em;" id="sin_bonif">
                                     - Sin registros -
                                 </th>
-                                <th style="background-color: #ffffff; color: black;"><input type="number" min="0" id="bonif_manual" name="bonif_manual" value="0" oninput="this.value = Math.min(Math.max(this.value, 0), 100)"></th>
+                                <th style="background-color: #ffffff; color: black;">
+                                            <div class="bonif-inputs-row">
+                                                <div class="bonif-field-mini">
+                                                    <label class="bonif-mini" for="bonif_vigente">Vigente</label>
+                                                    <input type="number" min="0" max="100" id="bonif_vigente" name="bonif_vigente" value="{{ x.bonif_vigente_valor|default:0 }}" oninput="this.value = Math.min(Math.max(this.value, 0), 100)">
+                                                </div>
+                                                <div class="bonif-field-mini">
+                                                    <label class="bonif-mini" for="bonif_manual">Nuevo</label>
+                                                    <input type="number" min="0" max="100" id="bonif_manual" name="bonif_manual" value="0" oninput="this.value = Math.min(Math.max(this.value, 0), 100)">
+                                                </div>
+                                                <button type="button" class="bonif-api-btn" title="Enviar a Gecros" aria-label="Cargar bonificación en sistema externo" onclick="openBonifApiModal()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></button>
+                                            </div>
+                                            <div id="tramos-editor" style="display:none;">
+                                                <div class="bonif-field bonif-month tramo-inicio-field" data-target="tramo_inicio">
+                                                    <label class="bonif-mini" for="tramo_inicio_display">Mes inicio</label>
+                                                    <input type="text" id="tramo_inicio_display" class="bonif-month-display" readonly placeholder="Seleccionar" onclick="toggleMonthPicker('tramo_inicio')">
+                                                    <input type="hidden" id="tramo_inicio">
+                                                    <div class="bonif-month-pop" id="tramo_inicio_pop"></div>
+                                                </div>
+                                                <div id="tramos-list"></div>
+                                                <div class="tramos-actions">
+                                                    <button type="button" class="bonif-mini-btn" onclick="addTramo()">+ tramo</button>
+                                                    <button type="button" class="bonif-api-btn tramos-gecros-btn" title="Enviar tramos a Gecros" aria-label="Cargar tramos en sistema externo" onclick="openBonifApiModal()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></button>
+                                                </div>
+                                            </div>
+                                        </th>
                             </tr>
                         {% endif %}
 
@@ -810,9 +1146,60 @@
                     </tbody>
                 </table>
 
-                <button onclick="cotizar_actual()" class="cot_button2">Cotizar</button>
+                <button id="btn_cotizar" onclick="cotizar_actual()" class="cot_button2">Cotizar</button>
 
             </div>
+        </div>
+    </div>
+
+    <!-- Modal para cargar bonificación en sistema externo -->
+    <div class="modal-overlay" id="bonif-api-modal-overlay"></div>
+    <div class="modal" id="bonif-api-modal">
+        <button class="close-button" onclick="closeBonifApiModal()" aria-label="Cerrar">X</button>
+        <div class="modal-content">
+            <div class="bonif-api-header">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                <h3>Cargar bonificación</h3>
+            </div>
+
+            <div class="bonif-api-form">
+                <div id="bonif-single-fields">
+                <div class="bonif-field-row">
+                    <div class="bonif-field bonif-month" data-target="api_peri_desde">
+                        <label for="api_peri_desde_display">Período desde</label>
+                        <input type="text" id="api_peri_desde_display" class="bonif-month-display" readonly placeholder="Seleccionar" onclick="toggleMonthPicker('api_peri_desde')">
+                        <input type="hidden" id="api_peri_desde">
+                        <div class="bonif-month-pop" id="api_peri_desde_pop"></div>
+                    </div>
+                    <div class="bonif-field bonif-month align-right" data-target="api_peri_hasta">
+                        <label for="api_peri_hasta_display">Período hasta</label>
+                        <input type="text" id="api_peri_hasta_display" class="bonif-month-display" readonly placeholder="Seleccionar" onclick="toggleMonthPicker('api_peri_hasta')">
+                        <input type="hidden" id="api_peri_hasta">
+                        <div class="bonif-month-pop" id="api_peri_hasta_pop"></div>
+                    </div>
+                </div>
+
+                <div class="bonif-field">
+                    <label for="api_porcentaje">Porcentaje</label>
+                    <div class="bonif-pct-wrap">
+                        <input type="number" id="api_porcentaje" readonly>
+                        <span class="bonif-pct-suffix">%</span>
+                    </div>
+                </div>
+                </div>
+
+                <div id="bonif-tramos-summary" style="display:none;"></div>
+
+                <div class="bonif-field">
+                    <label for="api_observacion">Observación</label>
+                    <textarea id="api_observacion" maxlength="250" rows="1" oninput="updateObsCount()">alta externa</textarea>
+                    <span class="bonif-char-count" id="api_obs_count">0/250</span>
+                </div>
+            </div>
+
+            <button type="button" class="bonif-api-submit" id="bonif_api_submit" onclick="enviarBonifApi()">
+                <span class="bonif-submit-label">Enviar</span>
+            </button>
         </div>
     </div>
 
@@ -844,6 +1231,447 @@
             document.getElementById('secondary-modal-overlay').style.display = 'none';
         }
 
+        // ===== Modal: cargar bonificación en sistema externo =====
+        const BONIF_MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+        const BONIF_MESES_FULL = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+        let bonifApiSending = false;   // guard: garantiza una sola petición por envío
+        let lastBonifError = '';       // texto del último error (para copiar al portapapeles)
+        const bonifPickerYear = {};    // año visible del picker, por campo
+
+        function bonifPad2(n) { return (n < 10 ? '0' : '') + n; }
+
+        // ---- Selector mes/año dentro del modal ----
+        function renderMonthPicker(target) {
+            const pop = document.getElementById(target + '_pop');
+            const val = document.getElementById(target).value; // 'YYYY-MM' o ''
+            const selYear = val ? parseInt(val.split('-')[0], 10) : null;
+            const selMonth = val ? parseInt(val.split('-')[1], 10) - 1 : null;
+            const year = bonifPickerYear[target];
+            let grid = '';
+            for (let i = 0; i < 12; i++) {
+                const sel = (selYear === year && selMonth === i) ? 'selected' : '';
+                grid += '<button type="button" class="' + sel + '" onclick="pickMonth(\'' + target + '\',' + i + ')">' + BONIF_MESES[i] + '</button>';
+            }
+            pop.innerHTML =
+                '<div class="bonif-month-pop-head">' +
+                    '<button type="button" onclick="changePickerYear(\'' + target + '\',-1)">&#8249;</button>' +
+                    '<span>' + year + '</span>' +
+                    '<button type="button" onclick="changePickerYear(\'' + target + '\',1)">&#8250;</button>' +
+                '</div>' +
+                '<div class="bonif-month-grid">' + grid + '</div>' +
+                '<div class="bonif-month-pop-foot">' +
+                    '<button type="button" onclick="clearMonth(\'' + target + '\')">Borrar</button>' +
+                    '<button type="button" onclick="pickThisMonth(\'' + target + '\')">Este mes</button>' +
+                '</div>';
+        }
+
+        function closeAllMonthPickers() {
+            document.querySelectorAll('.bonif-month-pop.open').forEach(function (p) { p.classList.remove('open'); });
+        }
+
+        function toggleMonthPicker(target) {
+            const pop = document.getElementById(target + '_pop');
+            const wasOpen = pop.classList.contains('open');
+            closeAllMonthPickers();
+            if (wasOpen) return;
+            const val = document.getElementById(target).value;
+            bonifPickerYear[target] = val ? parseInt(val.split('-')[0], 10) : (new Date()).getFullYear();
+            renderMonthPicker(target);
+            pop.classList.add('open');
+        }
+
+        function changePickerYear(target, delta) {
+            bonifPickerYear[target] = (bonifPickerYear[target] || (new Date()).getFullYear()) + delta;
+            renderMonthPicker(target);
+        }
+
+        function pickMonth(target, monthIndex) {
+            const year = bonifPickerYear[target];
+            document.getElementById(target).value = year + '-' + bonifPad2(monthIndex + 1); // 'YYYY-MM'
+            document.getElementById(target + '_display').value = BONIF_MESES_FULL[monthIndex] + ' de ' + year;
+            closeAllMonthPickers();
+            if (target === 'tramo_inicio' && typeof refreshTramoPeriodos === 'function') refreshTramoPeriodos();
+            if (isBonifBtnResult()) setBonifBtn('idle'); // limpia un error previo al corregir el período
+        }
+
+        function pickThisMonth(target) {
+            const now = new Date();
+            bonifPickerYear[target] = now.getFullYear();
+            pickMonth(target, now.getMonth());
+        }
+
+        function clearMonth(target) {
+            document.getElementById(target).value = '';
+            document.getElementById(target + '_display').value = '';
+            closeAllMonthPickers();
+        }
+
+        // Cierra el picker al hacer clic fuera de un campo de mes.
+        // Usamos 'mousedown' (no 'click'): corre antes de que un botón del picker
+        // re-renderice su contenido, evitando que el target quede "detached" y
+        // se cierre el picker al cambiar de año.
+        document.addEventListener('mousedown', function (e) {
+            if (!e.target.closest('.bonif-month')) closeAllMonthPickers();
+        });
+
+        // ---- Estado del botón Enviar (el resultado se muestra en el propio botón) ----
+        function isBonifBtnResult() {
+            const btn = document.getElementById('bonif_api_submit');
+            return btn && (btn.classList.contains('is-ok') || btn.classList.contains('is-error'));
+        }
+
+        function setBonifBtn(state, label) {
+            const btn = document.getElementById('bonif_api_submit');
+            if (!btn) return;
+            btn.classList.remove('is-ok', 'is-error', 'is-blocked');
+            btn.disabled = false;
+            if (state === 'loading') {
+                btn.disabled = true;
+                btn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span><span class="bonif-submit-label">Enviando…</span>';
+            } else if (state === 'ok') {
+                btn.classList.add('is-ok');
+                btn.disabled = true;
+                btn.innerHTML = '<span aria-hidden="true">✔</span><span class="bonif-submit-label">' + (label || 'Cargado') + '</span>';
+            } else if (state === 'error') {
+                btn.classList.add('is-error');
+                btn.innerHTML = '<span aria-hidden="true">✕</span><span class="bonif-submit-label">' + (label || 'Error') + '</span>' +
+                    '<span class="bonif-copy-err" title="Copiar error" onclick="copyBonifError(event)">' +
+                        '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>' +
+                    '</span>';
+            } else { // idle
+                btn.innerHTML = '<span class="bonif-submit-label">Enviar</span>';
+            }
+        }
+
+        function copyBonifError(ev) {
+            ev.stopPropagation(); // no re-dispara el envío del botón
+            const txt = lastBonifError || 'Error';
+            const marcarCopiado = function () {
+                const icon = ev.currentTarget;
+                if (icon) icon.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+            };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(txt).then(marcarCopiado).catch(function () { bonifFallbackCopy(txt, marcarCopiado); });
+            } else {
+                bonifFallbackCopy(txt, marcarCopiado);
+            }
+        }
+
+        function bonifFallbackCopy(txt, cb) {
+            try {
+                const ta = document.createElement('textarea');
+                ta.value = txt;
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.focus(); ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                if (cb) cb();
+            } catch (e) { console.error('No se pudo copiar el error:', e); }
+        }
+
+        // ---- Abrir / cerrar / enviar ----
+        function updateObsCount() {
+            const ta = document.getElementById('api_observacion');
+            const out = document.getElementById('api_obs_count');
+            if (!ta || !out) return;
+            const len = ta.value.length;
+            out.textContent = len + '/250';
+            out.classList.toggle('limit', len >= 250);
+        }
+
+        function tramosValidos() {
+            const inicioEl = document.getElementById('tramo_inicio');
+            return computeTramoPeriodos(
+                inicioEl ? inicioEl.value : '',
+                tramos.filter(function (t) { return t.meses > 0 && t.porcentaje > 0 && t.porcentaje <= 100; })
+            );
+        }
+
+        function refreshBonifSubmitState() {
+            const btn = document.getElementById('bonif_api_submit');
+            if (!btn) return;
+            let ok, motivo;
+            if (escalonadoOn) {
+                ok = tramosValidos().length > 0;
+                motivo = 'Defina el mes de inicio y al menos un tramo válido';
+            } else {
+                const p = parseFloat(document.getElementById('api_porcentaje').value) || 0;
+                ok = (p > 0 && p <= 100);
+                motivo = 'El porcentaje debe ser mayor a 0 y hasta 100';
+            }
+            btn.disabled = !ok;
+            btn.classList.toggle('is-blocked', !ok);
+            btn.title = ok ? '' : motivo;
+        }
+
+        function openBonifApiModal() {
+            bonifApiSending = false;
+            lastBonifError = '';
+            setBonifBtn('idle');
+            updateObsCount();
+            closeAllMonthPickers();
+
+            const single = document.getElementById('bonif-single-fields');
+            const summary = document.getElementById('bonif-tramos-summary');
+            if (escalonadoOn) {
+                const periodos = tramosValidos();
+                const fmtMY = function (s) { s = '' + s; return (BONIF_MESES[parseInt(s.slice(4, 6), 10) - 1] || '') + ' ' + s.slice(0, 4); };
+                const totMeses = periodos.reduce(function (a, p) { const d = parseInt(p.peri_desde.slice(0, 4), 10) * 12 + parseInt(p.peri_desde.slice(4, 6), 10); const h = parseInt(p.peri_hasta.slice(0, 4), 10) * 12 + parseInt(p.peri_hasta.slice(4, 6), 10); return a + (h - d + 1); }, 0);
+                const rango = periodos.length ? (fmtMY(periodos[0].peri_desde) + ' – ' + fmtMY(periodos[periodos.length - 1].peri_hasta)) : '';
+                summary.innerHTML = periodos.length
+                    ? '<div class="bonif-tramos-card">' +
+                          '<div class="bonif-tramos-head"><span>Tramos a cargar</span><span class="bonif-tramos-count">' + periodos.length + '</span></div>' +
+                          periodos.map(function (p, i) { return '<div class="bonif-tramo-item"><span class="bonif-tramo-idx">' + (i + 1) + '</span><span class="bonif-tramo-per">' + p.label + '</span><span class="bonif-tramo-pct">' + p.porcentaje + '%</span></div>'; }).join('') +
+                          '<div class="bonif-tramos-foot">' + rango + ' · ' + totMeses + ' ' + (totMeses === 1 ? 'mes' : 'meses') + '</div>' +
+                      '</div>'
+                    : '<div class="bonif-api-status err show" style="display:flex;">Defina el mes de inicio y al menos un tramo válido.</div>';
+                summary.style.display = 'block';
+                if (single) single.style.display = 'none';
+            } else {
+                const manual = document.querySelector('#bonif_manual');
+                document.getElementById('api_porcentaje').value = manual ? (parseFloat(manual.value) || 0) : 0;
+                summary.style.display = 'none';
+                if (single) single.style.display = '';
+            }
+            refreshBonifSubmitState();
+            document.getElementById('bonif-api-modal').style.display = 'block';
+            document.getElementById('bonif-api-modal-overlay').style.display = 'block';
+        }
+
+        function closeBonifApiModal() {
+            closeAllMonthPickers();
+            document.getElementById('bonif-api-modal').style.display = 'none';
+            document.getElementById('bonif-api-modal-overlay').style.display = 'none';
+        }
+
+        function enviarBonifApi() {
+            if (bonifApiSending) return; // ya hay una petición en curso -> ignora clics extra
+            const grupo = '{{ grupo }}';
+            if (!grupo) { lastBonifError = 'No hay grupo familiar.'; setBonifBtn('error'); return; }
+            const observacion = document.getElementById('api_observacion').value || 'alta externa';
+
+            // ----- Modo escalonado: varios tramos en una sola petición -----
+            if (escalonadoOn) {
+                const periodos = tramosValidos();
+                if (!periodos.length) { lastBonifError = 'Defina el mes de inicio y al menos un tramo válido.'; setBonifBtn('error'); return; }
+                bonifApiSending = true;
+                setBonifBtn('loading');
+                fetch(`/api/cargar_bonificacion/${grupo}/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCSRFToken() },
+                    body: JSON.stringify({
+                        tramos: periodos.map(function (p) { return { peri_desde: p.peri_desde, peri_hasta: p.peri_hasta, porcentaje: p.porcentaje }; }),
+                        observacion: observacion
+                    })
+                })
+                .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, status: r.status, d: d }; }); })
+                .then(function (res) {
+                    bonifApiSending = false;
+                    const d = res.d || {};
+                    const total = (d.resultados ? d.resultados.length : periodos.length);
+                    if (res.ok && d.fallidos === 0) {
+                        setBonifBtn('ok', (d.cargados || total) + ' cargados');
+                        setTimeout(closeBonifApiModal, 1600);
+                    } else {
+                        const fall = (d.resultados || []).filter(function (x) { return !x.ok; });
+                        lastBonifError = 'Cargados ' + (d.cargados || 0) + '/' + total + '. Fallidos:\n' +
+                            fall.map(function (x) { return x.peri_desde + '-' + x.peri_hasta + ' ' + x.porcentaje + '%: ' + (x.detalle || 'error'); }).join('\n');
+                        setBonifBtn('error', (d.cargados || 0) + ' ok / ' + (d.fallidos || fall.length) + ' fallidos');
+                    }
+                })
+                .catch(function (err) {
+                    bonifApiSending = false;
+                    lastBonifError = 'Error de red: ' + (err && err.message ? err.message : err);
+                    console.error('Error al cargar tramos:', err);
+                    setBonifBtn('error');
+                });
+                return;
+            }
+
+            // ----- Modo único -----
+            const desde = (document.getElementById('api_peri_desde').value || '').replace('-', ''); // 2026-01 -> 202601
+            const hasta = (document.getElementById('api_peri_hasta').value || '').replace('-', '');
+            const porcentaje = parseFloat(document.getElementById('api_porcentaje').value) || 0;
+
+            if (!desde || !hasta) { lastBonifError = 'Complete período desde y hasta.'; setBonifBtn('error'); return; }
+            if (!(porcentaje > 0 && porcentaje <= 100)) { lastBonifError = 'El porcentaje debe ser mayor a 0 y hasta 100'; setBonifBtn('error'); return; }
+
+            bonifApiSending = true;
+            setBonifBtn('loading');
+
+            fetch(`/api/cargar_bonificacion/${grupo}/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCSRFToken() },
+                body: JSON.stringify({ peri_desde: desde, peri_hasta: hasta, porcentaje: porcentaje, observacion: observacion })
+            })
+            .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, status: r.status, d: d }; }); })
+            .then(function (res) {
+                bonifApiSending = false;
+                if (res.ok) {
+                    setBonifBtn('ok');
+                    setTimeout(closeBonifApiModal, 1500);
+                } else {
+                    lastBonifError = (res.d.error || ('Error ' + res.status)) + (res.d.detalle ? '\n' + res.d.detalle : '');
+                    setBonifBtn('error');
+                }
+            })
+            .catch(function (err) {
+                bonifApiSending = false;
+                lastBonifError = 'Error de red: ' + (err && err.message ? err.message : err);
+                console.error('Error al cargar bonificación:', err);
+                setBonifBtn('error');
+            });
+        }
+
+        // ===== Bonificaciones escalonadas (tramos decrecientes en el tiempo) =====
+        let escalonadoOn = false;
+        let tramos = [{ meses: '', porcentaje: '' }, { meses: '', porcentaje: '' }]; // mínimo 2, sin valor por default
+
+        function toggleEscalonado(on) {
+            escalonadoOn = on;
+            const editorRow = document.getElementById('tramos-editor');
+            const inputsRow = document.querySelector('.bonif-inputs-row');
+            if (editorRow) editorRow.style.display = on ? '' : 'none';
+            if (inputsRow) inputsRow.style.display = on ? 'none' : '';
+            const tb = document.querySelector('#resultados-cotizacion tbody');
+            if (tb) tb.innerHTML = '<th colspan="2" style="color: black; background-color: #ffffff;"> --------------- </th>';
+            if (on) renderTramos();
+            closeAllMonthPickers();
+        }
+
+        function renderTramos() {
+            const list = document.getElementById('tramos-list');
+            if (!list) return;
+            const canDelete = tramos.length > 2; // mínimo 2 tramos
+            list.innerHTML = tramos.map(function (t, i) {
+                const mv = (t.meses === '' || t.meses === undefined || t.meses === null) ? '' : t.meses;
+                const pv = (t.porcentaje === '' || t.porcentaje === undefined || t.porcentaje === null) ? '' : t.porcentaje;
+                return '<div class="tramo-row">' +
+                    '<div class="tramo-cell"><input type="number" min="1" max="60" inputmode="numeric" aria-label="Meses tramo ' + (i + 1) + '" value="' + mv + '" oninput="updateTramo(' + i + ',\'meses\',this.value)"><span class="tramo-lbl">m</span></div>' +
+                    '<div class="tramo-cell"><input type="number" min="0" max="100" inputmode="numeric" aria-label="Porcentaje tramo ' + (i + 1) + '" value="' + pv + '" oninput="updateTramo(' + i + ',\'porcentaje\',this.value)"><span class="tramo-lbl">%</span></div>' +
+                    '<div class="tramo-periodo" data-i="' + i + '"></div>' +
+                    (canDelete ? '<button type="button" class="tramo-del" onclick="removeTramo(' + i + ')" aria-label="Quitar tramo ' + (i + 1) + '" title="Quitar tramo">✕</button>' : '') +
+                    '</div>';
+            }).join('');
+            refreshTramoPeriodos();
+        }
+
+        function refreshTramoPeriodos() {
+            const list = document.getElementById('tramos-list');
+            if (!list) return;
+            const inicioEl = document.getElementById('tramo_inicio');
+            const inicio = inicioEl ? inicioEl.value : '';
+            let y, m, ok = false;
+            if (inicio) { y = parseInt(inicio.split('-')[0], 10); m = parseInt(inicio.split('-')[1], 10); ok = !!(y && m); }
+            tramos.forEach(function (t, i) {
+                const span = list.querySelector('.tramo-periodo[data-i="' + i + '"]');
+                if (!span) return;
+                const meses = parseInt(t.meses, 10) || 0;
+                if (!ok || meses <= 0) { span.textContent = ''; return; }
+                const dy = y, dm = m;
+                let hm = dm + meses - 1, hy = dy + Math.floor((hm - 1) / 12);
+                hm = ((hm - 1) % 12) + 1;
+                span.textContent = (dy === hy)
+                    ? (BONIF_MESES[dm - 1] + '–' + BONIF_MESES[hm - 1] + ' ' + hy)
+                    : (BONIF_MESES[dm - 1] + ' ' + dy + ' – ' + BONIF_MESES[hm - 1] + ' ' + hy);
+                m = hm + 1; y = hy; if (m > 12) { m = 1; y += 1; }
+            });
+        }
+
+        function updateTramo(i, field, val) {
+            if (!tramos[i]) return;
+            if (val === '' || val === null) {
+                tramos[i][field] = '';
+            } else {
+                let n = parseInt(val, 10); if (isNaN(n)) n = 0;
+                if (field === 'porcentaje') n = Math.min(Math.max(n, 0), 100); // ningún tramo supera 100%
+                if (field === 'meses') n = Math.min(Math.max(n, 0), 60);
+                tramos[i][field] = n;
+            }
+            if (field === 'meses') refreshTramoPeriodos();
+        }
+
+        function addTramo() {
+            tramos.push({ meses: '', porcentaje: '' });
+            renderTramos();
+        }
+
+        function removeTramo(i) {
+            if (tramos.length <= 2) return; // mínimo 2 tramos
+            tramos.splice(i, 1);
+            renderTramos();
+        }
+
+        // inicio = 'YYYY-MM'; devuelve [{peri_desde:'YYYYMM', peri_hasta:'YYYYMM', porcentaje, label}]
+        function computeTramoPeriodos(inicio, tramosArr) {
+            if (!inicio) return [];
+            let y = parseInt(inicio.split('-')[0], 10);
+            let m = parseInt(inicio.split('-')[1], 10); // 1-12
+            if (!y || !m) return [];
+            const out = [];
+            (tramosArr || []).forEach(function (t) {
+                const meses = parseInt(t.meses, 10) || 0;
+                const pct = Math.min(Math.max(parseFloat(t.porcentaje) || 0, 0), 100);
+                if (meses <= 0 || pct <= 0) return;
+                const dy = y, dm = m;
+                let hm = dm + meses - 1, hy = dy + Math.floor((hm - 1) / 12);
+                hm = ((hm - 1) % 12) + 1;
+                const label = (dy === hy)
+                    ? (BONIF_MESES[dm - 1] + '–' + BONIF_MESES[hm - 1] + ' ' + hy)
+                    : (BONIF_MESES[dm - 1] + ' ' + dy + ' – ' + BONIF_MESES[hm - 1] + ' ' + hy);
+                out.push({ peri_desde: '' + dy + bonifPad2(dm), peri_hasta: '' + hy + bonifPad2(hm), porcentaje: pct, label: label });
+                m = hm + 1; y = hy;
+                if (m > 12) { m = 1; y += 1; }
+            });
+            return out;
+        }
+
+        function cotizarEscalonado(common) {
+            const tabla = document.querySelector('#resultados-cotizacion tbody');
+            const periodos = tramosValidos();
+            if (!periodos.length) {
+                if (tabla) tabla.innerHTML = '<th colspan="2" style="color:#c62828; background:#ffffff;">Defina el mes de inicio y los tramos</th>';
+                return;
+            }
+            cotizando = true;
+            setCotizarLoading(true);
+            const fmt = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', minimumFractionDigits: 0 });
+            Promise.all(periodos.map(function (p) {
+                const rd = Object.assign({}, common, { bonificaciones: p.porcentaje });
+                return fetch('/api/cotizar/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCSRFToken() },
+                    body: JSON.stringify(rd)
+                }).then(function (r) { return r.json(); }).then(function (d) { return { p: p, d: d }; }).catch(function () { return { p: p, d: null }; });
+            })).then(function (items) {
+                if (!tabla) return;
+                tabla.innerHTML = '';
+                items.forEach(function (it) {
+                    const head = document.createElement('tr');
+                    const hc = document.createElement('th'); hc.colSpan = 2; hc.className = 'tramo-result-head';
+                    hc.textContent = it.p.label + ' · ' + it.p.porcentaje + '%';
+                    head.appendChild(hc); tabla.appendChild(head);
+
+                    const fila = document.createElement('tr');
+                    if (it.d && it.d.primera_cuota !== undefined) {
+                        const c1 = document.createElement('td'); c1.textContent = fmt.format(it.d.primera_cuota);
+                        const c2 = document.createElement('td'); c2.textContent = fmt.format(it.d.valor_plan);
+                        fila.appendChild(c1); fila.appendChild(c2);
+                    } else {
+                        const ce = document.createElement('td'); ce.colSpan = 2; ce.style.color = '#c62828';
+                        ce.textContent = (it.d && it.d.error) ? ('Error: ' + it.d.error) : 'Error al cotizar';
+                        fila.appendChild(ce);
+                    }
+                    tabla.appendChild(fila);
+                });
+            }).finally(function () {
+                cotizando = false;
+                setCotizarLoading(false);
+            });
+        }
+
         document.getElementById('Cotizar').addEventListener('click', openSecondaryModal);
 
 
@@ -855,7 +1683,19 @@
         
 
         // Cotizacion
+        let cotizando = false; // guard: evita múltiples cotizaciones simultáneas
+
+        function setCotizarLoading(loading) {
+            const btn = document.getElementById('btn_cotizar');
+            if (!btn) return;
+            btn.disabled = loading;
+            btn.innerHTML = loading
+                ? '<span class="btn-spinner" aria-hidden="true" style="vertical-align:middle;margin-right:6px;"></span>Cotizando…'
+                : 'Cotizar';
+        }
+
         function cotizar_actual() {
+            if (cotizando) return; // ya hay una cotización en curso -> ignora clics extra
             
             // Datos fijos
             const mes = new Date().getMonth() + 1; // Mes actual
@@ -885,8 +1725,15 @@
                 aporte = 0
             }
 
-            const bonifManualElement = document.querySelector('#bonif_manual');
-            const bonificacion = bonifManualElement ? parseFloat(bonifManualElement.value) || 0 : 0;
+            // Modo escalonado: cotiza cada tramo por separado
+            if (escalonadoOn) {
+                cotizarEscalonado({ plan: plan, gestion: gestion, ubicacion: ubicacion, edades: edades, aportes: aporte, patologias: totalGrupal });
+                return;
+            }
+
+            const v1 = parseFloat(document.querySelector('#bonif_vigente')?.value) || 0;
+            const v2 = parseFloat(document.querySelector('#bonif_manual')?.value) || 0;
+            const bonificacion = Math.min(v1 + v2, 100); // suma Vigente + Manual, tope 100
 
             //console.log(totalGrupal) // Valor de patologias en el grupo familiar
 
@@ -928,8 +1775,10 @@
             //console.log(requestData)
 
             // Enviar datos al backend mediante fetch
-            fetch('/widget/api/cotizar/', { // Ajusta esta URL según tu configuración de Django
-            //fetch('/api/cotizar/', {
+            //fetch('/widget/api/cotizar/', { // Ajusta esta URL según tu configuración de Django
+            cotizando = true;
+            setCotizarLoading(true);
+            fetch('/api/cotizar/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -974,6 +1823,10 @@
                 })
                 .catch(error => {
                     console.error('Error al cotizar:', error);
+                })
+                .finally(() => {
+                    cotizando = false;
+                    setCotizarLoading(false);
                 });
 
                 //console.log(document.querySelector("#secondary-modal tbody tr")); // Verificar si las filas existen
