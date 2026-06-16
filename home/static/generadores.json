@@ -1,0 +1,23 @@
+[
+  {
+    "mGen_id": 73,
+    "mGen_cod": "A24",
+    "mGen_nom": "Crédito",
+    "mTipoGen_id": 38,
+    "mTipoGen_nom": "Forma de Pago                                     "
+  },
+  {
+    "mGen_id": 74,
+    "mGen_cod": "A25",
+    "mGen_nom": "Débito",
+    "mTipoGen_id": 38,
+    "mTipoGen_nom": "Forma de Pago                                     "
+  },
+  {
+    "mGen_id": 75,
+    "mGen_cod": "A26",
+    "mGen_nom": "Contado",
+    "mTipoGen_id": 38,
+    "mTipoGen_nom": "Forma de Pago                                     "
+  }
+]

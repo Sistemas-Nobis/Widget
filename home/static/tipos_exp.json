@@ -1,12 +1,12 @@
 [
-  {"mTipoExpId": 12, "mTipoExp_nom": "Devolución Prestacional", "mSectorId": 2, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 1, "pideProv_id": 1},
-  {"mTipoExpId": 13, "mTipoExp_nom": "Reintegro Prestacional", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 1, "pideProv_id": 1},
-  {"mTipoExpId": 7, "mTipoExp_nom": "Devolución NO Prestacional", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
-  {"mTipoExpId": 9, "mTipoExp_nom": "Reintegros NO Prestacional", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
-  {"mTipoExpId": 32, "mTipoExp_nom": "Tramites Contado", "mSectorId": 55, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
-  {"mTipoExpId": 33, "mTipoExp_nom": "Tramites TC", "mSectorId": 55, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
-  {"mTipoExpId": 34, "mTipoExp_nom": "Tramites DB", "mSectorId": 55, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0},
-  {"mTipoExpId": 44, "mTipoExp_nom": "Reintegro Odontología", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 1, "pideProv_id": 1},
-  {"mTipoExpId": 45, "mTipoExp_nom": "Devolucion Odontologia", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 1, "pideProv_id": 1},
-  {"mTipoExpId": 64, "mTipoExp_nom": "Trámites Alta", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 1, "pideProv_id": 0}
+  {"mTipoExpId": 12, "mTipoExp_nom": "Devolución Prestacional", "mSectorId": 2, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 1, "pideProv_id": 1, "pideGen_id": 0},
+  {"mTipoExpId": 13, "mTipoExp_nom": "Reintegro Prestacional", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 1, "pideProv_id": 1, "pideGen_id": 0},
+  {"mTipoExpId": 7, "mTipoExp_nom": "Devolución NO Prestacional", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0, "pideGen_id": 0},
+  {"mTipoExpId": 9, "mTipoExp_nom": "Reintegros NO Prestacional", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0, "pideGen_id": 0},
+  {"mTipoExpId": 32, "mTipoExp_nom": "Tramites Contado", "mSectorId": 55, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0, "pideGen_id": 0},
+  {"mTipoExpId": 33, "mTipoExp_nom": "Tramites TC", "mSectorId": 55, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0, "pideGen_id": 0},
+  {"mTipoExpId": 34, "mTipoExp_nom": "Tramites DB", "mSectorId": 55, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0, "pideGen_id": 0},
+  {"mTipoExpId": 44, "mTipoExp_nom": "Reintegro Odontología", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 1, "pideProv_id": 1, "pideGen_id": 0},
+  {"mTipoExpId": 45, "mTipoExp_nom": "Devolucion Odontologia", "mSectorId": 9, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 1, "pideProv_id": 1, "pideGen_id": 0},
+  {"mTipoExpId": 86, "mTipoExp_nom": "Cambio de plan FyC", "mSectorId": 5, "EntFacId": 1, "pideBen_id": 1, "pideOri_id": 0, "pideProv_id": 0, "pideGen_id": 1}
 ]

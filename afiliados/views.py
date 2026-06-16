@@ -370,8 +370,8 @@ class BuscarAfiliadoView(View):
        
 
 class BuscarRetencionView(View):
-    #template_name = 'rete_produccion.html'
-    template_name = 'rete_reserva.html'
+    template_name = 'rete_produccion.html'
+    #template_name = 'rete_reserva.html'
 
     def obtener_token_wise(self):
         """
@@ -576,9 +576,15 @@ class BuscarRetencionView(View):
 
                             # Bonificacion / Recargo
                             porcentaje = data_bf[0].get("porcentaje")
+                            rg_id = data_bf[0].get("rg_id")
                             if porcentaje is not None:
-                                # Magnitud para el input "Vigente": bonificación (negativa) -> magnitud; recargo (positivo) -> 0
-                                data_bf[0]["bonif_vigente_valor"] = abs(porcentaje) if porcentaje < 0 else 0
+                                # Magnitud para el input "Vigente": solo autollenar bonificaciones manuales (sin rg_id).
+                                # Si tiene rg_id (regla/generador automatico, ej. "EMPRESAS AGRO") -> no autorellenar.
+                                if rg_id is None and porcentaje < 0:
+                                    # int: evita que USE_L10N renderice "5,0" (coma) e invalide el input type=number
+                                    data_bf[0]["bonif_vigente_valor"] = int(abs(porcentaje))
+                                else:
+                                    data_bf[0]["bonif_vigente_valor"] = 0
                                 #print(porcentaje)
                                 porcentaje = f"{porcentaje / 100:.0%}"
                                 #print(porcentaje.replace("-",""))
@@ -847,6 +853,7 @@ class MesaDeEntradaView(View):
 
         OrigenesService.obtener_origenes()
         ProveedoresService.obtener_proveedores()
+        GeneradoresService.obtener_generadores()
 
         # Validación de entrada de DNI
         if not dni:
@@ -1241,7 +1248,53 @@ class ProveedoresService:
         except FileNotFoundError:
             print("Archivo local no encontrado y no se pudo actualizar desde la API.")
             return None
-        
+
+
+class GeneradoresService:
+    @staticmethod
+    def obtener_generadores():
+        url_api = "https://api.nobis.com.ar/generadores/38"
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        # Ruta absoluta al archivo generadores.json
+        json_path = os.path.join(settings.BASE_DIR, 'home', 'static', 'generadores.json')
+        archivo_existe = os.path.exists(json_path)
+
+        verificacion_semanal = cache.get('verificacion_semanal_generadores')
+
+        # Si no se realizó la verificación semanal, consultamos la API y actualizamos el archivo
+        if not archivo_existe or not verificacion_semanal:
+            try:
+                response = requests.get(url_api, headers=headers)
+                response.raise_for_status()
+                data = response.json()
+                #print("Actualizando archivo JSON de generadores")
+
+                # Guardar el JSON recibido en el archivo
+                with open(json_path, 'w', encoding='utf-8') as archivo:
+                    json.dump(data, archivo, ensure_ascii=False, indent=2)
+
+                # Registrar que se realizó la verificación semanal (7 días)
+                cache.set('verificacion_semanal_generadores', True, timeout=7 * 24 * 3600)
+
+            except requests.exceptions.RequestException as e:
+                print(f"Error al consultar la API: {e}")
+                # Si hay error y el archivo existe, devolvemos el último dato guardado
+                if os.path.exists(json_path):
+                    with open(json_path, 'r', encoding='utf-8') as archivo:
+                        return json.load(archivo)
+                return None
+
+        # Leer y devolver el contenido del archivo actualizado
+        try:
+            with open(json_path, 'r', encoding='utf-8') as archivo:
+                return json.load(archivo)
+        except FileNotFoundError:
+            print("Archivo local no encontrado y no se pudo actualizar desde la API.")
+            return None
+
 
 @csrf_exempt
 def guardar_expediente(request):
@@ -1252,6 +1305,7 @@ def guardar_expediente(request):
             benId = data.get("benId")
             oriId = data.get("oriId")
             provId = data.get("provId")
+            genId = data.get("genId")
             mTipoExpId = data.get("mTipoExpId")
             observaciones = data.get("observaciones", "")
             periodo = data.get("periodo")
@@ -1281,7 +1335,26 @@ def guardar_expediente(request):
                 #print("Body enviado:", payload)
 
                 if response.status_code == 200:
-                    return JsonResponse({"success": True, "data": response.json()})
+                    expediente_data = response.json()
+                    advertencia = None
+
+                    # Si se seleccionó un generador, asociarlo al expediente recién creado
+                    if genId and int(genId) != 0:
+                        expediente_id = expediente_data.get("data")
+                        try:
+                            generador_url = f"https://api.nobis.com.ar/generador_exp/{expediente_id}?generador_id={int(genId)}"
+                            generador_response = requests.put(generador_url)
+
+                            if generador_response.status_code == 409:
+                                advertencia = "Expediente creado, el generador actual es el mismo."
+                            elif generador_response.status_code != 200:
+                                advertencia = "Expediente creado, pero no se pudo asociar el generador."
+                            else:
+                                print(f"Generador {genId} asignado correctamente al expediente {expediente_id}")
+                        except Exception as gen_error:
+                            advertencia = f"Expediente creado, pero no se pudo asociar el generador: {str(gen_error)}"
+
+                    return JsonResponse({"success": True, "data": expediente_data, "advertencia": advertencia})
                 else:
                     return JsonResponse({"success": False, "error": response.text}, status=400)
             except Exception as e:
