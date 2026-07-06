@@ -16,7 +16,7 @@ from django.conf import settings
 from collections import defaultdict
 from django.utils.decorators import method_decorator
 from cuentas.decoradores import requiere_permiso_iframe, requiere_permiso_json
-from cuentas.permisos import usuario_puede
+from cuentas.permisos import usuario_puede, grupo_que_concede
 from .audit import registrar, etiqueta_usuario
 
 
@@ -1766,9 +1766,12 @@ def cargar_bonificacion_externa(request, grupo):
         observacion = body.get("observacion", "alta externa")
         tramos = body.get("tramos")  # opcional: [{peri_desde, peri_hasta, porcentaje}, ...]
 
-        # API propia de Nobis: atribución real. El usuario viaja en el payload y en la observación.
-        usuario = etiqueta_usuario(request)
-        observacion = f"{observacion} [Cargado por {usuario}]"
+        # Identidad del operador para la API (que ya lee 'usuario' y 'grupo').
+        # usuario = parte local del UPN (antes del @), sin espacios, máx 20.
+        # grupo = nombre legible del grupo que concede la acción, sin espacios, máx 25.
+        # Fallback "" en ambos; el endpoint lo resuelve por su cuenta.
+        usuario_api = "".join((request.session.get("upn") or "").split("@")[0].split())[:20]
+        grupo_api = "".join(grupo_que_concede(request, "accion.enviar_bonificacion").split())[:25]
 
         api_token = os.environ.get("BONIF_API_TOKEN", "")
         headers = {"Content-Type": "application/json", "X-API-Token": api_token}
@@ -1781,7 +1784,8 @@ def cargar_bonificacion_externa(request, grupo):
                 "porcentaje": porcentaje,
                 "modo": "forzar",            # fijo, no visible al usuario
                 "observacion": observacion,
-                "usuario": usuario,
+                "usuario": usuario_api,
+                "grupo": grupo_api,
             }
             r = requests.post(api_url, json=payload, headers=headers, timeout=15)
             ok = r.status_code in (200, 201)

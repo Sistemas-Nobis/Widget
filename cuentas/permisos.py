@@ -93,3 +93,22 @@ def usuario_puede(request, recurso_key) -> bool:
         return False
     usuario_oids = {str(g).lower() for g in grupos_usuario}
     return bool(concedidos & usuario_oids)
+
+
+def grupo_que_concede(request, recurso_key) -> str:
+    """
+    Nombre legible (GrupoEntra.nombre) del primer grupo del operador que concede
+    recurso_key. "" si ninguno (o el usuario no tiene grupos). No es hot-path:
+    se usa solo al enviar la identidad a una API externa.
+    """
+    grupos_usuario = {str(g).lower() for g in (request.session.get("grupos") or [])}
+    if not grupos_usuario:
+        return ""
+    from .models import GrupoEntra
+    candidatos = (GrupoEntra.objects
+                  .filter(activo=True, permisos__recurso_key=recurso_key)
+                  .values_list("oid", "nombre"))
+    for oid, nombre in candidatos:
+        if (oid or "").lower() in grupos_usuario:
+            return nombre or ""
+    return ""
