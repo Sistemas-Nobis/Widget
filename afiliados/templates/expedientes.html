@@ -216,6 +216,12 @@ tr:nth-child(odd) td {
   margin: 0;
   font-size: 15px;
 }
+.wa-logout-inline {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px; color: #fff; text-decoration: none;
+  border-radius: 4px; flex: none;
+}
+.wa-logout-inline:hover { background: rgba(255,255,255,.22); }
 
 .icon-button {
   width: 28px; height: 28px;
@@ -255,7 +261,10 @@ tr:nth-child(odd) td {
 <body>
     <div class="container">
         <div class="titulo-expedientes">
-          <h2>Expedientes del grupo familiar</h2>
+          <div style="display:flex;align-items:center;gap:8px;">
+            {% if widget_auth_enabled %}<a href="{{ widget_logout_url }}" class="wa-logout-inline" title="Usuario logeado: {{ widget_user_nombre }} - Cerrar sesión" aria-label="Cerrar sesión" onclick="event.preventDefault();fetch(this.href,{credentials:'include'}).then(function(){location.reload();}).catch(function(){location.reload();});"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></a>{% endif %}
+            <h2>Expedientes del grupo familiar</h2>
+          </div>
           <button id="openFilters" class="icon-button" type="button" style="margin-left: 5px;"
                   data-bs-toggle="modal" data-bs-target="#filtrosModal"
                   title="Filtrar expedientes">

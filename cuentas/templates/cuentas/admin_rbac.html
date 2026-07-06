@@ -6,180 +6,347 @@
   <title>Permisos del Widget</title>
   {% csrf_token %}
   <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: #f4f6f4; color: #333; }
-    header { background: #0e8c13; color: #fff; padding: 14px 22px; display: flex;
-             align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
-    header h1 { font-size: 18px; margin: 0; }
-    header .user { font-size: 13px; opacity: .9; }
-    main { padding: 22px; max-width: 1200px; margin: 0 auto; }
-    .card { background: #fff; border: 2px solid #0e8c13; border-radius: 14px; padding: 18px; margin-bottom: 22px; }
-    .card h2 { font-size: 15px; color: #0e8c13; margin: 0 0 12px; }
-    .form-grupo { display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end; }
-    .form-grupo label { font-size: 12px; display: flex; flex-direction: column; gap: 4px; }
-    .form-grupo input { padding: 7px 9px; border: 1px solid #bbb; border-radius: 6px; font-size: 13px; }
-    .form-grupo input#gObjectId { min-width: 320px; }
-    .btn { background: #0e8c13; color: #fff; border: 0; border-radius: 6px; padding: 9px 18px;
-           font-weight: bold; cursor: pointer; font-size: 13px; }
-    .btn:disabled { background: #9bbf9d; cursor: default; }
-    .btn.sec { background: #fff; color: #b00020; border: 1px solid #d99; }
-    table { border-collapse: collapse; width: 100%; font-size: 13px; }
-    th, td { border: 1px solid #dce5dc; padding: 7px 9px; text-align: center; }
-    th.recurso, td.recurso { text-align: left; white-space: nowrap; }
-    thead th { background: #eafbe9; color: #0e8c13; position: sticky; top: 0; }
-    tr.seccion td { background: #f0f7f0; color: #0e8c13; font-weight: bold; text-align: left; }
-    .sin-grupos { color: #b00020; font-size: 11px; }
-    .grupo-lista { list-style: none; padding: 0; margin: 0 0 12px; }
-    .grupo-lista li { display: flex; justify-content: space-between; align-items: center;
-                      border-bottom: 1px solid #eee; padding: 6px 0; font-size: 13px; }
-    .grupo-lista code { color: #777; font-size: 11px; }
-    .footer-bar { position: sticky; bottom: 0; background: #fff; border-top: 1px solid #ddd;
-                  padding: 12px 22px; display: flex; gap: 12px; align-items: center; }
-    #toast { font-size: 13px; color: #0e8c13; }
-    .table-wrap { overflow-x: auto; }
-    .hint { font-size: 11px; color: #888; margin-top: 6px; }
+    :root{
+      --verde:#0e8c13; --verde-d:#0a6b0f; --verde-l:#eafbe9; --verde-l2:#f4faf3;
+      --bg:#eef1ee; --surface:#ffffff; --border:#dbe4db; --border-strong:#c4d3c4;
+      --text:#1e2a1e; --text-2:#566356; --muted:#8a9a8a; --danger:#b00020; --danger-l:#fdecef;
+      --radius:14px; --radius-sm:8px;
+      --shadow:0 1px 2px rgba(20,60,20,.04), 0 10px 30px rgba(20,60,20,.06);
+      --sp1:4px; --sp2:8px; --sp3:12px; --sp4:16px; --sp5:24px; --sp6:32px;
+      --focus:0 0 0 3px rgba(14,140,19,.3);
+    }
+    *{box-sizing:border-box;}
+    [hidden]{display:none!important;}
+    html,body{margin:0;}
+    body{background:var(--bg);color:var(--text);
+      font-family:'Segoe UI',Roboto,-apple-system,Helvetica,Arial,sans-serif;
+      font-size:14px;line-height:1.5;padding-bottom:88px;}
+    a{color:inherit;}
+
+    /* Header */
+    header{position:sticky;top:0;z-index:30;background:var(--verde);color:#fff;
+      padding:var(--sp4) var(--sp5);display:flex;align-items:center;justify-content:space-between;
+      gap:var(--sp3);flex-wrap:wrap;box-shadow:0 2px 10px rgba(0,0,0,.12);}
+    header .brand{display:flex;align-items:center;gap:var(--sp3);}
+    header h1{font-size:17px;font-weight:700;margin:0;letter-spacing:.2px;}
+    header .sub{font-size:12px;opacity:.85;margin-top:2px;}
+    header .user{display:flex;align-items:center;gap:var(--sp3);font-size:13px;}
+    header .logout{display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;
+      border:1px solid rgba(255,255,255,.55);border-radius:var(--radius-sm);padding:6px 12px;
+      font-weight:600;transition:background .15s;}
+    header .logout:hover{background:rgba(255,255,255,.14);}
+    header .logout:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(255,255,255,.5);}
+
+    main{width:100%;padding:var(--sp5) var(--sp6) 0;}
+
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+      box-shadow:var(--shadow);margin-bottom:var(--sp5);overflow:hidden;}
+    .card-head{display:flex;align-items:center;gap:var(--sp2);padding:var(--sp4) var(--sp5);
+      border-bottom:1px solid var(--border);}
+    .card-head h2{font-size:14px;font-weight:700;color:var(--verde);margin:0;text-transform:uppercase;letter-spacing:.5px;}
+    .card-head .count{margin-left:auto;font-size:12px;color:var(--muted);background:var(--verde-l);
+      color:var(--verde-d);padding:2px 10px;border-radius:999px;font-weight:600;}
+    .card-body{padding:var(--sp5);}
+    .icon{width:18px;height:18px;flex:none;}
+
+    /* Grupos */
+    .grupos-grid{display:flex;flex-wrap:wrap;gap:var(--sp3);margin-bottom:var(--sp5);}
+    .grupo-chip{display:flex;align-items:center;gap:var(--sp3);background:var(--verde-l2);
+      border:1px solid var(--border);border-radius:var(--radius-sm);padding:var(--sp3) var(--sp3) var(--sp3) var(--sp4);
+      min-width:220px;}
+    .grupo-chip .dot{width:9px;height:9px;border-radius:50%;background:var(--verde);flex:none;}
+    .grupo-chip .meta{min-width:0;}
+    .grupo-chip .nom{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;}
+    .grupo-chip .oid{font-family:ui-monospace,'Cascadia Code',Consolas,monospace;font-size:11px;
+      color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;}
+    .grupo-chip .del{margin-left:auto;width:34px;height:34px;display:flex;align-items:center;justify-content:center;
+      border:1px solid transparent;border-radius:var(--radius-sm);background:transparent;color:var(--muted);
+      cursor:pointer;flex:none;transition:background .15s,color .15s;}
+    .grupo-chip .del:hover{background:var(--danger-l);color:var(--danger);}
+    .grupo-chip .del:focus-visible{outline:none;box-shadow:var(--focus);}
+
+    .empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;
+      padding:var(--sp6) var(--sp4);color:var(--text-2);border:1.5px dashed var(--border-strong);
+      border-radius:var(--radius-sm);background:var(--verde-l2);margin-bottom:var(--sp5);}
+    .empty svg{color:var(--muted);}
+
+    /* Form alta grupo */
+    .form-grupo{display:flex;gap:var(--sp3);flex-wrap:wrap;align-items:flex-end;
+      border-top:1px dashed var(--border);padding-top:var(--sp4);}
+    .field{display:flex;flex-direction:column;gap:6px;flex:1 1 200px;min-width:0;}
+    .field.field-oid{flex:2 1 320px;}
+    .field label{font-size:12px;font-weight:600;color:var(--text-2);}
+    .field input{width:100%;height:42px;padding:0 12px;border:1px solid var(--border-strong);border-radius:var(--radius-sm);
+      font-size:14px;font-family:inherit;background:#fff;transition:border-color .15s,box-shadow .15s;}
+    .field input#gObjectId{font-family:ui-monospace,Consolas,monospace;font-size:13px;}
+    .form-grupo .btn-primary{flex:0 0 auto;}
+    .field input:focus{outline:none;border-color:var(--verde);box-shadow:var(--focus);}
+    .field input[aria-invalid="true"]{border-color:var(--danger);box-shadow:0 0 0 3px rgba(176,0,32,.15);}
+    .btn{height:42px;padding:0 20px;border:0;border-radius:var(--radius-sm);font-size:14px;font-weight:600;
+      cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background .15s,box-shadow .15s;}
+    .btn:focus-visible{outline:none;box-shadow:var(--focus);}
+    .btn-primary{background:var(--verde);color:#fff;}
+    .btn-primary:hover{background:var(--verde-d);}
+    .btn-primary:disabled{background:#a9c9ab;cursor:default;}
+    .hint{font-size:12px;color:var(--muted);margin-top:var(--sp3);line-height:1.5;}
+    .hint b{color:var(--text-2);}
+    details.oids{margin-top:var(--sp3);font-size:12px;color:var(--text-2);}
+    details.oids summary{cursor:pointer;color:var(--verde-d);font-weight:600;}
+    details.oids code{display:block;font-family:ui-monospace,Consolas,monospace;font-size:11px;color:var(--muted);
+      margin-top:6px;word-break:break-all;}
+
+    /* Matriz */
+    .table-wrap{overflow-x:auto;border-radius:var(--radius-sm);border:1px solid var(--border);}
+    table{border-collapse:separate;border-spacing:0;width:100%;font-size:13px;min-width:520px;}
+    thead th{position:sticky;top:0;z-index:5;background:var(--verde-l);color:var(--verde-d);
+      font-weight:700;padding:var(--sp3) var(--sp3);text-align:center;border-bottom:2px solid var(--border-strong);
+      white-space:nowrap;}
+    thead th.col-recurso{left:0;z-index:6;text-align:left;min-width:230px;}
+    th.col-recurso, td.col-recurso{position:sticky;left:0;background:var(--surface);}
+    thead th .g-nom{display:block;}
+    thead th .g-oid{display:block;font-family:ui-monospace,Consolas,monospace;font-size:10px;
+      font-weight:400;opacity:.7;margin-top:1px;}
+    tbody td{padding:0;border-bottom:1px solid var(--border);text-align:center;height:46px;}
+    tbody td.col-recurso{text-align:left;padding:var(--sp3) var(--sp4);font-weight:500;}
+    tbody tr:hover td{background:var(--verde-l2);}
+    tbody tr:hover td.col-recurso{background:var(--verde-l2);}
+    tr.seccion td{background:#f0f5ef;color:var(--verde-d);font-weight:700;font-size:11px;
+      text-transform:uppercase;letter-spacing:.6px;padding:var(--sp2) var(--sp4);position:sticky;left:0;}
+    .sin-grupos{display:inline-block;margin-left:8px;font-size:10px;font-weight:600;color:var(--danger);
+      background:var(--danger-l);padding:1px 8px;border-radius:999px;text-transform:none;letter-spacing:0;}
+
+    /* Checkbox accesible: label cubre toda la celda (área ≥44px) */
+    .cell-check{display:flex;align-items:center;justify-content:center;width:100%;height:46px;cursor:pointer;}
+    .cell-check input{position:absolute;opacity:0;width:1px;height:1px;}
+    .cell-check .box{width:22px;height:22px;border:2px solid var(--border-strong);border-radius:6px;
+      background:#fff;display:flex;align-items:center;justify-content:center;transition:background .12s,border-color .12s;}
+    .cell-check .box svg{width:14px;height:14px;color:#fff;opacity:0;transform:scale(.6);transition:opacity .12s,transform .12s;}
+    .cell-check input:checked + .box{background:var(--verde);border-color:var(--verde);}
+    .cell-check input:checked + .box svg{opacity:1;transform:scale(1);}
+    .cell-check input:focus-visible + .box{box-shadow:var(--focus);}
+    .cell-check:hover .box{border-color:var(--verde);}
+
+    /* Footer guardar */
+    .savebar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--surface);
+      border-top:1px solid var(--border);box-shadow:0 -4px 20px rgba(0,0,0,.06);
+      padding:var(--sp3) var(--sp5);display:flex;align-items:center;gap:var(--sp4);}
+    .savebar .status{font-size:13px;color:var(--text-2);display:flex;align-items:center;gap:8px;}
+    .savebar .dirty-badge{background:#fff4d6;color:#8a6d00;font-weight:600;padding:2px 10px;border-radius:999px;font-size:12px;}
+    .savebar .spacer{flex:1;}
+    .btn-save{height:44px;padding:0 26px;background:var(--verde);color:#fff;font-weight:700;}
+    .btn-save:hover:not(:disabled){background:var(--verde-d);}
+    .btn-save:disabled{background:#b8ceb9;cursor:default;}
+    .spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;
+      border-radius:50%;animation:spin .7s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+
+    /* Toast */
+    #toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(10px);
+      background:#213021;color:#fff;padding:10px 18px;border-radius:var(--radius-sm);font-size:13px;
+      box-shadow:0 8px 24px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:60;
+      display:flex;align-items:center;gap:8px;max-width:90vw;}
+    #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+    #toast.ok{background:#12611a;}
+    #toast.err{background:#8f1020;}
+
+    @media (max-width:640px){
+      main{padding:var(--sp4);}
+      .field input#gObjectId{min-width:100%;}
+      .form-grupo{flex-direction:column;align-items:stretch;}
+      .field{width:100%;}
+    }
+    @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
   </style>
 </head>
 <body>
   <header>
-    <h1>Permisos del Widget — RBAC por grupos de Entra</h1>
-    <span class="user">{{ usuario }}</span>
+    <div class="brand">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <div>
+        <h1>Permisos del Widget</h1>
+        <div class="sub">Control de acceso por grupos de Entra ID</div>
+      </div>
+    </div>
+    <div class="user">
+      <span>{{ usuario }}</span>
+      <a class="logout" href="{{ widget_logout_url }}" title="Cerrar sesión">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Salir
+      </a>
+    </div>
   </header>
 
   <main>
-    <div class="card">
-      <h2>Grupos de Entra habilitados</h2>
-      <ul class="grupo-lista" id="listaGrupos"></ul>
-      <form class="form-grupo" id="formGrupo">
-        <label>Nombre legible
-          <input type="text" id="gNombre" placeholder="Ej: Atencion-Operadores" required>
-        </label>
-        <label>Object ID (GUID del grupo en Entra)
-          <input type="text" id="gObjectId" placeholder="00000000-0000-0000-0000-000000000000" required>
-        </label>
-        <button type="submit" class="btn">Agregar grupo</button>
-      </form>
-      <div class="hint">
-        El Object ID se obtiene en Entra admin center → Groups → (grupo) → Overview → Object Id.
-        Debe ser un grupo <b>visible en el token</b> del usuario (grupo de seguridad asignado según la config de la App Registration).
+    <!-- Panel 1: grupos -->
+    <section class="card">
+      <div class="card-head">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#0e8c13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <h2>Grupos de Entra habilitados</h2>
+        <span class="count" id="grupoCount">0</span>
       </div>
-    </div>
+      <div class="card-body">
+        <div class="grupos-grid" id="listaGrupos"></div>
+        <div class="empty" id="gruposEmpty" hidden>
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+          <div>Todavía no cargaste ningún grupo.<br>Agregá el primero para asignarle permisos.</div>
+        </div>
 
-    <div class="card">
-      <h2>Matriz de permisos (recurso × grupo)</h2>
-      <div class="table-wrap">
-        <table id="tablaMatriz"><thead><tr></tr></thead><tbody></tbody></table>
+        <form class="form-grupo" id="formGrupo" novalidate>
+          <div class="field">
+            <label for="gNombre">Nombre legible</label>
+            <input type="text" id="gNombre" placeholder="Ej: Atención-Operadores" autocomplete="off" required>
+          </div>
+          <div class="field field-oid">
+            <label for="gObjectId">Object ID (GUID del grupo en Entra)</label>
+            <input type="text" id="gObjectId" placeholder="00000000-0000-0000-0000-000000000000"
+                   autocomplete="off" spellcheck="false" required aria-describedby="oidHint">
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Agregar grupo
+          </button>
+        </form>
+        <p class="hint" id="oidHint">
+          El Object ID se obtiene en <b>Entra admin center → Groups → (grupo) → Overview → Object Id</b>.
+          Debe ser un grupo <b>visible en el token</b> del usuario.
+        </p>
       </div>
-      <div class="hint">Tildá qué grupos acceden a cada vista/acción. Los cambios impactan de inmediato tras Guardar.</div>
-    </div>
+    </section>
+
+    <!-- Panel 2: matriz -->
+    <section class="card">
+      <div class="card-head">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#0e8c13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="9" x2="9" y2="21"/></svg>
+        <h2>Matriz de permisos</h2>
+      </div>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table id="tablaMatriz"><thead><tr></tr></thead><tbody></tbody></table>
+        </div>
+        <p class="hint">Tildá qué grupos acceden a cada vista/acción. Los cambios impactan de inmediato tras guardar.</p>
+      </div>
+    </section>
   </main>
 
-  <div class="footer-bar">
-    <button id="btnGuardar" class="btn" disabled>Guardar cambios</button>
-    <span id="toast"></span>
+  <div class="savebar">
+    <div class="status" id="saveStatus">Sin cambios pendientes.</div>
+    <div class="spacer"></div>
+    <button id="btnGuardar" class="btn btn-save" disabled>Guardar cambios</button>
   </div>
+
+  <div id="toast" role="status" aria-live="polite"></div>
 
   <script>
     var BASE = "{{ prefix }}/gestion";
     var CSRF = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    var ESTADO = null;
+    var ESTADO = null, dirtyCount = 0;
+    var GUID_RE = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+    var CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
 
-    function toast(msg, err) {
-      var t = document.getElementById('toast');
-      t.textContent = msg; t.style.color = err ? '#b00020' : '#0e8c13';
-      setTimeout(function () { t.textContent = ''; }, 4000);
+    function toast(msg, tipo){
+      var t=document.getElementById('toast');
+      t.textContent=msg; t.className='show'+(tipo?(' '+tipo):'');
+      clearTimeout(t._h); t._h=setTimeout(function(){t.className=t.className.replace('show','').trim();},3500);
     }
-    function dirty() { document.getElementById('btnGuardar').disabled = false; }
+    function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 
-    function cargar() {
-      fetch(BASE + '/permisos/estado/', { credentials: 'same-origin', cache: 'no-store' })
-        .then(function (r) { return r.json(); })
-        .then(function (data) { ESTADO = data; pintarGrupos(); pintarMatriz(); });
+    function setDirty(){
+      dirtyCount=document.querySelectorAll('#tablaMatriz input:checked').length;
+      // recomputar contra estado inicial no hace falta: habilitamos al primer cambio
+      var b=document.getElementById('btnGuardar');
+      b.disabled=false;
+      document.getElementById('saveStatus').innerHTML='<span class="dirty-badge">Cambios sin guardar</span>';
+    }
+    function clearDirty(){
+      document.getElementById('btnGuardar').disabled=true;
+      document.getElementById('saveStatus').textContent='Sin cambios pendientes.';
     }
 
-    function pintarGrupos() {
-      var ul = document.getElementById('listaGrupos');
-      ul.innerHTML = '';
-      ESTADO.grupos.forEach(function (g) {
-        var li = document.createElement('li');
-        li.innerHTML = '<span>' + escapeHtml(g.nombre) + ' <code>' + g.oid + '</code></span>' +
-                       '<button class="btn sec" data-id="' + g.id + '">Eliminar</button>';
-        li.querySelector('button').onclick = function () { eliminarGrupo(g.id); };
-        ul.appendChild(li);
+    function cargar(){
+      fetch(BASE+'/permisos/estado/',{credentials:'same-origin',cache:'no-store'})
+        .then(function(r){return r.json();})
+        .then(function(d){ESTADO=d;pintarGrupos();pintarMatriz();clearDirty();})
+        .catch(function(){toast('No se pudo cargar el estado','err');});
+    }
+
+    function pintarGrupos(){
+      var cont=document.getElementById('listaGrupos');
+      var empty=document.getElementById('gruposEmpty');
+      document.getElementById('grupoCount').textContent=ESTADO.grupos.length;
+      cont.innerHTML='';
+      empty.hidden=ESTADO.grupos.length>0;
+      ESTADO.grupos.forEach(function(g){
+        var el=document.createElement('div');
+        el.className='grupo-chip';
+        el.innerHTML='<span class="dot"></span><div class="meta"><div class="nom" title="'+esc(g.nombre)+'">'+esc(g.nombre)+'</div>'+
+          '<div class="oid" title="'+g.oid+'">'+g.oid+'</div></div>'+
+          '<button class="del" type="button" title="Eliminar grupo" aria-label="Eliminar '+esc(g.nombre)+'">'+
+          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>';
+        el.querySelector('.del').onclick=function(){eliminarGrupo(g.id,g.nombre);};
+        cont.appendChild(el);
       });
-      if (!ESTADO.grupos.length) ul.innerHTML = '<li>No hay grupos cargados todavía.</li>';
     }
 
-    function pintarMatriz() {
-      var grupos = ESTADO.grupos, catalogo = ESTADO.catalogo, asign = ESTADO.asignaciones || {};
-      var thead = document.querySelector('#tablaMatriz thead tr');
-      thead.innerHTML = '<th class="recurso">Recurso</th>' +
-        grupos.map(function (g) { return '<th title="' + g.oid + '">' + escapeHtml(g.nombre) + '</th>'; }).join('');
-      var tbody = document.querySelector('#tablaMatriz tbody');
-      var html = '', sec = null;
-      catalogo.forEach(function (r) {
-        if (r.seccion !== sec) {
-          sec = r.seccion;
-          html += '<tr class="seccion"><td colspan="' + (grupos.length + 1) + '">' + escapeHtml(sec) + '</td></tr>';
-        }
-        var asignados = asign[r.key] || [];
-        var vacio = asignados.length ? '' : ' <span class="sin-grupos">(sin grupos)</span>';
-        html += '<tr><td class="recurso">' + escapeHtml(r.etiqueta) + vacio + '</td>' +
-          grupos.map(function (g) {
-            var checked = asignados.indexOf(g.id) !== -1 ? ' checked' : '';
-            return '<td><input type="checkbox" data-recurso="' + r.key + '" data-grupo="' + g.id + '"' + checked + '></td>';
-          }).join('') + '</tr>';
+    function pintarMatriz(){
+      var grupos=ESTADO.grupos, catalogo=ESTADO.catalogo, asign=ESTADO.asignaciones||{};
+      var head=document.querySelector('#tablaMatriz thead tr');
+      head.innerHTML='<th class="col-recurso">Recurso</th>'+grupos.map(function(g){
+        return '<th title="'+g.oid+'"><span class="g-nom">'+esc(g.nombre)+'</span><span class="g-oid">'+g.oid.slice(0,8)+'…</span></th>';
+      }).join('');
+      var tb=document.querySelector('#tablaMatriz tbody'), html='', sec=null;
+      catalogo.forEach(function(r){
+        if(r.seccion!==sec){sec=r.seccion;html+='<tr class="seccion"><td colspan="'+(grupos.length+1)+'">'+esc(sec)+'</td></tr>';}
+        var asignados=asign[r.key]||[];
+        var vacio=asignados.length?'':' <span class="sin-grupos">sin grupos</span>';
+        html+='<tr><td class="col-recurso">'+esc(r.etiqueta)+vacio+'</td>'+grupos.map(function(g){
+          var ck=asignados.indexOf(g.id)!==-1?' checked':'';
+          return '<td><label class="cell-check"><input type="checkbox" data-recurso="'+r.key+'" data-grupo="'+g.id+'"'+ck+
+            ' aria-label="'+esc(r.etiqueta)+' — '+esc(g.nombre)+'"><span class="box">'+CHECK+'</span></label></td>';
+        }).join('')+'</tr>';
       });
-      tbody.innerHTML = html;
-      tbody.querySelectorAll('input').forEach(function (c) { c.onchange = dirty; });
+      tb.innerHTML=grupos.length?html:'<tr><td class="col-recurso" style="color:var(--muted)">Agregá al menos un grupo para asignar permisos.</td></tr>';
+      tb.querySelectorAll('input').forEach(function(c){c.onchange=setDirty;});
     }
 
-    document.getElementById('btnGuardar').onclick = function () {
-      var asign = {};
-      ESTADO.catalogo.forEach(function (r) { asign[r.key] = []; });   // recursos vacíos viajan para permitir borrado
-      document.querySelectorAll('#tablaMatriz input:checked').forEach(function (c) {
-        asign[c.dataset.recurso].push(parseInt(c.dataset.grupo, 10));
-      });
-      fetch(BASE + '/permisos/guardar/', {
-        method: 'POST', credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': CSRF },
-        body: JSON.stringify({ asignaciones: asign })
-      }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
-        .then(function (res) {
-          if (res.ok) { document.getElementById('btnGuardar').disabled = true; toast('Cambios guardados.'); cargar(); }
-          else { toast('Error: ' + (res.d.error || 'desconocido'), true); }
-        });
+    document.getElementById('btnGuardar').onclick=function(){
+      var btn=this;
+      var asign={};
+      ESTADO.catalogo.forEach(function(r){asign[r.key]=[];});
+      document.querySelectorAll('#tablaMatriz input:checked').forEach(function(c){asign[c.dataset.recurso].push(parseInt(c.dataset.grupo,10));});
+      btn.disabled=true; btn.innerHTML='<span class="spin"></span> Guardando…';
+      fetch(BASE+'/permisos/guardar/',{method:'POST',credentials:'same-origin',
+        headers:{'Content-Type':'application/json','X-CSRFToken':CSRF},body:JSON.stringify({asignaciones:asign})})
+        .then(function(r){return r.json().then(function(d){return {ok:r.ok,d:d};});})
+        .then(function(res){
+          btn.innerHTML='Guardar cambios';
+          if(res.ok){toast('Cambios guardados','ok');cargar();}
+          else{btn.disabled=false;toast('Error: '+(res.d.error||'desconocido'),'err');}
+        }).catch(function(){btn.innerHTML='Guardar cambios';btn.disabled=false;toast('Error de red','err');});
     };
 
-    document.getElementById('formGrupo').onsubmit = function (e) {
+    document.getElementById('formGrupo').onsubmit=function(e){
       e.preventDefault();
-      var nombre = document.getElementById('gNombre').value.trim();
-      var oid = document.getElementById('gObjectId').value.trim();
-      fetch(BASE + '/grupos/crear/', {
-        method: 'POST', credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': CSRF },
-        body: JSON.stringify({ nombre: nombre, oid: oid })
-      }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
-        .then(function (res) {
-          if (res.ok) { document.getElementById('gNombre').value = ''; document.getElementById('gObjectId').value = ''; toast('Grupo agregado.'); cargar(); }
-          else { toast('Error: ' + (res.d.error || 'desconocido'), true); }
-        });
+      var nombreEl=document.getElementById('gNombre'), oidEl=document.getElementById('gObjectId');
+      var nombre=nombreEl.value.trim(), oid=oidEl.value.trim();
+      oidEl.setAttribute('aria-invalid', GUID_RE.test(oid)?'false':'true');
+      if(!nombre){nombreEl.focus();return toast('Ingresá un nombre','err');}
+      if(!GUID_RE.test(oid)){oidEl.focus();return toast('El Object ID no tiene formato de GUID válido','err');}
+      fetch(BASE+'/grupos/crear/',{method:'POST',credentials:'same-origin',
+        headers:{'Content-Type':'application/json','X-CSRFToken':CSRF},body:JSON.stringify({nombre:nombre,oid:oid})})
+        .then(function(r){return r.json().then(function(d){return {ok:r.ok,d:d};});})
+        .then(function(res){
+          if(res.ok){nombreEl.value='';oidEl.value='';oidEl.setAttribute('aria-invalid','false');toast('Grupo agregado','ok');cargar();}
+          else{toast('Error: '+(res.d.error||'desconocido'),'err');}
+        }).catch(function(){toast('Error de red','err');});
     };
 
-    function eliminarGrupo(id) {
-      if (!confirm('¿Eliminar el grupo y sus permisos?')) return;
-      fetch(BASE + '/grupos/eliminar/', {
-        method: 'POST', credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': CSRF },
-        body: JSON.stringify({ id: id })
-      }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
-        .then(function (res) { if (res.ok) { toast('Grupo eliminado.'); cargar(); } else { toast('Error: ' + (res.d.error || ''), true); } });
-    }
-
-    function escapeHtml(s) {
-      return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
-        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-      });
+    function eliminarGrupo(id,nombre){
+      if(!confirm('¿Eliminar el grupo "'+nombre+'" y todos sus permisos?'))return;
+      fetch(BASE+'/grupos/eliminar/',{method:'POST',credentials:'same-origin',
+        headers:{'Content-Type':'application/json','X-CSRFToken':CSRF},body:JSON.stringify({id:id})})
+        .then(function(r){return r.json().then(function(d){return {ok:r.ok,d:d};});})
+        .then(function(res){if(res.ok){toast('Grupo eliminado','ok');cargar();}else{toast('Error: '+(res.d.error||''),'err');}})
+        .catch(function(){toast('Error de red','err');});
     }
 
     cargar();

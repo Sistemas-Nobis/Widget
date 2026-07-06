@@ -27,7 +27,17 @@ def widget_auth(request):
     return {
         "widget_auth_json": json.dumps(cfg),
         "widget_perms": _permisos(request),
+        "widget_auth_enabled": getattr(settings, "WIDGET_AUTH_ENABLED", False),
+        "widget_logout_url": f"{p}/auth/logout",
+        "widget_user_nombre": _nombre_usuario(request),
     }
+
+
+def _nombre_usuario(request):
+    s = getattr(request, "session", None)
+    if not s:
+        return ""
+    return s.get("nombre") or s.get("upn") or ""
 
 
 def _permisos(request):

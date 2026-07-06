@@ -1037,5 +1037,12 @@
     {% load static %}
     <script>window.WIDGET_AUTH = Object.assign({{ widget_auth_json|safe }}, {role: "bloqueado"});</script>
     <script src="{% static 'afiliados/js/widget-auth.js' %}"></script>
+    {% if widget_auth_enabled %}
+    <a href="{{ widget_logout_url }}" class="wa-logout-btn" title="Cerrar sesión" aria-label="Cerrar sesión"
+       onclick="event.preventDefault();fetch(this.href,{credentials:'include'}).then(function(){location.reload();}).catch(function(){location.reload();});">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    </a>
+    <style>.wa-logout-btn{position:fixed;bottom:10px;right:10px;z-index:1030;width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid #d5ddd5;border-radius:50%;color:#0e8c13;box-shadow:0 2px 8px rgba(0,0,0,.18);text-decoration:none;transition:color .15s,border-color .15s}.wa-logout-btn:hover{color:#b00020;border-color:#e6bcbc}</style>
+    {% endif %}
 </body>
 </html>
