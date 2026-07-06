@@ -206,7 +206,7 @@ class BuscarAfiliadoView(View):
                     data_p = response_p.json()
                     #print(f"Datos de patologías para {nro_afi}: {data_p}")
 
-                    if data_p:
+                    if isinstance(data_p, list) and data_p:
                         fecha_alta = data_p[0].get('fecha_alta')
                         fecha_alta_format = datetime.strptime(fecha_alta, '%Y-%m-%dT%H:%M:%S.000')
                         fecha_formateada = fecha_alta_format.strftime('%d-%m-%Y')
@@ -708,7 +708,7 @@ class BuscarRetencionView(View):
                         response_p = requests.get(url_patologias, headers=headers_interno)
                         data_p = response_p.json()
 
-                        if data_p:
+                        if isinstance(data_p, list) and data_p:
                             
                             # Fecha de alta
                             fecha_alta = data_p[0].get('fecha_alta')
@@ -765,7 +765,7 @@ class BuscarRetencionView(View):
 
                 cont = 0
 
-                if data_a:
+                if isinstance(data_a, list) and data_a:
                     for aporte in data_a:
                         if cont != 5:
                             # Supongamos que `periodo` es una cadena como '202410'
@@ -1012,7 +1012,7 @@ class MesaDeEntradaView(View):
                     response_p = requests.get(url_patologias, headers=headers_interno)
                     data_p = response_p.json()
 
-                    if data_p:
+                    if isinstance(data_p, list) and data_p:
                         fecha_alta = data_p[0].get('fecha_alta')
                         fecha_alta_format = datetime.strptime(fecha_alta, '%Y-%m-%dT%H:%M:%S.000')
                         fecha_formateada = fecha_alta_format.strftime('%d-%m-%Y')
