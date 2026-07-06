@@ -17,7 +17,7 @@ from collections import defaultdict
 from django.utils.decorators import method_decorator
 from cuentas.decoradores import requiere_permiso_iframe, requiere_permiso_json
 from cuentas.permisos import usuario_puede, grupo_que_concede
-from .audit import registrar, etiqueta_usuario
+from .audit import registrar, etiqueta_usuario, usuario_para_api
 
 
 
@@ -1519,18 +1519,17 @@ def crear_remito(request, expediente_id):
             if not sector_destino:
                 return JsonResponse({"error": "Debe indicar un sector destino"}, status=400)
 
-            # API propia de Nobis: se puede atribuir el usuario real.
-            usuario = etiqueta_usuario(request)
-            observaciones_ext = (f"{observaciones}\n[Cargado por {usuario}]" if observaciones
-                                 else f"[Cargado por {usuario}]")
+            # API propia de Nobis: mandar el usuario real; se omite el campo si no hay.
+            usuario = usuario_para_api(request)
 
             api_url = f"https://api.nobis.com.ar/crear_remito/{expediente_id}"
 
             payload = {
                 "sector_destino": sector_destino,
-                "observaciones": observaciones_ext,
-                "usuario": usuario
+                "observaciones": observaciones if observaciones else None,
             }
+            if usuario:
+                payload["usuario"] = usuario
 
             api_response = requests.post(api_url, json=payload)
 
@@ -1770,7 +1769,7 @@ def cargar_bonificacion_externa(request, grupo):
         # usuario = parte local del UPN (antes del @), sin espacios, máx 20.
         # grupo = nombre legible del grupo que concede la acción, sin espacios, máx 25.
         # Fallback "" en ambos; el endpoint lo resuelve por su cuenta.
-        usuario_api = "".join((request.session.get("upn") or "").split("@")[0].split())[:20]
+        usuario_api = usuario_para_api(request, 20)
         grupo_api = "".join(grupo_que_concede(request, "accion.enviar_bonificacion").split())[:25]
 
         api_token = os.environ.get("BONIF_API_TOKEN", "")

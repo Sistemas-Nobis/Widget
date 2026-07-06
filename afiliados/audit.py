@@ -22,6 +22,16 @@ def etiqueta_usuario(request):
     return ident["upn"] or ident["nombre"] or "widget"
 
 
+def usuario_para_api(request, maxlen=None):
+    """
+    Nombre del operador para APIs externas: parte local del UPN (antes del @),
+    sin espacios, opcionalmente truncado a maxlen. "" si no hay sesión.
+    """
+    local = (identidad_de(request)["upn"] or "").split("@")[0]
+    limpio = "".join(local.split())
+    return limpio[:maxlen] if maxlen else limpio
+
+
 def ip_de(request):
     xff = request.META.get("HTTP_X_FORWARDED_FOR", "")
     if xff:
