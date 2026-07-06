@@ -105,7 +105,10 @@ class BuscarAfiliadoView(View):
 
                         url_agegru = f"https://api.nobis.com.ar/agente_por_grupo/{grupo_id}"
                         response_agegru = requests.get(url_agegru)
-                        data_agegru = response_agegru.json()
+                        try:
+                            data_agegru = response_agegru.json()
+                        except ValueError:
+                            data_agegru = []
 
                         if response_agegru.status_code == 200 and data_agegru != []:
                             for x in data_agegru:
@@ -122,7 +125,10 @@ class BuscarAfiliadoView(View):
                 if dni_aux != 0:
                     url_deuda = f"https://appmobile.nobissalud.com.ar/api/AgentesCuenta/Deuda/{dni_aux}"
                     response_deuda = requests.get(url_deuda, headers=headers)
-                    data_deuda = response_deuda.json()
+                    try:
+                        data_deuda = response_deuda.json()
+                    except ValueError:
+                        data_deuda = []
 
                     #print(data_deuda)
 
@@ -941,7 +947,10 @@ class MesaDeEntradaView(View):
                 if dni_aux != 0:
                     url_deuda = f"https://appmobile.nobissalud.com.ar/api/AgentesCuenta/Deuda/{dni_aux}"
                     response_deuda = requests.get(url_deuda, headers=headers)
-                    data_deuda = response_deuda.json()
+                    try:
+                        data_deuda = response_deuda.json()
+                    except ValueError:
+                        data_deuda = []
 
                     hoy = datetime.today()
 
