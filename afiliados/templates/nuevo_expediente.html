@@ -1032,5 +1032,8 @@
     });
 
 </script>
+    {% load static %}
+    <script>window.WIDGET_AUTH = Object.assign({{ widget_auth_json|safe }}, {role: "bloqueado"});</script>
+    <script src="{% static 'afiliados/js/widget-auth.js' %}"></script>
 </body>
 </html>

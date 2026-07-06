@@ -14,9 +14,14 @@ from django.shortcuts import render
 from django.utils.safestring import mark_safe
 from django.conf import settings
 from collections import defaultdict
+from django.utils.decorators import method_decorator
+from cuentas.decoradores import requiere_permiso_iframe, requiere_permiso_json
+from cuentas.permisos import usuario_puede
+from .audit import registrar, etiqueta_usuario
 
 
 
+@method_decorator(requiere_permiso_iframe("vista.atencion"), name="dispatch")
 class BuscarAfiliadoView(View):
     template_name = 'ate_produccion.html'
  
@@ -375,6 +380,7 @@ class BuscarAfiliadoView(View):
             return render(request, self.template_name, {'error': f'Error en la solicitud. Código de estado: {response_afiliado.status_code}'}, status=500)
        
 
+@method_decorator(requiere_permiso_iframe("vista.retencion"), name="dispatch")
 class BuscarRetencionView(View):
     template_name = 'rete_produccion.html'
     #template_name = 'rete_reserva.html'
@@ -836,6 +842,7 @@ class BuscarRetencionView(View):
             return render(request, self.template_name, {'error': f'Error en la solicitud. Código de estado: {response_afiliado.status_code}'}, status=500)
         
 
+@method_decorator(requiere_permiso_iframe("vista.mesa"), name="dispatch")
 class MesaDeEntradaView(View):
     template_carga_expediente = 'nuevo_expediente.html'
     template_expedientes = 'expedientes.html'
@@ -1052,69 +1059,10 @@ class MesaDeEntradaView(View):
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-@csrf_exempt
-def cotizar_anterior(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        mes = data.get('mes')
-        plan = data.get('plan')
-        gestion = data.get('gestion')
-        ubicacion = data.get('ubicacion')
-        aporte = data.get('aportes')
-        bonificacion = data.get('bonificaciones')
-        patologias = data.get('patologias')
-        edades = ','.join(data.get('edades', []))
-
-        if not all([mes, plan, gestion, ubicacion, edades]):
-            return JsonResponse({"error": "Faltan parámetros"}, status=400)
-
-        print(aporte, bonificacion, patologias)
-        token = "496ae7b9-0787-482e-bbe2-235279237940"
-
-        def consultar_api(mes_valor):
-            url_api = f"https://cotizador.nobis.com.ar/api?mes={mes_valor}&planes={plan}&gestion={gestion}&ubicacion={ubicacion}&ages={edades}&directo={int(aporte)}&descuento={bonificacion}&preexistencia={patologias}"
-            #url_api = (
-            #    f"https://cotizador.nobis.com.ar/cotizacion?"
-            #    f"mes={mes_valor}&planes={plan}&convenio={gestion}&provincia={ubicacion}"
-            #    f"&ages={edades}&directo={aporte}&descuento={bonificacion}&preexistencia={patologias}"
-            #)
-            headers = {
-                "Content-Type": "application/json",
-                "Authorization": f"Bearer {token}"
-            }
-            response = requests.get(url_api, headers=headers)
-            return response
-
-        try:
-            response = consultar_api(mes)
-            if response.status_code == 400:
-                error_data = response.json()
-                if error_data.get("error") == "'NoneType' object is not subscriptable":
-                    # Reintentar con mes - 1
-                    try:
-                        mes_int = int(mes)
-                        if mes_int > 1:
-                            #print(f"Reintentando con mes: {mes_int - 1}")
-                            response = consultar_api(mes_int - 1)
-                        else:
-                            return JsonResponse({"error": "No se puede restar más meses"}, status=400)
-                    except Exception:
-                        return JsonResponse({"error": "El valor de 'mes' no es un número válido"}, status=400)
-
-            response_data = response.json()
-            valor_pc = response_data['resultado']['cotizacion']['planes'][0]['primera_cuota']
-            valor_p = response_data['resultado']['cotizacion']['planes'][0]['valor_plan']
-
-            return JsonResponse({
-                "primera_cuota": valor_pc,
-                "valor_plan": valor_p
-            })
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
-
-    return JsonResponse({"error": "Método no permitido"}, status=405)
+# cotizar_anterior: eliminado (dead code — no tenía ruta en urls.py y quedaba sin gate).
 
 
+@requiere_permiso_json("accion.cotizar")
 @csrf_exempt
 def cotizar_actual(request):
     if request.method == 'POST':
@@ -1305,6 +1253,7 @@ class GeneradoresService:
             return None
 
 
+@requiere_permiso_json("accion.crear_expediente")
 @csrf_exempt
 def guardar_expediente(request):
     if request.method == "POST":
@@ -1319,6 +1268,12 @@ def guardar_expediente(request):
             observaciones = data.get("observaciones", "")
             periodo = data.get("periodo")
 
+            # Atribución: Gecros es de un tercero y solo acepta texto libre en observaciones.
+            # BenefUserId queda None (no hay mapeo Azure->Gecros). El registro confiable es el AuditLog local.
+            usuario = etiqueta_usuario(request)
+            observaciones_ext = (f"{observaciones}\n[Cargado por {usuario}]" if observaciones
+                                 else f"[Cargado por {usuario}]")
+
             url = "https://appmobile.nobissalud.com.ar/api/Expedientes"
 
             payload = json.dumps({
@@ -1328,7 +1283,7 @@ def guardar_expediente(request):
                 "provId": int(provId) if provId else None,
                 "mTipoExpId": int(mTipoExpId) if mTipoExpId else None,
                 "appCode": None,
-                "observaciones": observaciones,
+                "observaciones": observaciones_ext,
                 "periodo": periodo
             })
 
@@ -1345,33 +1300,51 @@ def guardar_expediente(request):
 
                 if response.status_code == 200:
                     expediente_data = response.json()
+                    expediente_id = expediente_data.get("data")
                     advertencia = None
 
-                    # Si se seleccionó un generador, asociarlo al expediente recién creado
+                    # Si se seleccionó un generador, asociarlo al expediente recién creado.
                     if genId and int(genId) != 0:
-                        expediente_id = expediente_data.get("data")
-                        try:
-                            generador_url = f"https://api.nobis.com.ar/generador_exp/{expediente_id}?generador_id={int(genId)}"
-                            generador_response = requests.put(generador_url)
+                        # Gate inline: la asignación de generador es un recurso RBAC aparte.
+                        if not usuario_puede(request, "accion.asignar_generador"):
+                            advertencia = "Expediente creado, pero no tenés permiso para asignar generador."
+                        else:
+                            try:
+                                generador_url = f"https://api.nobis.com.ar/generador_exp/{expediente_id}?generador_id={int(genId)}"
+                                generador_response = requests.put(generador_url)
 
-                            if generador_response.status_code == 409:
-                                advertencia = "Expediente creado, el generador actual es el mismo."
-                            elif generador_response.status_code != 200:
-                                advertencia = "Expediente creado, pero no se pudo asociar el generador."
-                            else:
-                                print(f"Generador {genId} asignado correctamente al expediente {expediente_id}")
-                        except Exception as gen_error:
-                            advertencia = f"Expediente creado, pero no se pudo asociar el generador: {str(gen_error)}"
+                                if generador_response.status_code == 409:
+                                    advertencia = "Expediente creado, el generador actual es el mismo."
+                                elif generador_response.status_code != 200:
+                                    advertencia = "Expediente creado, pero no se pudo asociar el generador."
+                                else:
+                                    print(f"Generador {genId} asignado correctamente al expediente {expediente_id}")
+                                registrar(request, action="asignar_generador", target_type="expediente",
+                                          target_id=expediente_id, response_status=generador_response.status_code,
+                                          success=(generador_response.status_code == 200),
+                                          payload_summary={"generador_id": int(genId)})
+                            except Exception as gen_error:
+                                advertencia = f"Expediente creado, pero no se pudo asociar el generador: {str(gen_error)}"
 
+                    registrar(request, action="crear_expediente", target_type="expediente",
+                              target_id=expediente_id, response_status=200, success=True,
+                              payload_summary={"benId": benId, "oriId": oriId, "provId": provId,
+                                               "mTipoExpId": mTipoExpId, "periodo": periodo})
                     return JsonResponse({"success": True, "data": expediente_data, "advertencia": advertencia})
                 else:
+                    registrar(request, action="crear_expediente", target_type="expediente",
+                              response_status=response.status_code, success=False,
+                              error_detail=response.text)
                     return JsonResponse({"success": False, "error": response.text}, status=400)
             except Exception as e:
+                registrar(request, action="crear_expediente", target_type="expediente",
+                          success=False, error_detail=str(e))
                 return JsonResponse({"success": False, "error": str(e)}, status=500)
     else:
         return JsonResponse({"success": False, "error": "Método no permitido"}, status=405)
     
 
+@requiere_permiso_json("accion.subir_archivo")
 @csrf_exempt
 def archivo_expediente(request):
     if request.method == "POST":
@@ -1388,11 +1361,19 @@ def archivo_expediente(request):
 
         try:
             response = requests.post(url, files=files, headers=headers)
-            if response.status_code == 200:
+            ok = response.status_code == 200
+            # SaveArchivo (Gecros, tercero) no acepta identidad de usuario -> solo AuditLog local.
+            registrar(request, action="subir_archivo", target_type="expediente",
+                      target_id=expediente_id, response_status=response.status_code, success=ok,
+                      payload_summary={"filename": archivo.name, "content_type": archivo.content_type},
+                      error_detail="" if ok else response.text)
+            if ok:
                 return JsonResponse({'success': True, 'data': response.json()})
             else:
                 return JsonResponse({'success': False, 'error': response.text}, status=400)
         except Exception as e:
+            registrar(request, action="subir_archivo", target_type="expediente",
+                      target_id=expediente_id, success=False, error_detail=str(e))
             return JsonResponse({'success': False, 'error': str(e)}, status=500)
     else:
         return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
@@ -1413,6 +1394,7 @@ EXTENSION_TO_CONTENT_TYPE = {
 }
 
 
+@requiere_permiso_json("vista.mesa")
 @csrf_exempt
 def descargar_adjunto(request):
     if request.method == "POST":
@@ -1452,6 +1434,7 @@ def descargar_adjunto(request):
     return JsonResponse({"error": "Método no permitido"}, status=405)
 
 
+@requiere_permiso_json("vista.mesa")
 @csrf_exempt
 def previsualizar_adjunto(request):
     if request.method == "POST":
@@ -1481,6 +1464,7 @@ def previsualizar_adjunto(request):
     return JsonResponse({"error": "Método no permitido"}, status=405)
 
 
+@requiere_permiso_json("vista.mesa")
 @csrf_exempt
 def buscar_beneficiario(request):
     if request.method == "GET":
@@ -1522,6 +1506,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 
+@requiere_permiso_json("accion.crear_remito")
 @csrf_exempt
 def crear_remito(request, expediente_id):
     if request.method == "POST":
@@ -1534,19 +1519,31 @@ def crear_remito(request, expediente_id):
             if not sector_destino:
                 return JsonResponse({"error": "Debe indicar un sector destino"}, status=400)
 
+            # API propia de Nobis: se puede atribuir el usuario real.
+            usuario = etiqueta_usuario(request)
+            observaciones_ext = (f"{observaciones}\n[Cargado por {usuario}]" if observaciones
+                                 else f"[Cargado por {usuario}]")
+
             api_url = f"https://api.nobis.com.ar/crear_remito/{expediente_id}"
 
             payload = {
                 "sector_destino": sector_destino,
-                "observaciones": observaciones if observaciones else None
+                "observaciones": observaciones_ext,
+                "usuario": usuario
             }
 
             api_response = requests.post(api_url, json=payload)
 
             if api_response.status_code != 200:
+                registrar(request, action="crear_remito", target_type="expediente",
+                          target_id=expediente_id, response_status=api_response.status_code,
+                          success=False, error_detail=api_response.text)
                 return JsonResponse({"error": "Error al crear remito en API externa"}, status=api_response.status_code)
 
             data = api_response.json()
+            registrar(request, action="crear_remito", target_type="remito",
+                      target_id=data.get("mRem_id"), response_status=200, success=True,
+                      payload_summary={"expediente_id": expediente_id, "sector_destino": sector_destino})
             #print(data)
 
             #print(f"Remito ID: {data.get("mRem_id")}")
@@ -1555,12 +1552,14 @@ def crear_remito(request, expediente_id):
             advertencia = None
 
             # Si hay un generador_id válido (distinto de 0), llamar a la API de generador
-            if generador_id and generador_id != 0:
+            if generador_id and generador_id != 0 and not usuario_puede(request, "accion.asignar_generador"):
+                advertencia = f"Remito creado ID: {data.get('mRem_id')}, pero no tenés permiso para asignar generador."
+            elif generador_id and generador_id != 0:
                 try:
                     print(f"Expediente {expediente_id} y generador {generador_id}")
                     generador_url = f"https://api.nobis.com.ar/generador_exp/{expediente_id}?generador_id={generador_id}"
                     generador_response = requests.put(generador_url)
-                    
+
                     if generador_response.status_code == 409:
                         advertencia = f"Remito creado ID: {data.get('mRem_id')}, el generador actual es el mismo."
                         print(f"Advertencia: {advertencia}")
@@ -1569,7 +1568,10 @@ def crear_remito(request, expediente_id):
                         print(f"Advertencia: {advertencia}")
                     else:
                         print(f"Generador {generador_id} asignado correctamente al expediente {expediente_id}")
-                
+                    registrar(request, action="asignar_generador", target_type="expediente",
+                              target_id=expediente_id, response_status=generador_response.status_code,
+                              success=(generador_response.status_code == 200),
+                              payload_summary={"generador_id": generador_id})
                 except Exception as gen_error:
                     advertencia = f"Remito creado, pero no se pudo asociar el generador al expediente: {str(gen_error)}"
                     print(f"Advertencia: {advertencia}")
@@ -1593,6 +1595,7 @@ def crear_remito(request, expediente_id):
 
 from django.http import JsonResponse
 
+@requiere_permiso_json("vista.mesa")
 def obtener_destinos(request, sector_origen):
     """
     Devuelve los posibles sectores destino según el sector de origen.
@@ -1693,6 +1696,7 @@ def obtener_generadores(request, sector_origen):
         return JsonResponse({"error": str(e)}, status=400)
     
 
+@requiere_permiso_json("accion.asignar_generador")
 def obtener_generadores_api(request, sector_origen):
     """
     Devuelve los posibles generadores según el sector de origen.
@@ -1746,6 +1750,7 @@ def obtener_generadores_api(request, sector_origen):
         return JsonResponse({"error": str(e)}, status=400)
 
 
+@requiere_permiso_json("accion.enviar_bonificacion")
 @csrf_exempt
 def cargar_bonificacion_externa(request, grupo):
     """
@@ -1761,6 +1766,10 @@ def cargar_bonificacion_externa(request, grupo):
         observacion = body.get("observacion", "alta externa")
         tramos = body.get("tramos")  # opcional: [{peri_desde, peri_hasta, porcentaje}, ...]
 
+        # API propia de Nobis: atribución real. El usuario viaja en el payload y en la observación.
+        usuario = etiqueta_usuario(request)
+        observacion = f"{observacion} [Cargado por {usuario}]"
+
         api_token = os.environ.get("BONIF_API_TOKEN", "")
         headers = {"Content-Type": "application/json", "X-API-Token": api_token}
         api_url = f"https://bonificaciones.nobis.com.ar/api/individuales/{grupo}/insertar"
@@ -1772,9 +1781,15 @@ def cargar_bonificacion_externa(request, grupo):
                 "porcentaje": porcentaje,
                 "modo": "forzar",            # fijo, no visible al usuario
                 "observacion": observacion,
+                "usuario": usuario,
             }
             r = requests.post(api_url, json=payload, headers=headers, timeout=15)
             ok = r.status_code in (200, 201)
+            registrar(request, action="enviar_bonificacion", target_type="grupo",
+                      target_id=grupo, response_status=r.status_code, success=ok,
+                      payload_summary={"peri_desde": peri_desde, "peri_hasta": peri_hasta,
+                                       "porcentaje": porcentaje},
+                      error_detail="" if ok else r.text)
             return {
                 "ok": ok,
                 "peri_desde": peri_desde,

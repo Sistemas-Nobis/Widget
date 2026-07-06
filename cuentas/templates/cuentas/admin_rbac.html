@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Permisos del Widget</title>
+  {% csrf_token %}
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: #f4f6f4; color: #333; }
+    header { background: #0e8c13; color: #fff; padding: 14px 22px; display: flex;
+             align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    header h1 { font-size: 18px; margin: 0; }
+    header .user { font-size: 13px; opacity: .9; }
+    main { padding: 22px; max-width: 1200px; margin: 0 auto; }
+    .card { background: #fff; border: 2px solid #0e8c13; border-radius: 14px; padding: 18px; margin-bottom: 22px; }
+    .card h2 { font-size: 15px; color: #0e8c13; margin: 0 0 12px; }
+    .form-grupo { display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end; }
+    .form-grupo label { font-size: 12px; display: flex; flex-direction: column; gap: 4px; }
+    .form-grupo input { padding: 7px 9px; border: 1px solid #bbb; border-radius: 6px; font-size: 13px; }
+    .form-grupo input#gObjectId { min-width: 320px; }
+    .btn { background: #0e8c13; color: #fff; border: 0; border-radius: 6px; padding: 9px 18px;
+           font-weight: bold; cursor: pointer; font-size: 13px; }
+    .btn:disabled { background: #9bbf9d; cursor: default; }
+    .btn.sec { background: #fff; color: #b00020; border: 1px solid #d99; }
+    table { border-collapse: collapse; width: 100%; font-size: 13px; }
+    th, td { border: 1px solid #dce5dc; padding: 7px 9px; text-align: center; }
+    th.recurso, td.recurso { text-align: left; white-space: nowrap; }
+    thead th { background: #eafbe9; color: #0e8c13; position: sticky; top: 0; }
+    tr.seccion td { background: #f0f7f0; color: #0e8c13; font-weight: bold; text-align: left; }
+    .sin-grupos { color: #b00020; font-size: 11px; }
+    .grupo-lista { list-style: none; padding: 0; margin: 0 0 12px; }
+    .grupo-lista li { display: flex; justify-content: space-between; align-items: center;
+                      border-bottom: 1px solid #eee; padding: 6px 0; font-size: 13px; }
+    .grupo-lista code { color: #777; font-size: 11px; }
+    .footer-bar { position: sticky; bottom: 0; background: #fff; border-top: 1px solid #ddd;
+                  padding: 12px 22px; display: flex; gap: 12px; align-items: center; }
+    #toast { font-size: 13px; color: #0e8c13; }
+    .table-wrap { overflow-x: auto; }
+    .hint { font-size: 11px; color: #888; margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Permisos del Widget — RBAC por grupos de Entra</h1>
+    <span class="user">{{ usuario }}</span>
+  </header>
+
+  <main>
+    <div class="card">
+      <h2>Grupos de Entra habilitados</h2>
+      <ul class="grupo-lista" id="listaGrupos"></ul>
+      <form class="form-grupo" id="formGrupo">
+        <label>Nombre legible
+          <input type="text" id="gNombre" placeholder="Ej: Atencion-Operadores" required>
+        </label>
+        <label>Object ID (GUID del grupo en Entra)
+          <input type="text" id="gObjectId" placeholder="00000000-0000-0000-0000-000000000000" required>
+        </label>
+        <button type="submit" class="btn">Agregar grupo</button>
+      </form>
+      <div class="hint">
+        El Object ID se obtiene en Entra admin center → Groups → (grupo) → Overview → Object Id.
+        Debe ser un grupo <b>visible en el token</b> del usuario (grupo de seguridad asignado según la config de la App Registration).
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Matriz de permisos (recurso × grupo)</h2>
+      <div class="table-wrap">
+        <table id="tablaMatriz"><thead><tr></tr></thead><tbody></tbody></table>
+      </div>
+      <div class="hint">Tildá qué grupos acceden a cada vista/acción. Los cambios impactan de inmediato tras Guardar.</div>
+    </div>
+  </main>
+
+  <div class="footer-bar">
+    <button id="btnGuardar" class="btn" disabled>Guardar cambios</button>
+    <span id="toast"></span>
+  </div>
+
+  <script>
+    var BASE = "{{ prefix }}/gestion";
+    var CSRF = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    var ESTADO = null;
+
+    function toast(msg, err) {
+      var t = document.getElementById('toast');
+      t.textContent = msg; t.style.color = err ? '#b00020' : '#0e8c13';
+      setTimeout(function () { t.textContent = ''; }, 4000);
+    }
+    function dirty() { document.getElementById('btnGuardar').disabled = false; }
+
+    function cargar() {
+      fetch(BASE + '/permisos/estado/', { credentials: 'same-origin', cache: 'no-store' })
+        .then(function (r) { return r.json(); })
+        .then(function (data) { ESTADO = data; pintarGrupos(); pintarMatriz(); });
+    }
+
+    function pintarGrupos() {
+      var ul = document.getElementById('listaGrupos');
+      ul.innerHTML = '';
+      ESTADO.grupos.forEach(function (g) {
+        var li = document.createElement('li');
+        li.innerHTML = '<span>' + escapeHtml(g.nombre) + ' <code>' + g.oid + '</code></span>' +
+                       '<button class="btn sec" data-id="' + g.id + '">Eliminar</button>';
+        li.querySelector('button').onclick = function () { eliminarGrupo(g.id); };
+        ul.appendChild(li);
+      });
+      if (!ESTADO.grupos.length) ul.innerHTML = '<li>No hay grupos cargados todavía.</li>';
+    }
+
+    function pintarMatriz() {
+      var grupos = ESTADO.grupos, catalogo = ESTADO.catalogo, asign = ESTADO.asignaciones || {};
+      var thead = document.querySelector('#tablaMatriz thead tr');
+      thead.innerHTML = '<th class="recurso">Recurso</th>' +
+        grupos.map(function (g) { return '<th title="' + g.oid + '">' + escapeHtml(g.nombre) + '</th>'; }).join('');
+      var tbody = document.querySelector('#tablaMatriz tbody');
+      var html = '', sec = null;
+      catalogo.forEach(function (r) {
+        if (r.seccion !== sec) {
+          sec = r.seccion;
+          html += '<tr class="seccion"><td colspan="' + (grupos.length + 1) + '">' + escapeHtml(sec) + '</td></tr>';
+        }
+        var asignados = asign[r.key] || [];
+        var vacio = asignados.length ? '' : ' <span class="sin-grupos">(sin grupos)</span>';
+        html += '<tr><td class="recurso">' + escapeHtml(r.etiqueta) + vacio + '</td>' +
+          grupos.map(function (g) {
+            var checked = asignados.indexOf(g.id) !== -1 ? ' checked' : '';
+            return '<td><input type="checkbox" data-recurso="' + r.key + '" data-grupo="' + g.id + '"' + checked + '></td>';
+          }).join('') + '</tr>';
+      });
+      tbody.innerHTML = html;
+      tbody.querySelectorAll('input').forEach(function (c) { c.onchange = dirty; });
+    }
+
+    document.getElementById('btnGuardar').onclick = function () {
+      var asign = {};
+      ESTADO.catalogo.forEach(function (r) { asign[r.key] = []; });   // recursos vacíos viajan para permitir borrado
+      document.querySelectorAll('#tablaMatriz input:checked').forEach(function (c) {
+        asign[c.dataset.recurso].push(parseInt(c.dataset.grupo, 10));
+      });
+      fetch(BASE + '/permisos/guardar/', {
+        method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': CSRF },
+        body: JSON.stringify({ asignaciones: asign })
+      }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+        .then(function (res) {
+          if (res.ok) { document.getElementById('btnGuardar').disabled = true; toast('Cambios guardados.'); cargar(); }
+          else { toast('Error: ' + (res.d.error || 'desconocido'), true); }
+        });
+    };
+
+    document.getElementById('formGrupo').onsubmit = function (e) {
+      e.preventDefault();
+      var nombre = document.getElementById('gNombre').value.trim();
+      var oid = document.getElementById('gObjectId').value.trim();
+      fetch(BASE + '/grupos/crear/', {
+        method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': CSRF },
+        body: JSON.stringify({ nombre: nombre, oid: oid })
+      }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+        .then(function (res) {
+          if (res.ok) { document.getElementById('gNombre').value = ''; document.getElementById('gObjectId').value = ''; toast('Grupo agregado.'); cargar(); }
+          else { toast('Error: ' + (res.d.error || 'desconocido'), true); }
+        });
+    };
+
+    function eliminarGrupo(id) {
+      if (!confirm('¿Eliminar el grupo y sus permisos?')) return;
+      fetch(BASE + '/grupos/eliminar/', {
+        method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': CSRF },
+        body: JSON.stringify({ id: id })
+      }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+        .then(function (res) { if (res.ok) { toast('Grupo eliminado.'); cargar(); } else { toast('Error: ' + (res.d.error || ''), true); } });
+    }
+
+    function escapeHtml(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+
+    cargar();
+  </script>
+</body>
+</html>

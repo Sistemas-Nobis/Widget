@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Sesión iniciada</title></head>
+<body style="font-family:Arial,sans-serif;text-align:center;padding:40px;color:#0e8c13;">
+<p>Sesión iniciada. Ya podés cerrar esta ventana.</p>
+<script>
+(function () {
+  var HANDOFF = "{{ handoff|escapejs }}";
+  var TARGET  = "{{ target_origin|escapejs }}";
+  // 1) Avisar al iframe que abrió el popup (opener directo, mismo origen).
+  try {
+    if (window.opener && !window.opener.closed) {
+      window.opener.postMessage({ type: "widget-login-success", handoff: HANDOFF }, TARGET);
+    }
+  } catch (e) {}
+  // 2) Avisar a las demás pestañas/iframes de la misma partición.
+  try {
+    var bc = new BroadcastChannel("widget-auth");
+    bc.postMessage({ type: "auth-changed", authenticated: true });
+    bc.close();
+  } catch (e) {}
+  // 3) Cerrar el popup.
+  window.close();
+})();
+</script>
+</body>
+</html>

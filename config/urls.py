@@ -26,6 +26,12 @@ urlpatterns = [
     path('test/', test_view),
 ]
 
+# cuentas (auth MSAL + gestión de permisos) va ANTES de home/afiliados
+# para que ningún pattern greedy de esos includes lo sombree.
+urlpatterns += [
+    path('', include('cuentas.urls')),
+]
+
 urlpatterns += [
     path('', include('home.urls')),
     path('', include('afiliados.urls')),

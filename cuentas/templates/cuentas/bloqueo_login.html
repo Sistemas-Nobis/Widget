@@ -1,0 +1,16 @@
+{% load static %}<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Iniciar sesión</title>
+</head>
+<body style="margin:0;background:#0e8c13;">
+  <!-- widget-auth.js monta el overlay/interstitial y maneja el popup de login -->
+  <script>window.WIDGET_AUTH = Object.assign({{ widget_auth_json|safe }}, {role: "{{ role|default:'bloqueado' }}"});</script>
+  <script src="{% static 'afiliados/js/widget-auth.js' %}"></script>
+  <noscript style="color:#fff;font-family:Arial;display:block;padding:20px;text-align:center;">
+    Necesitás JavaScript habilitado para iniciar sesión.
+  </noscript>
+</body>
+</html>

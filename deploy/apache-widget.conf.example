@@ -1,0 +1,32 @@
+# ==========================================================================
+# Apache — fragmento para el vhost HTTPS de widget.nobis.com.ar
+# Requisitos para el login Azure AD del widget embebido como iframe cross-site.
+# Módulos necesarios: mod_headers, mod_proxy, mod_proxy_http.
+# ==========================================================================
+
+# --- 1. Terminación TLS -> avisar a Django que la request original es https ---
+# Django lee esto por SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO','https').
+RequestHeader set X-Forwarded-Proto "https"
+
+# --- 2. Permitir el embebido SOLO desde el portal host real (reemplazar el dominio) ---
+# Reemplaza al X-Frame-Options: DENY que Django emite por defecto (settings XFrameOptions).
+# IMPORTANTE: poné el/los origin(es) reales del portal que embebe el widget.
+Header always unset X-Frame-Options
+Header always set Content-Security-Policy "frame-ancestors https://EL-PORTAL-HOST.example https://*.nobis.com.ar;"
+
+# --- 3. CHIPS: agregar ; Partitioned a NUESTRAS cookies ---
+# Django 5.x no emite el atributo Partitioned; se anexa acá.
+# Nuestras cookies ya salen con SameSite=None; Secure (WIDGET_CROSS_SITE=True).
+# El ancla ^(nombre=...) evita tocar cookies de terceros.
+Header edit* Set-Cookie "^(widget_sessionid=.*)$" "$1; Partitioned"
+Header edit* Set-Cookie "^(csrftoken=.*)$"        "$1; Partitioned"
+
+# --- 4. Proxy inverso hacia el runserver, quitando el prefijo /widget/ ---
+# El navegador ve /widget/...  ->  Django ve /...
+# (Ajustar el puerto al de la app; ver PORT en .env.)
+ProxyPreserveHost On
+ProxyPass        /widget/ http://127.0.0.1:8000/
+ProxyPassReverse /widget/ http://127.0.0.1:8000/
+
+# Nota: si el redirect_uri público es https://widget.nobis.com.ar/widget/auth/callback,
+# el strip de /widget/ hace que Django reciba /auth/callback (coincide con cuentas/urls.py).
