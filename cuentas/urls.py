@@ -14,6 +14,7 @@ urlpatterns = [
     path("auth/handoff", va.handoff_poll, name="handoff"),
     path("auth/logout", va.logout, name="logout"),
     path("auth/dev_login", va.dev_login, name="dev_login"),  # solo DEBUG=True (pruebas locales)
+    path("auth/whoami", va.whoami, name="whoami"),            # solo DEBUG=True (diagnóstico)
 
     # --- Superadmin (top-level, first-party) ---
     path("gestion/permisos/", adm.panel_permisos, name="panel_permisos"),

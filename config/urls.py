@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 from django.http import HttpResponse
@@ -36,3 +37,13 @@ urlpatterns += [
     path('', include('home.urls')),
     path('', include('afiliados.urls')),
 ]
+
+# En dev NO hay proxy Apache que quite el prefijo /widget/, pero el frontend hace
+# fetch a /widget/... Montamos las mismas URLs bajo /widget/ solo con DEBUG para
+# que las llamadas funcionen local. En prod Apache strippea /widget/ y esto no aplica.
+if settings.DEBUG:
+    urlpatterns += [
+        path('widget/', include(('cuentas.urls', 'cuentas'), namespace='cuentas_widget')),
+        path('widget/', include(('home.urls', 'home'), namespace='home_widget')),
+        path('widget/', include(('afiliados.urls', 'afiliados'), namespace='afiliados_widget')),
+    ]

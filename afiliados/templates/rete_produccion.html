@@ -630,7 +630,7 @@
                 <thead>
                     <tr>
                         <th colspan="5" style="background-color: #008000; color: white;">Información del grupo familiar 
-                        <button id="redirect-button" class="top-right-button">→ Atención</button></th>
+                        {% if widget_perms.atencion %}<button id="redirect-button" class="top-right-button">→ Atención</button>{% endif %}</th>
                     </tr>
                     <tr>
                         <th>Nombre</th>
@@ -2235,6 +2235,8 @@
         });
 
     </script>
+    {% if not widget_perms.cotizar %}<style>#Cotizar,#btn_cotizar{display:none!important}</style>{% endif %}
+    {% if not widget_perms.enviar_bonificacion %}<style>.bonif-api-btn,.tramos-gecros-btn,#bonif_api_submit{display:none!important}</style>{% endif %}
     {% load static %}
     <script>window.WIDGET_AUTH = Object.assign({{ widget_auth_json|safe }}, {role: "bloqueado"});</script>
     <script src="{% static 'afiliados/js/widget-auth.js' %}"></script>

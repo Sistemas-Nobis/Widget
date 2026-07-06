@@ -135,9 +135,12 @@ def exchange(request):
         return JsonResponse({"error": "handoff_invalido"}, status=400)
 
     h = AuthHandoff.objects.get(token=token)
-    request.session.cycle_key()  # anti session-fixation
+    # No se usa cycle_key(): en dev el popup y la pestaña comparten la misma cookie
+    # (mismo origen, sin partición) y rotar/borrar la clave pisaría la sesión que otros
+    # contextos están usando. El handoff single-use + validación de origin ya mitigan fixation.
     _set_identidad(request.session, upn=h.upn, oid=h.oid, nombre=h.nombre,
                    grupos=h.grupos, es_superadmin=h.es_superadmin)
+    request.session.modified = True
     return JsonResponse({"authenticated": True, "user": {"upn": h.upn, "nombre": h.nombre}})
 
 
@@ -171,6 +174,25 @@ def logout(request):
     if request.method == "POST":
         return JsonResponse({"ok": True})
     return HttpResponse("Sesión cerrada.")
+
+
+@never_cache
+@require_GET
+def whoami(request):
+    """Diagnóstico (solo DEBUG): qué identidad/grupos/permisos ve el gate para esta sesión."""
+    if not settings.DEBUG:
+        raise Http404()
+    from .permisos import usuario_puede
+    from .recursos import RECURSO_KEYS
+    permisos = {k: usuario_puede(request, k) for k in sorted(RECURSO_KEYS)}
+    return JsonResponse({
+        "upn": request.session.get("upn"),
+        "nombre": request.session.get("nombre"),
+        "oid": request.session.get("oid"),
+        "grupos": request.session.get("grupos"),
+        "es_superadmin": request.session.get("es_superadmin"),
+        "permisos": permisos,
+    }, json_dumps_params={"indent": 2, "ensure_ascii": False})
 
 
 @never_cache

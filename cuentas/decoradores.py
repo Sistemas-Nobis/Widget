@@ -19,6 +19,29 @@ def _auth_activa() -> bool:
     return getattr(settings, "WIDGET_AUTH_ENABLED", False)
 
 
+# Vistas intercambiables para el botón "ir a una vista accesible" en la pantalla 403.
+# Mesa NO participa (no tiene contraparte natural) -> sin botón.
+_PARES_VISTA = {
+    "vista.retencion": ("vista.atencion", "atencion", "Atención"),
+    "vista.atencion": ("vista.retencion", "retencion", "Retención"),
+}
+
+
+def _vista_alternativa(request, recurso_key, kwargs):
+    """Devuelve {url,label} de una vista accesible equivalente, o None (sin botón)."""
+    par = _PARES_VISTA.get(recurso_key)
+    if not par:
+        return None                                  # mesa u otra: sin botón
+    recurso_alt, path_alt, label_alt = par
+    if not usuario_puede(request, recurso_alt):
+        return None                                  # no tiene la contraparte: sin botón
+    dni = kwargs.get("dni")
+    if not dni:
+        return None                                  # sin DNI no se puede armar la URL
+    prefix = getattr(settings, "WIDGET_URL_PREFIX", "")
+    return {"url": f"{prefix}/{path_alt}/{dni}/", "label": label_alt}
+
+
 def requiere_permiso_iframe(recurso_key):
     """Para las CBV (vistas GET que renderizan el iframe)."""
     def deco(view_func):
@@ -32,7 +55,9 @@ def requiere_permiso_iframe(recurso_key):
                               {"recurso": recurso_key, "role": role}, status=401)
             if not usuario_puede(request, recurso_key):
                 return render(request, "cuentas/sin_acceso.html",
-                              {"recurso": recurso_key}, status=403)
+                              {"recurso": recurso_key,
+                               "alternativa": _vista_alternativa(request, recurso_key, kwargs)},
+                              status=403)
             return view_func(request, *args, **kwargs)
         return _wrapped
     return deco

@@ -1032,6 +1032,8 @@
     });
 
 </script>
+    {% if not widget_perms.crear_expediente %}<style>#expedienteForm button[type="submit"]{display:none!important}</style>{% endif %}
+    {% if not widget_perms.subir_archivo %}<style>#archivosBtn{display:none!important}</style>{% endif %}
     {% load static %}
     <script>window.WIDGET_AUTH = Object.assign({{ widget_auth_json|safe }}, {role: "bloqueado"});</script>
     <script src="{% static 'afiliados/js/widget-auth.js' %}"></script>

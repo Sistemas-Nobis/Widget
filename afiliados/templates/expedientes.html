@@ -1149,6 +1149,8 @@ tr:nth-child(odd) td {
     <script>
       pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     </script>
+    {% if not widget_perms.crear_expediente %}<style>.nuevo-expediente{display:none!important}</style>{% endif %}
+    {% if not widget_perms.crear_remito %}<style>#btnRemitos,#guardarRemito{display:none!important}</style>{% endif %}
     {% load static %}
     <script>window.WIDGET_AUTH = Object.assign({{ widget_auth_json|safe }}, {role: "bloqueado"});</script>
     <script src="{% static 'afiliados/js/widget-auth.js' %}"></script>

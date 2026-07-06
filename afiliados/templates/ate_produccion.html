@@ -263,7 +263,7 @@
                                 </span>
                             {% endif %}
                             Información del grupo familiar
-                            <button id="redirect-button" class="top-right-button">→ Retención</button>
+                            {% if widget_perms.retencion %}<button id="redirect-button" class="top-right-button">→ Retención</button>{% endif %}
                         </th>
                     </tr>
                     <tr>

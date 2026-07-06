@@ -36,20 +36,21 @@ def _graph_app_token():
 
 
 def _grupos_por_graph(oid: str):
-    """POST /users/{oid}/getMemberGroups -> lista de oids de grupos (resuelve overage)."""
+    """POST /users/{oid}/getMemberGroups -> lista de oids de grupos del usuario (vía Graph app-only)."""
     token = _graph_app_token()
     if not token or not oid:
+        logger.warning("Graph: sin token app-only o sin oid (oid=%s, token=%s)", oid, bool(token))
         return []
     try:
         r = requests.post(
             f"{_GRAPH}/v1.0/users/{oid}/getMemberGroups",
             headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
-            json={"securityEnabledOnly": True},
+            json={"securityEnabledOnly": False},   # todos los grupos, no solo security-enabled
             timeout=10,
         )
         if r.status_code == 200:
             return r.json().get("value", [])
-        logger.error("getMemberGroups fallo %s: %s", r.status_code, r.text[:300])
+        logger.error("getMemberGroups fallo %s: %s", r.status_code, r.text[:400])
     except requests.RequestException as e:
         logger.error("getMemberGroups excepción: %s", e)
     return []
@@ -58,16 +59,16 @@ def _grupos_por_graph(oid: str):
 def extraer_grupos(claims: dict) -> list:
     """
     Devuelve la lista de oids de grupos del usuario.
-    - Camino normal: claim 'groups'.
-    - Overage (>200 grupos): el token trae '_claim_names' en vez de 'groups' -> se resuelve por Graph.
-      Si Graph no está disponible -> lista vacía (deny-by-default) + log.
+    - Si el token trae el claim 'groups', se usa directo.
+    - Si NO lo trae (claim no configurado u overage >200 grupos), se resuelve por Graph
+      (getMemberGroups app-only). Requiere permiso de APLICACIÓN GroupMember.Read.All o
+      Directory.Read.All + consentimiento de admin en la App Registration.
     """
-    if "groups" in claims:
-        return claims["groups"] or []
-    if claims.get("_claim_names", {}).get("groups"):
-        oid = claims.get("oid") or claims.get("sub")
-        grupos = _grupos_por_graph(oid)
-        if not grupos:
-            logger.warning("Overage de grupos para oid=%s y Graph no devolvió grupos -> deny", oid)
-        return grupos
-    return []
+    grupos_claim = claims.get("groups")
+    if grupos_claim:
+        return grupos_claim
+    oid = claims.get("oid") or claims.get("sub")
+    grupos = _grupos_por_graph(oid)
+    if not grupos:
+        logger.warning("Sin grupos en el token y Graph no devolvió grupos para oid=%s -> deny", oid)
+    return grupos
