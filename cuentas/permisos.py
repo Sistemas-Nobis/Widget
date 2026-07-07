@@ -39,8 +39,8 @@ def calcular_es_superadmin(upn: str, grupos) -> bool:
     upn = (upn or "").lower()
     if upn and upn in getattr(settings, "WIDGET_SUPERADMINS", []):
         return True
-    gid = getattr(settings, "WIDGET_SUPERADMIN_GROUP_ID", "")
-    if gid and gid.lower() in {str(g).lower() for g in (grupos or [])}:
+    gids = getattr(settings, "WIDGET_SUPERADMIN_GROUP_IDS", [])
+    if gids and set(gids) & {str(g).lower() for g in (grupos or [])}:
         return True
     return False
 

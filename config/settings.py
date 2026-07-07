@@ -76,8 +76,10 @@ WIDGET_URL_PREFIX = '/widget' if urlparse(MSAL_REDIRECT_URI).path.startswith('/w
 WIDGET_SUPERADMINS = [
     u.strip().lower() for u in os.environ.get('WIDGET_SUPERADMINS', '').split(',') if u.strip()
 ]
-# Grupo Entra dedicado de superadmins (opcional, se resuelve del claim 'groups').
-WIDGET_SUPERADMIN_GROUP_ID = os.environ.get('WIDGET_SUPERADMIN_GROUP_ID', '').strip()
+# Grupos Entra dedicados de superadmins: uno o varios GUIDs separados por coma (opcional).
+WIDGET_SUPERADMIN_GROUP_IDS = [
+    g.strip().lower() for g in os.environ.get('WIDGET_SUPERADMIN_GROUP_ID', '').split(',') if g.strip()
+]
  
 # Application definition
 INSTALLED_APPS = [

@@ -56,7 +56,7 @@ MSAL_CLIENT_SECRET=...
 MSAL_REDIRECT_URI=https://widget.nobis.com.ar/widget/auth/callback
 
 WIDGET_SUPERADMINS=lazaro.gonzalez@nobis.com.ar   # break-glass anti-lockout (UPNs)
-WIDGET_SUPERADMIN_GROUP_ID=<guid-grupo-superadmins>  # opcional
+WIDGET_SUPERADMIN_GROUP_ID=<guid1>,<guid2>  # opcional, uno o varios separados por coma
 ```
 
 > `WIDGET_URL_PREFIX` se deriva solo del path del `MSAL_REDIRECT_URI` (`/widget` en prod, vacío en dev).
