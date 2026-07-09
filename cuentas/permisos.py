@@ -76,6 +76,20 @@ def _mapa_permisos():
 
 def invalidar_cache_rbac():
     cache.delete(_CACHE_KEY)
+    cache.delete(_CACHE_KEY_ACCESO_TOTAL)
+
+
+_CACHE_KEY_ACCESO_TOTAL = "rbac_acceso_total_v1"
+
+
+def acceso_total_activo() -> bool:
+    """Switch global: True = la matriz se ignora y todo autenticado accede a todo."""
+    val = cache.get(_CACHE_KEY_ACCESO_TOTAL)
+    if val is None:
+        from .models import ConfiguracionRBAC
+        val = ConfiguracionRBAC.obtener().acceso_total
+        cache.set(_CACHE_KEY_ACCESO_TOTAL, val, _CACHE_TTL)
+    return bool(val)
 
 
 # --------------------------------------------------------------------------- #
@@ -85,6 +99,8 @@ def usuario_puede(request, recurso_key) -> bool:
     """Autorización pura. Asume que la autenticación ya se verificó."""
     if es_superadmin(request):
         return True
+    if acceso_total_activo():
+        return True  # switch global: la matriz no aplica
     grupos_usuario = request.session.get("grupos") or []
     if not grupos_usuario:
         return False  # deny-by-default

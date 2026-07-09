@@ -22,4 +22,5 @@ urlpatterns = [
     path("gestion/permisos/guardar/", adm.permisos_guardar, name="permisos_guardar"),
     path("gestion/grupos/crear/", adm.grupo_crear, name="grupo_crear"),
     path("gestion/grupos/eliminar/", adm.grupo_eliminar, name="grupo_eliminar"),
+    path("gestion/permisos/acceso-total/", adm.acceso_total_toggle, name="acceso_total_toggle"),
 ]

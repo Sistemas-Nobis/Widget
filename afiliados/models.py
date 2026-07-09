@@ -15,6 +15,7 @@ class AuditLog(models.Model):
         ("admin_permisos_guardar", "Guardar permisos"),
         ("admin_grupo_crear", "Crear grupo"),
         ("admin_grupo_eliminar", "Eliminar grupo"),
+        ("admin_acceso_total", "Cambiar acceso total"),
     ]
 
     user_upn = models.CharField(max_length=255, blank=True)

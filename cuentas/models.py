@@ -71,3 +71,26 @@ class PermisoRecurso(models.Model):
 
     def __str__(self):
         return f"{self.grupo} -> {self.recurso_key}"
+
+
+class ConfiguracionRBAC(models.Model):
+    """
+    Configuración global del RBAC (fila única, pk=1).
+    acceso_total=True -> cualquier usuario autenticado accede a todas las vistas/acciones
+    (la matriz de permisos se ignora mientras esté activo).
+    """
+    acceso_total = models.BooleanField(default=False)
+    actualizado_en = models.DateTimeField(auto_now=True)
+    actualizado_por = models.CharField(max_length=255, blank=True)
+
+    class Meta:
+        verbose_name = "Configuración RBAC"
+        verbose_name_plural = "Configuración RBAC"
+
+    @classmethod
+    def obtener(cls):
+        obj, _ = cls.objects.get_or_create(pk=1)
+        return obj
+
+    def __str__(self):
+        return f"acceso_total={self.acceso_total}"

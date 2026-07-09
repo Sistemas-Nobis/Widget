@@ -14,7 +14,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.http import require_GET, require_POST
 
 from .decoradores import superadmin_required_page, superadmin_required_json
-from .models import GrupoEntra, PermisoRecurso
+from .models import GrupoEntra, PermisoRecurso, ConfiguracionRBAC
 from .permisos import invalidar_cache_rbac, identidad_de
 from .recursos import catalogo_serializable, RECURSO_KEYS
 
@@ -44,7 +44,31 @@ def permisos_estado(request):
         "catalogo": catalogo_serializable(),
         "grupos": grupos,
         "asignaciones": asign,
+        "acceso_total": ConfiguracionRBAC.obtener().acceso_total,
     })
+
+
+@superadmin_required_json
+@csrf_protect
+@require_POST
+def acceso_total_toggle(request):
+    """Switch global: la matriz se ignora y todo usuario autenticado accede a todo."""
+    from afiliados.audit import registrar
+    try:
+        payload = json.loads(request.body or b"{}")
+    except (ValueError, TypeError):
+        return JsonResponse({"error": "body_invalido"}, status=400)
+
+    activo = bool(payload.get("activo"))
+    ident = identidad_de(request)
+    conf = ConfiguracionRBAC.obtener()
+    conf.acceso_total = activo
+    conf.actualizado_por = ident.get("upn") or ""
+    conf.save()
+    invalidar_cache_rbac()
+    registrar(request, action="admin_acceso_total", target_type="ConfiguracionRBAC",
+              payload_summary={"acceso_total": activo}, success=True)
+    return JsonResponse({"ok": True, "acceso_total": activo})
 
 
 @superadmin_required_json
