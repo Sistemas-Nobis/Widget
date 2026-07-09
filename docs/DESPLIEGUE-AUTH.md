@@ -63,19 +63,43 @@ WIDGET_SUPERADMIN_GROUP_ID=<guid1>,<guid2>  # opcional, uno o varios separados p
 
 ## 3. Apache
 
-Aplicar `deploy/apache-widget.conf.example` en el vhost HTTPS: `X-Forwarded-Proto`, CSP
-`frame-ancestors` con el origin real del portal (reemplaza `X-Frame-Options: DENY`), y el
-`Header edit ... Partitioned` para CHIPS. Verificar que `X-Forwarded-Proto: https` llega a Django.
+  **Prod corre con mod_wsgi** (`WSGIScriptAlias /widget` en
+  `/etc/apache2/sites-available/widget-le-ssl.conf`; el `WSGIDaemonProcess` está en el
+  vhost `:80`), no con runserver + ProxyPass. Aplicar `deploy/apache-widget.conf.example`
+  en el vhost HTTPS. Puntos que costaron caro en el despliegue del 2026-07-09:
 
-## 4. Dependencias y migraciones
+  - **`WSGIApplicationGroup %{GLOBAL}` es obligatorio**: sin eso MSAL/requests se
+    deadlockea en el subintérprete y `login_start` cuelga (504) con el resto de la app sana.
+  - El `X-Frame-Options: DENY` de Django hay que quitarlo con `Header unset` **y**
+    `Header always unset` (la respuesta de mod_wsgi va por la tabla onsuccess).
+  - `Header edit* ... Partitioned` para `widget_sessionid` y `csrftoken` (CHIPS).
+  - `RequestHeader set X-Forwarded-Proto "https"`.
+  - Estáticos: alias específicos a `staticfiles/` para lo nuevo, y el Alias general
+    en `home/static` para no congelar los JSON que la app reescribe en runtime
+    (ver comentarios del `.example`).
+  - Permisos (el daemon corre como `www-data`): `.env` legible (644) — si no,
+    python-dotenv tumba el settings y TODO da 500 — y los JSON runtime de
+    `home/static` escribibles (666); un `git stash pop` los recrea 664.
 
-```
-venv/Scripts/python.exe -m pip install -r requirements.txt   # incluye msal
-# Parar el servicio (runserver) antes de migrar (sqlite + autoreload):
-venv/Scripts/python.exe dbtools.py migrate
-```
-`manage.py` está intervenido (siempre runserver); por eso los comandos de gestión van por
-`dbtools.py` (usa `django.setup()`).
+  ## 4. Dependencias, estáticos y migraciones (Linux / mod_wsgi)
+
+  venv/bin/python -m pip install -r requirements.txt   # incluye msal
+  venv/bin/python dbtools.py collectstatic --noinput   # llena staticfiles/
+
+  Parar el widget antes de migrar (sqlite). Con mod_wsgi eso es sacar los vhosts
+
+  (el otro sitio del servidor no se ve afectado):
+
+  sudo a2dissite widget widget-le-ssl && sudo systemctl reload apache2
+  venv/bin/python dbtools.py migrate
+  venv/bin/python dbtools.py check
+  sudo a2ensite widget widget-le-ssl && sudo systemctl reload apache2
+
+  Para recargar código o `.env` **sin** parar el servicio (activación/rollback del flag):
+  `touch /home/widget/config/wsgi.py` reinicia el daemon mod_wsgi, sin sudo.
+
+  `manage.py` está intervenido (siempre runserver); por eso los comandos de gestión van por
+  `dbtools.py` (usa `django.setup()`).
 
 ## 5. Primer uso (bootstrap del RBAC)
 

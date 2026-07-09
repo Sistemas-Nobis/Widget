@@ -1,32 +1,69 @@
 # ==========================================================================
-# Apache — fragmento para el vhost HTTPS de widget.nobis.com.ar
-# Requisitos para el login Azure AD del widget embebido como iframe cross-site.
-# Módulos necesarios: mod_headers, mod_proxy, mod_proxy_http.
-# ==========================================================================
+  # Apache — fragmento para el vhost HTTPS de widget.nobis.com.ar
+  # Requisitos para el login Azure AD del widget embebido como iframe cross-site.
+  #
+  # PROD corre con mod_wsgi (WSGIScriptAlias), NO con runserver + ProxyPass.
+  # Módulos necesarios: mod_headers, mod_wsgi (libapache2-mod-wsgi-py3).
+  # Verificado en prod el 2026-07-09.
+  # ==========================================================================
 
-# --- 1. Terminación TLS -> avisar a Django que la request original es https ---
-# Django lee esto por SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO','https').
-RequestHeader set X-Forwarded-Proto "https"
+  # --- 1. WSGI ---
+  # El strip del prefijo /widget lo hace WSGIScriptAlias vía SCRIPT_NAME:
+  # el navegador ve /widget/auth/callback y Django recibe /auth/callback
+  # (coincide con cuentas/urls.py). WSGIDaemonProcess se define UNA sola vez
+  # (en prod está en el vhost :80; acá se referencia por process group).
+  WSGIProcessGroup widget
+  # OBLIGATORIO: sin esto la app corre en un subintérprete de mod_wsgi y el
+  # stack ssl/requests que usa MSAL se deadlockea (login_start cuelga hasta
+  # el 504 de Apache, con el resto de la app funcionando normal).
+  WSGIApplicationGroup %{GLOBAL}
+  WSGIScriptAlias /widget /home/widget/config/wsgi.py
 
-# --- 2. Permitir el embebido SOLO desde el portal host real (reemplazar el dominio) ---
-# Reemplaza al X-Frame-Options: DENY que Django emite por defecto (settings XFrameOptions).
-# IMPORTANTE: poné el/los origin(es) reales del portal que embebe el widget.
-Header always unset X-Frame-Options
-Header always set Content-Security-Policy "frame-ancestors https://EL-PORTAL-HOST.example https://*.nobis.com.ar;"
+  # --- 2. Terminación TLS -> avisar a Django que la request original es https ---
+  # Django lee esto por SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO','https').
+  # Fijarlo acá también impide que un cliente lo inyecte.
+  RequestHeader set X-Forwarded-Proto "https"
 
-# --- 3. CHIPS: agregar ; Partitioned a NUESTRAS cookies ---
-# Django 5.x no emite el atributo Partitioned; se anexa acá.
-# Nuestras cookies ya salen con SameSite=None; Secure (WIDGET_CROSS_SITE=True).
-# El ancla ^(nombre=...) evita tocar cookies de terceros.
-Header edit* Set-Cookie "^(widget_sessionid=.*)$" "$1; Partitioned"
-Header edit* Set-Cookie "^(csrftoken=.*)$"        "$1; Partitioned"
+  # --- 3. Permitir el embebido SOLO desde el portal host real ---
+  # Django emite X-Frame-Options: DENY (XFrameOptionsMiddleware); quitarlo en
+  # AMBAS tablas de mod_headers: la respuesta de la app (mod_wsgi) va por la
+  # tabla onsuccess, así que `Header always unset` solo NO alcanza.
+  Header unset X-Frame-Options
+  Header always unset X-Frame-Options
+  Header always set Content-Security-Policy "frame-ancestors 'self' https://wcentrix.net https://app.wcx.cloud https://nobis.wcx.cloud"
 
-# --- 4. Proxy inverso hacia el runserver, quitando el prefijo /widget/ ---
-# El navegador ve /widget/...  ->  Django ve /...
-# (Ajustar el puerto al de la app; ver PORT en .env.)
-ProxyPreserveHost On
-ProxyPass        /widget/ http://127.0.0.1:8000/
-ProxyPassReverse /widget/ http://127.0.0.1:8000/
+  # --- 4. CHIPS: agregar ; Partitioned a NUESTRAS cookies ---
+  # Django 5.x no emite el atributo Partitioned; se anexa acá.
+  # Nuestras cookies ya salen con SameSite=None; Secure (WIDGET_CROSS_SITE=True).
+  # El ancla ^(nombre=...) evita tocar cookies de terceros.
+  Header edit* Set-Cookie "^(widget_sessionid=.*)$" "$1; Partitioned"
+  Header edit* Set-Cookie "^(csrftoken=.*)$"        "$1; Partitioned"
 
-# Nota: si el redirect_uri público es https://widget.nobis.com.ar/widget/auth/callback,
-# el strip de /widget/ hace que Django reciba /auth/callback (coincide con cuentas/urls.py).
+  # --- 5. Estáticos ---
+  # Los estáticos nuevos (JS de auth, admin de Django, imágenes del feature) se
+  # sirven de staticfiles/ (salida de `dbtools.py collectstatic`). El Alias
+  # general se queda en home/static porque la app REESCRIBE en runtime
+  # origenes/preexistencias/proveedores.json y los templates los consultan vía
+  # /static/: apuntar todo /static a staticfiles congelaría esos JSON.
+  Alias /static/afiliados /home/widget/staticfiles/afiliados
+  Alias /static/admin /home/widget/staticfiles/admin
+  Alias /static/cerrar-sesion.png /home/widget/staticfiles/cerrar-sesion.png
+  Alias /static /home/widget/home/static
+  <Directory /home/widget/staticfiles>
+      Require all granted
+  </Directory>
+  <Directory /home/widget/home/static>
+      Require all granted
+  </Directory>
+
+  # --- 6. Permisos de archivos (el daemon corre como www-data) ---
+  # - /home/widget/.env legible por www-data (chmod 644): si no puede leerlo,
+  #   python-dotenv revienta el import del settings y TODO da 500 (página de
+  #   error de Apache, no la de Django).
+  # - Los JSON runtime de home/static escribibles por www-data (chmod 666):
+  #   un git stash pop los recrea 664 y las vistas que los reescriben dan 500.
+
+  # Nota histórica: la "muralla de Referer" (<Location /> con RewriteRule que
+  # devolvía 403 fuera de los portales) se eliminó a propósito el 2026-07-09:
+  # el control de embebido es la CSP frame-ancestors de arriba y el control de
+  # acceso es el login Azure AD (WIDGET_AUTH_ENABLED).
