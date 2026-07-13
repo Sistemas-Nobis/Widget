@@ -24,6 +24,7 @@ from django.views.decorators.http import require_GET, require_POST
 from .models import AuthHandoff
 from .msal_utils import construir_app, extraer_grupos
 from .permisos import calcular_es_superadmin
+from afiliados.audit import registrar
 
 
 def _widget_origin() -> str:
@@ -92,6 +93,8 @@ def callback(request):
 
     # Flujo superadmin/top-level: sin iframe, la cookie first-party ya sirve.
     if next_url:
+        registrar(request, action="login",
+                  payload_summary={"grupos": grupos, "es_superadmin": es_super, "via": "top-level"})
         return redirect(next_url)
 
     # Flujo iframe: emitir un handoff de un solo uso y cerrar el popup.
@@ -141,6 +144,8 @@ def exchange(request):
     _set_identidad(request.session, upn=h.upn, oid=h.oid, nombre=h.nombre,
                    grupos=h.grupos, es_superadmin=h.es_superadmin)
     request.session.modified = True
+    registrar(request, action="login",
+              payload_summary={"grupos": h.grupos, "es_superadmin": h.es_superadmin, "via": "iframe"})
     return JsonResponse({"authenticated": True, "user": {"upn": h.upn, "nombre": h.nombre}})
 
 
@@ -170,6 +175,8 @@ def handoff_poll(request):
 
 @never_cache
 def logout(request):
+    if request.session.get("upn"):
+        registrar(request, action="logout")   # antes de flush, para leer la identidad
     request.session.flush()
     if request.method == "POST":
         return JsonResponse({"ok": True})

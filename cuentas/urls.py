@@ -23,4 +23,10 @@ urlpatterns = [
     path("gestion/grupos/crear/", adm.grupo_crear, name="grupo_crear"),
     path("gestion/grupos/eliminar/", adm.grupo_eliminar, name="grupo_eliminar"),
     path("gestion/permisos/acceso-total/", adm.acceso_total_toggle, name="acceso_total_toggle"),
+
+    # --- Auditoría (solo superadmin) ---
+    path("gestion/auditoria/", adm.panel_auditoria, name="panel_auditoria"),
+    path("gestion/auditoria/datos/", adm.auditoria_datos, name="auditoria_datos"),
+    path("gestion/auditoria/metricas/", adm.auditoria_metricas, name="auditoria_metricas"),
+    path("gestion/auditoria/export/", adm.auditoria_export, name="auditoria_export"),
 ]

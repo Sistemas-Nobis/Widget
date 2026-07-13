@@ -1319,25 +1319,25 @@ def guardar_expediente(request):
                                     advertencia = "Expediente creado, pero no se pudo asociar el generador."
                                 else:
                                     print(f"Generador {genId} asignado correctamente al expediente {expediente_id}")
-                                registrar(request, action="asignar_generador", target_type="expediente",
+                                registrar(request, action="asignar_generador", recurso="accion.asignar_generador", target_type="expediente",
                                           target_id=expediente_id, response_status=generador_response.status_code,
                                           success=(generador_response.status_code == 200),
                                           payload_summary={"generador_id": int(genId)})
                             except Exception as gen_error:
                                 advertencia = f"Expediente creado, pero no se pudo asociar el generador: {str(gen_error)}"
 
-                    registrar(request, action="crear_expediente", target_type="expediente",
+                    registrar(request, action="crear_expediente", recurso="accion.crear_expediente", target_type="expediente",
                               target_id=expediente_id, response_status=200, success=True,
                               payload_summary={"benId": benId, "oriId": oriId, "provId": provId,
                                                "mTipoExpId": mTipoExpId, "periodo": periodo})
                     return JsonResponse({"success": True, "data": expediente_data, "advertencia": advertencia})
                 else:
-                    registrar(request, action="crear_expediente", target_type="expediente",
+                    registrar(request, action="crear_expediente", recurso="accion.crear_expediente", target_type="expediente",
                               response_status=response.status_code, success=False,
                               error_detail=response.text)
                     return JsonResponse({"success": False, "error": response.text}, status=400)
             except Exception as e:
-                registrar(request, action="crear_expediente", target_type="expediente",
+                registrar(request, action="crear_expediente", recurso="accion.crear_expediente", target_type="expediente",
                           success=False, error_detail=str(e))
                 return JsonResponse({"success": False, "error": str(e)}, status=500)
     else:
@@ -1363,7 +1363,7 @@ def archivo_expediente(request):
             response = requests.post(url, files=files, headers=headers)
             ok = response.status_code == 200
             # SaveArchivo (Gecros, tercero) no acepta identidad de usuario -> solo AuditLog local.
-            registrar(request, action="subir_archivo", target_type="expediente",
+            registrar(request, action="subir_archivo", recurso="accion.subir_archivo", target_type="expediente",
                       target_id=expediente_id, response_status=response.status_code, success=ok,
                       payload_summary={"filename": archivo.name, "content_type": archivo.content_type},
                       error_detail="" if ok else response.text)
@@ -1372,7 +1372,7 @@ def archivo_expediente(request):
             else:
                 return JsonResponse({'success': False, 'error': response.text}, status=400)
         except Exception as e:
-            registrar(request, action="subir_archivo", target_type="expediente",
+            registrar(request, action="subir_archivo", recurso="accion.subir_archivo", target_type="expediente",
                       target_id=expediente_id, success=False, error_detail=str(e))
             return JsonResponse({'success': False, 'error': str(e)}, status=500)
     else:
@@ -1534,13 +1534,13 @@ def crear_remito(request, expediente_id):
             api_response = requests.post(api_url, json=payload)
 
             if api_response.status_code != 200:
-                registrar(request, action="crear_remito", target_type="expediente",
+                registrar(request, action="crear_remito", recurso="accion.crear_remito", target_type="expediente",
                           target_id=expediente_id, response_status=api_response.status_code,
                           success=False, error_detail=api_response.text)
                 return JsonResponse({"error": "Error al crear remito en API externa"}, status=api_response.status_code)
 
             data = api_response.json()
-            registrar(request, action="crear_remito", target_type="remito",
+            registrar(request, action="crear_remito", recurso="accion.crear_remito", target_type="remito",
                       target_id=data.get("mRem_id"), response_status=200, success=True,
                       payload_summary={"expediente_id": expediente_id, "sector_destino": sector_destino})
             #print(data)
@@ -1567,7 +1567,7 @@ def crear_remito(request, expediente_id):
                         print(f"Advertencia: {advertencia}")
                     else:
                         print(f"Generador {generador_id} asignado correctamente al expediente {expediente_id}")
-                    registrar(request, action="asignar_generador", target_type="expediente",
+                    registrar(request, action="asignar_generador", recurso="accion.asignar_generador", target_type="expediente",
                               target_id=expediente_id, response_status=generador_response.status_code,
                               success=(generador_response.status_code == 200),
                               payload_summary={"generador_id": generador_id})
@@ -1788,7 +1788,7 @@ def cargar_bonificacion_externa(request, grupo):
             }
             r = requests.post(api_url, json=payload, headers=headers, timeout=15)
             ok = r.status_code in (200, 201)
-            registrar(request, action="enviar_bonificacion", target_type="grupo",
+            registrar(request, action="enviar_bonificacion", recurso="accion.enviar_bonificacion", target_type="grupo",
                       target_id=grupo, response_status=r.status_code, success=ok,
                       payload_summary={"peri_desde": peri_desde, "peri_hasta": peri_hasta,
                                        "porcentaje": porcentaje},

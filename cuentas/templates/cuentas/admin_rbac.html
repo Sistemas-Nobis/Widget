@@ -31,7 +31,12 @@
     header .brand{display:flex;align-items:center;gap:var(--sp3);}
     header h1{font-size:17px;font-weight:700;margin:0;letter-spacing:.2px;}
     header .sub{font-size:12px;opacity:.85;margin-top:2px;}
-    header .user{display:flex;align-items:center;gap:var(--sp3);font-size:13px;}
+    header .user{display:flex;align-items:center;gap:var(--sp4);font-size:13px;}
+    header .paneles-nav{display:flex;gap:6px;}
+    header .paneles-nav a{color:#fff;text-decoration:none;padding:6px 12px;border-radius:var(--radius-sm);
+      font-weight:600;opacity:.8;transition:background .15s,opacity .15s;}
+    header .paneles-nav a:hover{background:rgba(255,255,255,.14);opacity:1;}
+    header .paneles-nav a.activo{background:rgba(255,255,255,.2);opacity:1;}
     header .logout{display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;
       border:1px solid rgba(255,255,255,.55);border-radius:var(--radius-sm);padding:6px 12px;
       font-weight:600;transition:background .15s;}
@@ -200,6 +205,10 @@
       </div>
     </div>
     <div class="user">
+      <nav class="paneles-nav">
+        <a href="{{ prefix }}/gestion/permisos/" class="activo">Permisos</a>
+        <a href="{{ prefix }}/gestion/auditoria/">Auditoría</a>
+      </nav>
       <span>{{ usuario }}</span>
       <a class="logout" href="{{ widget_logout_url }}" title="Cerrar sesión">
         <img src="{% static 'cerrar-sesion.png' %}" alt="Cerrar sesión" width="16" height="16" style="display:block;">

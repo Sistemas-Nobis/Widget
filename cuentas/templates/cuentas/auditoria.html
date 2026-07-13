@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Auditoría del Widget</title>
+  {% csrf_token %}
+  <style>
+    :root{
+      --verde:#0e8c13; --verde-d:#0a6b0f; --verde-l:#eafbe9; --verde-l2:#f4faf3;
+      --bg:#eef1ee; --surface:#ffffff; --border:#dbe4db; --border-strong:#c4d3c4;
+      --text:#1e2a1e; --text-2:#566356; --muted:#8a9a8a; --danger:#b00020; --danger-l:#fdecef;
+      --radius:14px; --radius-sm:8px;
+      --shadow:0 1px 2px rgba(20,60,20,.04), 0 10px 30px rgba(20,60,20,.06);
+      --sp1:4px; --sp2:8px; --sp3:12px; --sp4:16px; --sp5:24px; --sp6:32px;
+      --focus:0 0 0 3px rgba(14,140,19,.3);
+    }
+    *{box-sizing:border-box;}
+    [hidden]{display:none!important;}
+    html,body{margin:0;}
+    body{background:var(--bg);color:var(--text);font-family:'Segoe UI',Roboto,-apple-system,Helvetica,Arial,sans-serif;
+      font-size:14px;line-height:1.5;padding-bottom:24px;}
+    a{color:inherit;}
+
+    header{position:sticky;top:0;z-index:30;background:var(--verde);color:#fff;
+      padding:var(--sp4) var(--sp5);display:flex;align-items:center;justify-content:space-between;
+      gap:var(--sp3);flex-wrap:wrap;box-shadow:0 2px 10px rgba(0,0,0,.12);}
+    header .brand{display:flex;align-items:center;gap:var(--sp3);}
+    header h1{font-size:17px;font-weight:700;margin:0;letter-spacing:.2px;}
+    header .sub{font-size:12px;opacity:.85;margin-top:2px;}
+    header .right{display:flex;align-items:center;gap:var(--sp4);font-size:13px;}
+    header nav{display:flex;gap:6px;}
+    header nav a{color:#fff;text-decoration:none;padding:6px 12px;border-radius:var(--radius-sm);
+      font-weight:600;opacity:.8;transition:background .15s,opacity .15s;}
+    header nav a:hover{background:rgba(255,255,255,.14);opacity:1;}
+    header nav a.activo{background:rgba(255,255,255,.2);opacity:1;}
+    header .user{display:flex;align-items:center;gap:10px;}
+    header .logout{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;
+      border:1px solid rgba(255,255,255,.55);border-radius:var(--radius-sm);overflow:hidden;}
+    header .logout img{width:100%;height:100%;object-fit:cover;}
+
+    main{width:100%;padding:var(--sp5) var(--sp6) 0;}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+      box-shadow:var(--shadow);margin-bottom:var(--sp5);overflow:hidden;}
+    .card-body{padding:var(--sp5);}
+
+    /* Métricas */
+    .metricas{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--sp4);margin-bottom:var(--sp5);}
+    .metrica{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+      box-shadow:var(--shadow);padding:var(--sp4) var(--sp5);}
+    .metrica .val{font-size:26px;font-weight:800;color:var(--verde-d);line-height:1;}
+    .metrica .lbl{font-size:12px;color:var(--text-2);margin-top:6px;text-transform:uppercase;letter-spacing:.4px;}
+    .metrica.warn .val{color:var(--danger);}
+
+    /* Filtros */
+    .filtros{display:flex;flex-wrap:wrap;gap:var(--sp3);align-items:flex-end;}
+    .filtro{display:flex;flex-direction:column;gap:5px;}
+    .filtro label{font-size:11px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.4px;}
+    .filtro input,.filtro select{height:38px;padding:0 10px;border:1px solid var(--border-strong);
+      border-radius:var(--radius-sm);font-size:13px;font-family:inherit;background:#fff;}
+    .filtro input:focus,.filtro select:focus{outline:none;border-color:var(--verde);box-shadow:var(--focus);}
+    .filtro.crece{flex:1 1 200px;min-width:160px;}
+    .filtro.crece input{width:100%;}
+    .btn{height:38px;padding:0 16px;border:0;border-radius:var(--radius-sm);font-size:13px;font-weight:600;
+      cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:background .15s;}
+    .btn:focus-visible{outline:none;box-shadow:var(--focus);}
+    .btn-primary{background:var(--verde);color:#fff;}
+    .btn-primary:hover{background:var(--verde-d);}
+    .btn-ghost{background:#fff;color:var(--text-2);border:1px solid var(--border-strong);}
+    .btn-ghost:hover{background:var(--verde-l2);}
+
+    /* Tabla */
+    .table-wrap{overflow-x:auto;border-radius:var(--radius-sm);border:1px solid var(--border);}
+    table{border-collapse:separate;border-spacing:0;width:100%;font-size:12.5px;min-width:760px;}
+    thead th{position:sticky;top:0;z-index:2;background:var(--verde-l);color:var(--verde-d);font-weight:700;
+      padding:var(--sp3);text-align:left;border-bottom:2px solid var(--border-strong);white-space:nowrap;}
+    tbody td{padding:var(--sp3);border-bottom:1px solid var(--border);vertical-align:top;}
+    tbody tr:hover td{background:var(--verde-l2);}
+    td.mono{font-family:ui-monospace,Consolas,monospace;font-size:11.5px;color:var(--text-2);white-space:nowrap;}
+    td.usuario{font-weight:600;}
+    .pill{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:999px;white-space:nowrap;}
+    .pill.grupo{background:var(--verde-l);color:var(--verde-d);}
+    .pill.recurso{background:#eef4fb;color:#2b6cb0;}
+    .pill.vacio{background:#f0f2f0;color:var(--muted);}
+    .res-ok{color:var(--verde);font-weight:700;}
+    .res-err{color:var(--danger);font-weight:700;}
+    .accion-denegado{color:var(--danger);}
+
+    .paginacion{display:flex;align-items:center;justify-content:space-between;gap:var(--sp3);
+      margin-top:var(--sp4);font-size:13px;color:var(--text-2);flex-wrap:wrap;}
+    .paginacion .btns{display:flex;gap:8px;}
+    .empty{text-align:center;color:var(--text-2);padding:var(--sp6);}
+
+    #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(10px);background:#213021;color:#fff;
+      padding:10px 18px;border-radius:var(--radius-sm);font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.25);
+      opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:60;}
+    #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+    #toast.err{background:#8f1020;}
+    @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+      <div>
+        <h1>Auditoría del Widget</h1>
+        <div class="sub">Registro de accesos y acciones de todos los usuarios</div>
+      </div>
+    </div>
+    <div class="right">
+      <nav>
+        <a href="{{ prefix }}/gestion/permisos/">Permisos</a>
+        <a href="{{ prefix }}/gestion/auditoria/" class="activo">Auditoría</a>
+      </nav>
+      <div class="user">
+        <span>{{ usuario }}</span>
+        <a class="logout" href="{{ widget_logout_url }}" title="Cerrar sesión"><img src="{% static 'cerrar-sesion.png' %}" alt="Salir"></a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="metricas">
+      <div class="metrica"><div class="val" id="mTotal">—</div><div class="lbl">Eventos totales</div></div>
+      <div class="metrica"><div class="val" id="mLogins">—</div><div class="lbl">Logins hoy</div></div>
+      <div class="metrica"><div class="val" id="mUsuarios">—</div><div class="lbl">Usuarios activos hoy</div></div>
+      <div class="metrica warn"><div class="val" id="mFallidos">—</div><div class="lbl">Acciones fallidas hoy</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="filtros">
+          <div class="filtro crece">
+            <label for="fQ">Buscar (usuario / target)</label>
+            <input type="text" id="fQ" placeholder="upn, nombre o target…" autocomplete="off">
+          </div>
+          <div class="filtro">
+            <label for="fAccion">Acción</label>
+            <select id="fAccion"><option value="">Todas</option>
+              {% for k, label in acciones %}<option value="{{ k }}">{{ label }}</option>{% endfor %}
+            </select>
+          </div>
+          <div class="filtro">
+            <label for="fGrupo">Grupo</label>
+            <select id="fGrupo"><option value="">Todos</option>
+              {% for g in grupos %}<option value="{{ g }}">{{ g }}</option>{% endfor %}
+            </select>
+          </div>
+          <div class="filtro">
+            <label for="fRecurso">Recurso</label>
+            <select id="fRecurso"><option value="">Todos</option>
+              {% for k, label in recursos %}<option value="{{ k }}">{{ label }}</option>{% endfor %}
+            </select>
+          </div>
+          <div class="filtro">
+            <label for="fExito">Resultado</label>
+            <select id="fExito"><option value="">Todos</option><option value="1">Éxito</option><option value="0">Falla</option></select>
+          </div>
+          <div class="filtro"><label for="fDesde">Desde</label><input type="date" id="fDesde"></div>
+          <div class="filtro"><label for="fHasta">Hasta</label><input type="date" id="fHasta"></div>
+          <button class="btn btn-ghost" id="btnLimpiar" type="button">Limpiar</button>
+          <button class="btn btn-primary" id="btnExport" type="button">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Exportar CSV
+          </button>
+        </div>
+
+        <div class="table-wrap" style="margin-top:var(--sp4)">
+          <table id="tabla">
+            <thead><tr>
+              <th>Fecha</th><th>Usuario</th><th>Grupo</th><th>Recurso</th><th>Acción</th>
+              <th>Target</th><th>Resultado</th><th>IP</th>
+            </tr></thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+
+        <div class="paginacion">
+          <span id="pagInfo">—</span>
+          <div class="btns">
+            <button class="btn btn-ghost" id="btnPrev" type="button" disabled>← Anterior</button>
+            <button class="btn btn-ghost" id="btnNext" type="button" disabled>Siguiente →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    var BASE = "{{ prefix }}/gestion";
+    var pagina = 1, numPages = 1;
+
+    function toast(m, err){ var t=document.getElementById('toast'); t.textContent=m; t.className='show'+(err?' err':'');
+      clearTimeout(t._h); t._h=setTimeout(function(){t.className='';},3500); }
+    function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+
+    function filtros(){
+      var p = new URLSearchParams();
+      var q=document.getElementById('fQ').value.trim(); if(q)p.set('q',q);
+      var a=document.getElementById('fAccion').value; if(a)p.set('action',a);
+      var g=document.getElementById('fGrupo').value; if(g)p.set('grupo',g);
+      var r=document.getElementById('fRecurso').value; if(r)p.set('recurso',r);
+      var e=document.getElementById('fExito').value; if(e!=='')p.set('success',e);
+      var d=document.getElementById('fDesde').value; if(d)p.set('desde',d);
+      var h=document.getElementById('fHasta').value; if(h)p.set('hasta',h);
+      return p;
+    }
+
+    function pill(txt, cls){ return txt ? '<span class="pill '+cls+'">'+esc(txt)+'</span>' : '<span class="pill vacio">—</span>'; }
+
+    function cargarDatos(){
+      var p = filtros(); p.set('page', pagina);
+      fetch(BASE+'/auditoria/datos/?'+p.toString(), {credentials:'same-origin', cache:'no-store'})
+        .then(function(r){return r.json();})
+        .then(function(d){
+          numPages = d.num_pages; pagina = d.page;
+          var tb = document.getElementById('tbody');
+          if(!d.filas.length){ tb.innerHTML='<tr><td colspan="8" class="empty">Sin registros para estos filtros.</td></tr>'; }
+          else {
+            tb.innerHTML = d.filas.map(function(f){
+              var accCls = f.action_key==='acceso_denegado' ? ' class="accion-denegado"' : '';
+              var res = f.success ? '<span class="res-ok">✓</span>' : '<span class="res-err">✗ '+(f.status||'')+'</span>';
+              return '<tr>'+
+                '<td class="mono">'+esc(f.created_at)+'</td>'+
+                '<td class="usuario">'+esc(f.usuario)+'</td>'+
+                '<td>'+pill(f.grupo,'grupo')+'</td>'+
+                '<td>'+pill(f.recurso,'recurso')+'</td>'+
+                '<td'+accCls+'>'+esc(f.action)+'</td>'+
+                '<td>'+esc(f.target||'')+'</td>'+
+                '<td>'+res+'</td>'+
+                '<td class="mono">'+esc(f.ip)+'</td>'+
+              '</tr>';
+            }).join('');
+          }
+          document.getElementById('pagInfo').textContent = 'Página '+d.page+' de '+d.num_pages+' · '+d.total+' eventos';
+          document.getElementById('btnPrev').disabled = d.page<=1;
+          document.getElementById('btnNext').disabled = d.page>=d.num_pages;
+        }).catch(function(){ toast('No se pudieron cargar los datos', true); });
+    }
+
+    function cargarMetricas(){
+      fetch(BASE+'/auditoria/metricas/', {credentials:'same-origin', cache:'no-store'})
+        .then(function(r){return r.json();})
+        .then(function(m){
+          document.getElementById('mTotal').textContent=m.total;
+          document.getElementById('mLogins').textContent=m.logins_hoy;
+          document.getElementById('mUsuarios').textContent=m.usuarios_hoy;
+          document.getElementById('mFallidos').textContent=m.fallidos_hoy;
+        }).catch(function(){});
+    }
+
+    var deb;
+    function aplicar(){ pagina=1; clearTimeout(deb); deb=setTimeout(cargarDatos, 250); }
+    ['fQ','fAccion','fGrupo','fRecurso','fExito','fDesde','fHasta'].forEach(function(id){
+      var el=document.getElementById(id); el.addEventListener(el.tagName==='SELECT'||el.type==='date'?'change':'input', aplicar);
+    });
+    document.getElementById('btnPrev').onclick=function(){ if(pagina>1){pagina--;cargarDatos();} };
+    document.getElementById('btnNext').onclick=function(){ if(pagina<numPages){pagina++;cargarDatos();} };
+    document.getElementById('btnLimpiar').onclick=function(){
+      ['fQ','fAccion','fGrupo','fRecurso','fExito','fDesde','fHasta'].forEach(function(id){document.getElementById(id).value='';});
+      aplicar();
+    };
+    document.getElementById('btnExport').onclick=function(){
+      window.location = BASE+'/auditoria/export/?'+filtros().toString();
+    };
+
+    cargarMetricas();
+    cargarDatos();
+  </script>
+</body>
+</html>

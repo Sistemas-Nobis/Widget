@@ -4,11 +4,12 @@ Pantalla de superadmin: matriz grupos Entra × recursos.
 Corre TOP-LEVEL en widget.nobis.com.ar/widget/gestion/... (no es iframe de 3ª parte),
 así que usa CSRF de Django normal (no @csrf_exempt) y login por redirect.
 """
+import csv
 import json
 import re
 
 from django.db import transaction
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.http import require_GET, require_POST
@@ -161,3 +162,117 @@ def grupo_eliminar(request):
     registrar(request, action="admin_grupo_eliminar", target_type="GrupoEntra",
               target_id=str(grupo.id), payload_summary={"oid": grupo.oid, "permisos_removidos": removidos}, success=True)
     return JsonResponse({"ok": True})
+
+
+# --------------------------------------------------------------------------- #
+# Vista de auditoría
+# --------------------------------------------------------------------------- #
+def _filtrar_auditoria(request):
+    """Queryset de AuditLog filtrado por los GET params. Reusado por datos y export."""
+    from afiliados.models import AuditLog
+    qs = AuditLog.objects.all()
+    g = request.GET
+    q = (g.get("q") or "").strip()
+    if q:
+        from django.db.models import Q
+        qs = qs.filter(Q(user_upn__icontains=q) | Q(user_name__icontains=q) | Q(target_id__icontains=q))
+    if g.get("action"):
+        qs = qs.filter(action=g["action"])
+    if g.get("grupo"):
+        qs = qs.filter(grupo=g["grupo"])
+    if g.get("recurso"):
+        qs = qs.filter(recurso=g["recurso"])
+    if g.get("success") in ("0", "1"):
+        qs = qs.filter(success=(g["success"] == "1"))
+    if g.get("desde"):
+        qs = qs.filter(created_at__date__gte=g["desde"])
+    if g.get("hasta"):
+        qs = qs.filter(created_at__date__lte=g["hasta"])
+    return qs.order_by("-created_at")
+
+
+@superadmin_required_page
+@require_GET
+def panel_auditoria(request):
+    from django.conf import settings
+    from afiliados.models import AuditLog
+    ident = identidad_de(request)
+    grupos = list(
+        GrupoEntra.objects.filter(activo=True).values_list("nombre", flat=True)
+    )
+    return render(request, "cuentas/auditoria.html", {
+        "usuario": ident.get("nombre") or ident.get("upn") or "superadmin",
+        "prefix": getattr(settings, "WIDGET_URL_PREFIX", ""),
+        "acciones": AuditLog.ACTIONS,
+        "grupos": grupos,
+        "recursos": catalogo_serializable_pairs(),
+    })
+
+
+def catalogo_serializable_pairs():
+    from .recursos import RECURSOS
+    return [(k, v[0]) for k, v in RECURSOS.items()]
+
+
+@superadmin_required_json
+@require_GET
+def auditoria_datos(request):
+    from django.core.paginator import Paginator
+    qs = _filtrar_auditoria(request)
+    try:
+        page = max(1, int(request.GET.get("page", 1)))
+    except ValueError:
+        page = 1
+    paginator = Paginator(qs, 50)
+    pg = paginator.get_page(page)
+    filas = [{
+        "created_at": f.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+        "usuario": f.user_upn or f.user_name or "",
+        "grupo": f.grupo,
+        "recurso": f.recurso,
+        "action": f.get_action_display(),
+        "action_key": f.action,
+        "target": f"{f.target_type}:{f.target_id}" if f.target_id else f.target_type,
+        "success": f.success,
+        "status": f.response_status,
+        "ip": f.ip or "",
+        "dni": f.dni,
+    } for f in pg.object_list]
+    return JsonResponse({
+        "filas": filas,
+        "page": pg.number,
+        "num_pages": paginator.num_pages,
+        "total": paginator.count,
+    })
+
+
+@superadmin_required_json
+@require_GET
+def auditoria_metricas(request):
+    from django.utils import timezone
+    from afiliados.models import AuditLog
+    hoy = timezone.localdate()
+    base_hoy = AuditLog.objects.filter(created_at__date=hoy)
+    return JsonResponse({
+        "total": AuditLog.objects.count(),
+        "logins_hoy": base_hoy.filter(action="login").count(),
+        "usuarios_hoy": base_hoy.exclude(user_upn="").values("user_upn").distinct().count(),
+        "fallidos_hoy": base_hoy.filter(success=False).count(),
+    })
+
+
+@superadmin_required_page
+@require_GET
+def auditoria_export(request):
+    qs = _filtrar_auditoria(request)[:50000]   # tope de seguridad
+    resp = HttpResponse(content_type="text/csv; charset=utf-8")
+    resp["Content-Disposition"] = 'attachment; filename="auditoria_widget.csv"'
+    resp.write("﻿")  # BOM para Excel
+    w = csv.writer(resp)
+    w.writerow(["Fecha", "Usuario", "Nombre", "Grupo", "Recurso", "Accion",
+                "Target tipo", "Target id", "Exito", "Status", "IP", "DNI"])
+    for f in qs:
+        w.writerow([f.created_at.strftime("%Y-%m-%d %H:%M:%S"), f.user_upn, f.user_name,
+                    f.grupo, f.recurso, f.action, f.target_type, f.target_id,
+                    "si" if f.success else "no", f.response_status or "", f.ip or "", f.dni])
+    return resp

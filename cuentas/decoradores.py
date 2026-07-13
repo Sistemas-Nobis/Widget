@@ -53,11 +53,16 @@ def requiere_permiso_iframe(recurso_key):
                 role = "atencion" if recurso_key == "vista.atencion" else "bloqueado"
                 return render(request, "cuentas/bloqueo_login.html",
                               {"recurso": recurso_key, "role": role}, status=401)
+            from afiliados.audit import registrar
             if not usuario_puede(request, recurso_key):
+                registrar(request, action="acceso_denegado", recurso=recurso_key,
+                          success=False, dni=str(kwargs.get("dni") or ""))
                 return render(request, "cuentas/sin_acceso.html",
                               {"recurso": recurso_key,
                                "alternativa": _vista_alternativa(request, recurso_key, kwargs)},
                               status=403)
+            registrar(request, action="ver_vista", recurso=recurso_key,
+                      dni=str(kwargs.get("dni") or ""))
             return view_func(request, *args, **kwargs)
         return _wrapped
     return deco

@@ -16,12 +16,18 @@ class AuditLog(models.Model):
         ("admin_grupo_crear", "Crear grupo"),
         ("admin_grupo_eliminar", "Eliminar grupo"),
         ("admin_acceso_total", "Cambiar acceso total"),
+        ("login", "Inicio de sesión"),
+        ("logout", "Cierre de sesión"),
+        ("ver_vista", "Ver pantalla"),
+        ("acceso_denegado", "Acceso denegado"),
     ]
 
-    user_upn = models.CharField(max_length=255, blank=True)
+    user_upn = models.CharField(max_length=255, blank=True, db_index=True)
     user_oid = models.CharField(max_length=64, blank=True, db_index=True)
     user_name = models.CharField(max_length=255, blank=True)
-    action = models.CharField(max_length=64, choices=ACTIONS)
+    action = models.CharField(max_length=64, choices=ACTIONS, db_index=True)
+    grupo = models.CharField(max_length=255, blank=True, db_index=True)   # nombre legible del grupo que concedió
+    recurso = models.CharField(max_length=64, blank=True, db_index=True)  # recurso_key: vista.* / accion.*
     target_type = models.CharField(max_length=64, blank=True)
     target_id = models.CharField(max_length=128, blank=True)
     endpoint = models.CharField(max_length=255, blank=True)

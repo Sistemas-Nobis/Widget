@@ -39,7 +39,23 @@ def ip_de(request):
     return request.META.get("REMOTE_ADDR") or None
 
 
-def registrar(request, *, action, target_type="", target_id="", endpoint="",
+def _grupo_de(request, recurso, grupo):
+    """Nombre del grupo que concedió el recurso, o '(superadmin)' por bypass, o ''."""
+    if grupo:
+        return grupo
+    if not recurso:
+        return ""
+    try:
+        s = getattr(request, "session", {}) or {}
+        if s.get("es_superadmin"):
+            return "(superadmin)"
+        from cuentas.permisos import grupo_que_concede
+        return grupo_que_concede(request, recurso) or ""
+    except Exception:
+        return ""
+
+
+def registrar(request, *, action, recurso="", grupo="", target_type="", target_id="", endpoint="",
               payload_summary=None, response_status=None, success=True,
               error_detail="", dni=""):
     """Escribe una fila de AuditLog. Silenciosa ante cualquier error."""
@@ -48,7 +64,8 @@ def registrar(request, *, action, target_type="", target_id="", endpoint="",
         ident = identidad_de(request)
         AuditLog.objects.create(
             user_upn=ident["upn"], user_oid=ident["oid"], user_name=ident["nombre"],
-            action=action, target_type=target_type, target_id=str(target_id or ""),
+            action=action, recurso=recurso, grupo=_grupo_de(request, recurso, grupo),
+            target_type=target_type, target_id=str(target_id or ""),
             endpoint=endpoint or getattr(request, "path", ""),
             payload_summary=payload_summary or {},
             response_status=response_status, success=success,
