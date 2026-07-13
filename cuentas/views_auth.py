@@ -10,8 +10,11 @@ Piezas:
   logout       (POST)             -> session.flush() local
 """
 import json
+import logging
 from datetime import timedelta
 from urllib.parse import urlparse
+
+import requests
 
 from django.conf import settings
 from django.http import JsonResponse, HttpResponse, Http404
@@ -25,6 +28,8 @@ from .models import AuthHandoff
 from .msal_utils import construir_app, extraer_grupos
 from .permisos import calcular_es_superadmin
 from afiliados.audit import registrar
+
+logger = logging.getLogger(__name__)
 
 
 def _widget_origin() -> str:
@@ -49,11 +54,17 @@ def login_start(request):
     """Corre top-level (popup o pestaña). Guarda el flow en la sesión del contexto top-level."""
     if not _auth_configurada():
         return HttpResponse("Autenticación no configurada (faltan credenciales MSAL).", status=503)
-    app = construir_app()
-    flow = app.initiate_auth_code_flow(
-        settings.MSAL_SCOPES,
-        redirect_uri=settings.MSAL_REDIRECT_URI,   # string PÚBLICO fijo; nunca build_absolute_uri
-    )
+    try:
+        # construir_app() ya hace red: el constructor de MSAL resuelve el discovery
+        # (.well-known/openid-configuration) del tenant, así que va DENTRO del try.
+        app = construir_app()
+        flow = app.initiate_auth_code_flow(
+            settings.MSAL_SCOPES,
+            redirect_uri=settings.MSAL_REDIRECT_URI,   # string PÚBLICO fijo; nunca build_absolute_uri
+        )
+    except requests.RequestException as e:
+        logger.error("Timeout/error contactando Azure AD en login_start: %s", e)
+        return HttpResponse("No se pudo contactar el servicio de autenticación. Reintentá en unos minutos.", status=503)
     request.session["auth_flow"] = flow
     request.session["auth_ch"] = request.GET.get("ch", "")
     request.session["auth_next"] = request.GET.get("next", "")
@@ -67,10 +78,15 @@ def callback(request):
     if not flow:
         return HttpResponse("Sesión de login expirada. Cerrá esta ventana y reintentá.", status=400)
 
-    app = construir_app()
-    result = app.acquire_token_by_auth_code_flow(
-        flow, {k: v for k, v in request.GET.items()}
-    )
+    try:
+        # construir_app() hace red (discovery del tenant) -> dentro del try.
+        app = construir_app()
+        result = app.acquire_token_by_auth_code_flow(
+            flow, {k: v for k, v in request.GET.items()}
+        )
+    except requests.RequestException as e:
+        logger.error("Timeout/error contactando Azure AD en callback: %s", e)
+        return HttpResponse("No se pudo contactar el servicio de autenticación. Reintentá en unos minutos.", status=503)
     if "error" in result:
         return HttpResponse(
             f"Error de autenticación: {result.get('error_description', result['error'])}",

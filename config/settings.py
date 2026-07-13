@@ -26,6 +26,17 @@ ALLOWED_HOSTS = ['172.210.161.18', 'localhost', 'widget.nobis.com.ar', '192.168.
 CSRF_TRUSTED_ORIGINS = ['https://widget.nobis.com.ar']
 
 # ---------------------------------------------------------------------------
+# HTTP saliente (requests / MSAL)
+# ---------------------------------------------------------------------------
+# Timeout único para TODAS las llamadas HTTP salientes: (conexión, lectura) en segundos.
+# Se pasa como `timeout=` en cada requests.* y como http_client de MSAL.
+# Motivo: el 2026-07-13 la API appmobile.nobissalud.com.ar dejó de responder y, al no
+# tener timeout, cada request entrante clavó un hilo WSGI para siempre hasta agotar los
+# 15 hilos y devolver 503. Con timeout el hilo se libera y la vista devuelve un error
+# controlado. NO hardcodear el número en cada llamada: usar siempre esta constante.
+REQUESTS_TIMEOUT = (5, 30)
+
+# ---------------------------------------------------------------------------
 # Autenticación Azure AD (MSAL) + sesión cross-site (iframe de 3ª parte)
 # ---------------------------------------------------------------------------
 # Flag maestro del gate. Con False los decoradores pasan de largo (deploy dormido / rollback).

@@ -20,9 +20,34 @@ from cuentas.permisos import usuario_puede, grupo_que_concede
 from .audit import registrar, etiqueta_usuario, usuario_para_api
 
 
+class ManejoErroresAPIMixin:
+    """
+    Red de seguridad para las vistas HTML que consultan APIs externas.
+
+    Muchas llamadas requests.* dentro de get() no están envueltas en try/except.
+    Con timeout, ante un backend caído dejan de colgar el hilo pero levantan
+    RequestException/Timeout. Este mixin la captura a nivel dispatch y devuelve un
+    error controlado (502) renderizado en el template, en vez de romper la vista con
+    un 500 crudo. El decorador de permisos envuelve este dispatch, así que el chequeo
+    de acceso queda FUERA del try (sus respuestas no se ven afectadas).
+    """
+    template_error = None  # si es None se usa self.template_name
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            return super().dispatch(request, *args, **kwargs)
+        except requests.exceptions.RequestException as e:
+            print(f"Error de conexión con una API externa: {e}")
+            template = self.template_error or getattr(self, "template_name", None)
+            contexto = {'error': 'No se pudo conectar con el sistema. Intentá nuevamente en unos minutos.'}
+            if template:
+                return render(request, template, contexto, status=502)
+            from django.http import HttpResponse
+            return HttpResponse(contexto['error'], status=502)
+
 
 @method_decorator(requiere_permiso_iframe("vista.atencion"), name="dispatch")
-class BuscarAfiliadoView(View):
+class BuscarAfiliadoView(ManejoErroresAPIMixin, View):
     template_name = 'ate_produccion.html'
  
     def obtener_token_wise(self):
@@ -86,7 +111,7 @@ class BuscarAfiliadoView(View):
             }
        
         # Solicitud a la API de afiliados
-        response_afiliado = requests.post(url_afiliado, data=payload_json_afiliado, headers=headers)
+        response_afiliado = requests.post(url_afiliado, data=payload_json_afiliado, headers=headers, timeout=settings.REQUESTS_TIMEOUT)
         #print(response_afiliado.text)
  
         if response_afiliado.status_code == 200:
@@ -109,7 +134,7 @@ class BuscarAfiliadoView(View):
                         #print(f"Grupo familiar: {grupo_id}")
 
                         url_agegru = f"https://api.nobis.com.ar/agente_por_grupo/{grupo_id}"
-                        response_agegru = requests.get(url_agegru)
+                        response_agegru = requests.get(url_agegru, timeout=settings.REQUESTS_TIMEOUT)
                         try:
                             data_agegru = response_agegru.json()
                         except ValueError:
@@ -129,7 +154,7 @@ class BuscarAfiliadoView(View):
                 total_deuda = 0
                 if dni_aux != 0:
                     url_deuda = f"https://appmobile.nobissalud.com.ar/api/AgentesCuenta/Deuda/{dni_aux}"
-                    response_deuda = requests.get(url_deuda, headers=headers)
+                    response_deuda = requests.get(url_deuda, headers=headers, timeout=settings.REQUESTS_TIMEOUT)
                     try:
                         data_deuda = response_deuda.json()
                     except ValueError:
@@ -202,7 +227,7 @@ class BuscarAfiliadoView(View):
 
                     # Solicitud a la API interna para obtener fecha de alta y patologia
                     url_patologias = f"https://api.nobis.com.ar/fecha_alta_y_patologias/{nro_afi}"
-                    response_p = requests.get(url_patologias, headers=headers_interno)
+                    response_p = requests.get(url_patologias, headers=headers_interno, timeout=settings.REQUESTS_TIMEOUT)
                     data_p = response_p.json()
                     #print(f"Datos de patologías para {nro_afi}: {data_p}")
 
@@ -216,7 +241,7 @@ class BuscarAfiliadoView(View):
  
                     url_contacto = f'https://api.wcx.cloud/core/v1/contacts/?filtering=[{{"field":"contacts.personal_id","operator":"EQUAL","value":"{nro_afi}"}}]&fields=id,personal_id&sort=desc&sort_field=id&limit=5&page=1'
  
-                    response_contacto = requests.request("GET", url_contacto, headers=headers_wise)
+                    response_contacto = requests.request("GET", url_contacto, headers=headers_wise, timeout=settings.REQUESTS_TIMEOUT)
  
                     # Convertir la respuesta a un diccionario de Python
                     data_contacto = response_contacto.json()
@@ -229,7 +254,7 @@ class BuscarAfiliadoView(View):
  
                         # Consulta de casos
                         url_casos = f'https://api.wcx.cloud/core/v1/cases?sort=asc&sort_field=last_update&limit=10&page=1&filtering=[{{"field":"case.contact_id","operator":"EQUAL","value":"{contact_id}"}}]&fields=id,number,user_id,status,created_at,user_id,source_channel,type_id,tags,channel_account'
-                        response_casos = requests.get(url_casos, headers=headers_wise)
+                        response_casos = requests.get(url_casos, headers=headers_wise, timeout=settings.REQUESTS_TIMEOUT)
  
                         if response_casos.status_code == 200:
                             data_casos = response_casos.json().get('data', [])
@@ -278,7 +303,7 @@ class BuscarAfiliadoView(View):
                                 if user_id not in user_names:
                                     # Realizar solicitud a la API para obtener el nombre del usuario
                                     url_usuario = f'https://api.wcx.cloud/core/v1/users?filtering=[{{"field":"users.id","operator":"EQUAL","value":"{user_id}"}}]&fields=nick,id'
-                                    response_usuario = requests.get(url_usuario, headers=headers_wise)
+                                    response_usuario = requests.get(url_usuario, headers=headers_wise, timeout=settings.REQUESTS_TIMEOUT)
  
                                     data_user = response_usuario.json()
  
@@ -302,7 +327,7 @@ class BuscarAfiliadoView(View):
                                 # Tipos
                                 if type_id not in type_names:
                                     url_tipos = f'https://api.wcx.cloud/core/v1/cases/types?filtering=[{{"field":"types.id","operator":"EQUAL","value":"{type_id}"}}]&fields=id,name'
-                                    response_tipos = requests.get(url_tipos, headers=headers_wise)
+                                    response_tipos = requests.get(url_tipos, headers=headers_wise, timeout=settings.REQUESTS_TIMEOUT)
  
                                     data_tipos = response_tipos.json()
  
@@ -381,7 +406,7 @@ class BuscarAfiliadoView(View):
        
 
 @method_decorator(requiere_permiso_iframe("vista.retencion"), name="dispatch")
-class BuscarRetencionView(View):
+class BuscarRetencionView(ManejoErroresAPIMixin, View):
     template_name = 'rete_produccion.html'
     #template_name = 'rete_reserva.html'
 
@@ -428,7 +453,7 @@ class BuscarRetencionView(View):
         if not verificacion_diaria:
             try:
                 # Obtener la clave dinámica actual desde la API
-                response = requests.get(url_api, headers=headers)
+                response = requests.get(url_api, headers=headers, timeout=settings.REQUESTS_TIMEOUT)
                 response.raise_for_status()
                 response_json = response.json()
                 clave_dinamica_actual = next(iter(response_json.keys()))
@@ -499,7 +524,7 @@ class BuscarRetencionView(View):
             }
        
         # Solicitud a la API de afiliados
-        response_afiliado = requests.post(url_afiliado, data=payload_json_afiliado, headers=headers)
+        response_afiliado = requests.post(url_afiliado, data=payload_json_afiliado, headers=headers, timeout=settings.REQUESTS_TIMEOUT)
         #print(response_afiliado.text)
  
         if response_afiliado.status_code == 200:
@@ -539,7 +564,7 @@ class BuscarRetencionView(View):
 
                 
                 url_dniage = f"https://api.nobis.com.ar/dni_agecta/{grupo}"
-                response_dniage = requests.get(url_dniage, headers=headers_interno)
+                response_dniage = requests.get(url_dniage, headers=headers_interno, timeout=settings.REQUESTS_TIMEOUT)
                 dni_aux = 0
 
                 if response_dniage.status_code == 200:
@@ -554,7 +579,7 @@ class BuscarRetencionView(View):
 
                 if dni_titular != 0:
                     url_deuda = f"https://appmobile.nobissalud.com.ar/api/AgentesCuenta/Deuda/{dni_aux}"
-                    response_deuda = requests.get(url_deuda, headers=headers)
+                    response_deuda = requests.get(url_deuda, headers=headers, timeout=settings.REQUESTS_TIMEOUT)
                     if response_deuda.status_code == 200:
                         data_deuda = response_deuda.json()
                         #print(f"Datos de deuda: {data_deuda}")
@@ -573,7 +598,7 @@ class BuscarRetencionView(View):
                     
                     # Forma de pago y Bonificacion/Recargo
                     url_bf = f"https://api.nobis.com.ar/fpago_bonif/{grupo}"
-                    response_bf = requests.get(url_bf, headers=headers_interno)
+                    response_bf = requests.get(url_bf, headers=headers_interno, timeout=settings.REQUESTS_TIMEOUT)
 
                     if response_bf.status_code == 200:
                         data_bf = response_bf.json()
@@ -656,7 +681,7 @@ class BuscarRetencionView(View):
                             #print(nro_afi)
 
                             url_tipoben = f"https://api.nobis.com.ar/tipo_ben/{nro_afi}"
-                            response_tipoben = requests.get(url_tipoben, headers=headers_interno)
+                            response_tipoben = requests.get(url_tipoben, headers=headers_interno, timeout=settings.REQUESTS_TIMEOUT)
 
                             if response_tipoben.status_code == 200:
                                 data_tipoben = response_tipoben.json()
@@ -679,7 +704,7 @@ class BuscarRetencionView(View):
 
                         # Solicitud a la API de afiliados para obtener edad y provincia
                         url_afiliado_extra = f"https://appmobile.nobissalud.com.ar/api/afiliados?numero={nro_afi}"
-                        response_afiliado_extra = requests.get(url_afiliado_extra, headers=headers)
+                        response_afiliado_extra = requests.get(url_afiliado_extra, headers=headers, timeout=settings.REQUESTS_TIMEOUT)
                         data_afiliado_extra = response_afiliado_extra.json().get('data', [])
     
                         if data_afiliado_extra:
@@ -705,7 +730,7 @@ class BuscarRetencionView(View):
 
                         # Solicitud a la API interna para obtener fecha de alta y patologia
                         url_patologias = f"https://api.nobis.com.ar/fecha_alta_y_patologias/{nro_afi}"
-                        response_p = requests.get(url_patologias, headers=headers_interno)
+                        response_p = requests.get(url_patologias, headers=headers_interno, timeout=settings.REQUESTS_TIMEOUT)
                         data_p = response_p.json()
 
                         if isinstance(data_p, list) and data_p:
@@ -758,7 +783,7 @@ class BuscarRetencionView(View):
 
                 url_aportes = f"https://api.nobis.com.ar/ultimos_aportes/{dni_titular}"
                 #url_aportes = f"http://127.0.0.1:8080/ultimos_aportes/{dni_titular}"
-                response_a = requests.get(url_aportes, headers=headers_interno)
+                response_a = requests.get(url_aportes, headers=headers_interno, timeout=settings.REQUESTS_TIMEOUT)
                 data_a = response_a.json()
 
                 #print(f"Datos de aportes: {data_a}")
@@ -843,9 +868,10 @@ class BuscarRetencionView(View):
         
 
 @method_decorator(requiere_permiso_iframe("vista.mesa"), name="dispatch")
-class MesaDeEntradaView(View):
+class MesaDeEntradaView(ManejoErroresAPIMixin, View):
     template_carga_expediente = 'nuevo_expediente.html'
     template_expedientes = 'expedientes.html'
+    template_error = template_carga_expediente
 
     def obtener_token_gecros(self):
         # Verifica si el token está en el caché
@@ -898,7 +924,7 @@ class MesaDeEntradaView(View):
             }
        
         # Solicitud a la API de afiliados
-        response_afiliado = requests.post(url_afiliado, data=payload_json_afiliado, headers=headers)
+        response_afiliado = requests.post(url_afiliado, data=payload_json_afiliado, headers=headers, timeout=settings.REQUESTS_TIMEOUT)
         #print(response_afiliado.text)
  
         if response_afiliado.status_code == 200:
@@ -953,7 +979,7 @@ class MesaDeEntradaView(View):
                 total_deuda = 0
                 if dni_aux != 0:
                     url_deuda = f"https://appmobile.nobissalud.com.ar/api/AgentesCuenta/Deuda/{dni_aux}"
-                    response_deuda = requests.get(url_deuda, headers=headers)
+                    response_deuda = requests.get(url_deuda, headers=headers, timeout=settings.REQUESTS_TIMEOUT)
                     try:
                         data_deuda = response_deuda.json()
                     except ValueError:
@@ -1009,7 +1035,7 @@ class MesaDeEntradaView(View):
 
                     # Solicitud a la API interna para obtener fecha de alta y patologia
                     url_patologias = f"https://api.nobis.com.ar/fecha_alta_y_patologias/{nro_afi}"
-                    response_p = requests.get(url_patologias, headers=headers_interno)
+                    response_p = requests.get(url_patologias, headers=headers_interno, timeout=settings.REQUESTS_TIMEOUT)
                     data_p = response_p.json()
 
                     if isinstance(data_p, list) and data_p:
@@ -1091,7 +1117,7 @@ def cotizar_actual(request):
                 "Content-Type": "application/json",
                 "Authorization": f"Bearer {token}"
             }
-            response = requests.get(url_api, headers=headers)
+            response = requests.get(url_api, headers=headers, timeout=settings.REQUESTS_TIMEOUT)
             return response
 
         try:
@@ -1132,7 +1158,7 @@ class OrigenesService:
         # Si no se realizó la verificación semanal, consultamos la API y actualizamos el archivo
         if not archivo_existe or not verificacion_semanal:
             try:
-                response = requests.get(url_api, headers=headers)
+                response = requests.get(url_api, headers=headers, timeout=settings.REQUESTS_TIMEOUT)
                 response.raise_for_status()
                 data = response.json()
                 #print("Actualizando archivo JSON de origenes")
@@ -1178,7 +1204,7 @@ class ProveedoresService:
         # Si no se realizó la verificación semanal, consultamos la API y actualizamos el archivo
         if not archivo_existe or not verificacion_semanal:
             try:
-                response = requests.get(url_api, headers=headers)
+                response = requests.get(url_api, headers=headers, timeout=settings.REQUESTS_TIMEOUT)
                 response.raise_for_status()
                 data = response.json()
                 #print("Actualizando archivo JSON de proveedores")
@@ -1224,7 +1250,7 @@ class GeneradoresService:
         # Si no se realizó la verificación semanal, consultamos la API y actualizamos el archivo
         if not archivo_existe or not verificacion_semanal:
             try:
-                response = requests.get(url_api, headers=headers)
+                response = requests.get(url_api, headers=headers, timeout=settings.REQUESTS_TIMEOUT)
                 response.raise_for_status()
                 data = response.json()
                 #print("Actualizando archivo JSON de generadores")
@@ -1295,7 +1321,7 @@ def guardar_expediente(request):
             }
             
             try:
-                response = requests.request("POST", url, headers=headers, data=payload)
+                response = requests.request("POST", url, headers=headers, data=payload, timeout=settings.REQUESTS_TIMEOUT)
                 #print("Body enviado:", payload)
 
                 if response.status_code == 200:
@@ -1311,7 +1337,7 @@ def guardar_expediente(request):
                         else:
                             try:
                                 generador_url = f"https://api.nobis.com.ar/generador_exp/{expediente_id}?generador_id={int(genId)}"
-                                generador_response = requests.put(generador_url)
+                                generador_response = requests.put(generador_url, timeout=settings.REQUESTS_TIMEOUT)
 
                                 if generador_response.status_code == 409:
                                     advertencia = "Expediente creado, el generador actual es el mismo."
@@ -1360,7 +1386,7 @@ def archivo_expediente(request):
         headers = {'Authorization': f'Bearer {token}'}
 
         try:
-            response = requests.post(url, files=files, headers=headers)
+            response = requests.post(url, files=files, headers=headers, timeout=settings.REQUESTS_TIMEOUT)
             ok = response.status_code == 200
             # SaveArchivo (Gecros, tercero) no acepta identidad de usuario -> solo AuditLog local.
             registrar(request, action="subir_archivo", recurso="accion.subir_archivo", target_type="expediente",
@@ -1409,7 +1435,7 @@ def descargar_adjunto(request):
             # Llamar a la API externa
             api_url = f"https://appmobile.nobissalud.com.ar/api/Archivo/get-img/{archivo_id}"
             headers = {'Authorization': f'Bearer {token}'}
-            api_response = requests.get(api_url, stream=True, headers=headers)
+            api_response = requests.get(api_url, stream=True, headers=headers, timeout=settings.REQUESTS_TIMEOUT)
 
             if api_response.status_code != 200:
                 return JsonResponse({"error": "No se pudo obtener el archivo"}, status=404)
@@ -1450,7 +1476,7 @@ def previsualizar_adjunto(request):
             
             api_url = f"https://appmobile.nobissalud.com.ar/api/Archivo/get-img/{archivo_id}"
             headers = {'Authorization': f'Bearer {token}'}
-            api_response = requests.get(api_url, stream=True, headers=headers)
+            api_response = requests.get(api_url, stream=True, headers=headers, timeout=settings.REQUESTS_TIMEOUT)
             
             if api_response.status_code != 200:
                 return JsonResponse({"error": "No se pudo obtener el archivo"}, status=404)
@@ -1474,7 +1500,7 @@ def buscar_beneficiario(request):
                 return JsonResponse({'error': 'No se proporcionó número'}, status=400)
             
             api_url = f"https://api.nobis.com.ar/obtener_beneficiario/{numero}"
-            api_response = requests.get(api_url)
+            api_response = requests.get(api_url, timeout=settings.REQUESTS_TIMEOUT)
             
             if api_response.status_code != 200:
                 return JsonResponse({"error": "No se pudo obtener el dato"}, status=404)
@@ -1531,7 +1557,7 @@ def crear_remito(request, expediente_id):
             if usuario:
                 payload["usuario"] = usuario
 
-            api_response = requests.post(api_url, json=payload)
+            api_response = requests.post(api_url, json=payload, timeout=settings.REQUESTS_TIMEOUT)
 
             if api_response.status_code != 200:
                 registrar(request, action="crear_remito", recurso="accion.crear_remito", target_type="expediente",
@@ -1557,7 +1583,7 @@ def crear_remito(request, expediente_id):
                 try:
                     print(f"Expediente {expediente_id} y generador {generador_id}")
                     generador_url = f"https://api.nobis.com.ar/generador_exp/{expediente_id}?generador_id={generador_id}"
-                    generador_response = requests.put(generador_url)
+                    generador_response = requests.put(generador_url, timeout=settings.REQUESTS_TIMEOUT)
 
                     if generador_response.status_code == 409:
                         advertencia = f"Remito creado ID: {data.get('mRem_id')}, el generador actual es el mismo."
@@ -1715,7 +1741,7 @@ def obtener_generadores_api(request, sector_origen):
             }, status=400)
 
         # Llamada a la API
-        api_response = requests.get(api_url, timeout=10)
+        api_response = requests.get(api_url, timeout=settings.REQUESTS_TIMEOUT)
 
         if api_response.status_code != 200:
             return JsonResponse({"error": "No se pudo obtener los generadores"}, status=404)
@@ -1786,7 +1812,7 @@ def cargar_bonificacion_externa(request, grupo):
                 "usuario": usuario_api,
                 "grupo": grupo_api,
             }
-            r = requests.post(api_url, json=payload, headers=headers, timeout=15)
+            r = requests.post(api_url, json=payload, headers=headers, timeout=settings.REQUESTS_TIMEOUT)
             ok = r.status_code in (200, 201)
             registrar(request, action="enviar_bonificacion", recurso="accion.enviar_bonificacion", target_type="grupo",
                       target_id=grupo, response_status=r.status_code, success=ok,

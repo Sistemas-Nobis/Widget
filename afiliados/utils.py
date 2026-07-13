@@ -3,6 +3,8 @@ import json
 import os
 from datetime import datetime
 
+from django.conf import settings  # REQUESTS_TIMEOUT: timeout único para HTTP saliente
+
 # Calcula la ruta relativa a partir de utils.py
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 json_path = os.path.join(base_dir, 'home', 'static', 'preexistencias.json')
@@ -17,7 +19,7 @@ def actualizar_token_wise():
         'x-api-key': 'be9dd08a9cd8422a9af1372a445ec8e4',
     }
     try:
-        response = requests.get(url_token, headers=headers, params=query_params)
+        response = requests.get(url_token, headers=headers, params=query_params, timeout=settings.REQUESTS_TIMEOUT)
         response.raise_for_status()  # Lanza un error si la solicitud falla
        
         # Imprimir la respuesta completa para verificar la estructura
@@ -48,7 +50,7 @@ def actualizar_token_gecros():
         'Content-Type': 'application/x-www-form-urlencoded'
     }
     try:
-        response = requests.post(url, data=payload,headers=headers)
+        response = requests.post(url, data=payload, headers=headers, timeout=settings.REQUESTS_TIMEOUT)
         response.raise_for_status()  # Lanza un error si la solicitud falla
        
         # Imprimir la respuesta completa para verificar la estructura
@@ -76,7 +78,7 @@ def actualizar_preexistencias():
     }
 
     try:
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=settings.REQUESTS_TIMEOUT)
         response.raise_for_status()
         response_json = response.json()
 
@@ -202,7 +204,7 @@ def obtener_expedientes_grupo_familiar(ben_ids, token_gecros, benid_to_dni, beni
     expedientes = []
     for ben_id in ben_ids:
         url = f"{url_base}?BenId={ben_id}"
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=settings.REQUESTS_TIMEOUT)
         if response.status_code == 200:
             data = response.json().get("data", [])
             for exp in data:
