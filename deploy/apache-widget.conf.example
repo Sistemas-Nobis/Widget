@@ -12,6 +12,27 @@
   # el navegador ve /widget/auth/callback y Django recibe /auth/callback
   # (coincide con cuentas/urls.py). WSGIDaemonProcess se define UNA sola vez
   # (en prod está en el vhost :80; acá se referencia por process group).
+  #
+  # Definición RECOMENDADA del daemon (va en el vhost :80 real, NO acá — ver nota abajo):
+  #
+  #   WSGIDaemonProcess widget python-home=/home/widget/venv python-path=/home/widget \
+  #       processes=2 threads=15 request-timeout=60
+  #
+  # - request-timeout=60  -> RED DE SEGURIDAD imprescindible. Si un hilo queda colgado
+  #   >60s (p.ej. un backend externo que deja de responder, como el incidente del
+  #   2026-07-13 con appmobile.nobissalud.com.ar), mod_wsgi mata y reinicia el daemon
+  #   solo, en vez de agotar los 15 hilos y clavar el sitio en 503 hasta un restart
+  #   manual de Apache. Complementa (no reemplaza) los timeout= de requests en el código.
+  # - processes=2 threads=15 -> 2 procesos aíslan el fallo: si uno se reinicia por
+  #   request-timeout, el otro sigue sirviendo.
+  #   OJO: con 2+ procesos el LocMemCache deja de ser único (cada worker tiene el suyo).
+  #   Los tokens/preex se re-piden por proceso (aceptable) y los permisos RBAC pueden
+  #   quedar stale hasta 5 min entre workers (ver "Límites conocidos" en docs). Si eso
+  #   molesta, migrar CACHES a un backend compartido antes de subir processes.
+  #
+  # IMPORTANTE: la definición REAL del daemon vive en
+  # /etc/apache2/sites-available/widget.conf (el vhost :80), NO en este vhost SSL.
+  # Este cambio hay que replicarlo A MANO en ese archivo del servidor de prod.
   WSGIProcessGroup widget
   # OBLIGATORIO: sin esto la app corre en un subintérprete de mod_wsgi y el
   # stack ssl/requests que usa MSAL se deadlockea (login_start cuelga hasta

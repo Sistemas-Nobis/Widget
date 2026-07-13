@@ -70,6 +70,15 @@ WIDGET_SUPERADMIN_GROUP_ID=<guid1>,<guid2>  # opcional, uno o varios separados p
 
   - **`WSGIApplicationGroup %{GLOBAL}` es obligatorio**: sin eso MSAL/requests se
     deadlockea en el subintérprete y `login_start` cuelga (504) con el resto de la app sana.
+  - **`WSGIDaemonProcess ... request-timeout=60 processes=2 threads=15`** (red de seguridad):
+    el `WSGIDaemonProcess` real vive en `/etc/apache2/sites-available/widget.conf` (el vhost
+    `:80`), **no** en el vhost SSL. Agregarle `request-timeout=60` para que mod_wsgi reinicie
+    el daemon solo si un hilo queda colgado (así un futuro cuelgue del backend —como el del
+    2026-07-13, en que appmobile dejó de responder y sin timeouts se clavaron los 15 hilos y
+    el sitio dio 503 hasta reiniciar Apache— se autorrecupera). `processes=2` aísla el fallo.
+    **Este cambio hay que aplicarlo A MANO en el `widget.conf` de prod**; el ejemplo de
+    `deploy/apache-widget.conf.example` lo documenta pero no puede definir el daemon por él.
+    Nota: con `processes=2` el `LocMemCache` deja de ser único por servidor (ver §9).
   - El `X-Frame-Options: DENY` de Django hay que quitarlo con `Header unset` **y**
     `Header always unset` (la respuesta de mod_wsgi va por la tabla onsuccess).
   - `Header edit* ... Partitioned` para `widget_sessionid` y `csrftoken` (CHIPS).
@@ -98,8 +107,9 @@ WIDGET_SUPERADMIN_GROUP_ID=<guid1>,<guid2>  # opcional, uno o varios separados p
   Para recargar código o `.env` **sin** parar el servicio (activación/rollback del flag):
   `touch /home/widget/config/wsgi.py` reinicia el daemon mod_wsgi, sin sudo.
 
-  `manage.py` está intervenido (siempre runserver); por eso los comandos de gestión van por
-  `dbtools.py` (usa `django.setup()`).
+  `manage.py` es el estándar de Django (restaurado el 2026-07-13; antes estaba intervenido
+  para correr siempre `runserver`). Los comandos de gestión pueden ir por `manage.py migrate/
+  check/...` o, equivalentemente, por `dbtools.py` (que usa `django.setup()` + `call_command`).
 
 ## 5. Primer uso (bootstrap del RBAC)
 
@@ -142,5 +152,7 @@ de confirmar con ese equipo).
 
 - El auto-refresh de "todos los iframes" aplica dentro del **mismo portal top-level** (confirmado: siempre el mismo).
 - Safari no está soportado (se descartó; usa CHIPS). Firefox: requiere versión con soporte `Partitioned`.
-- `LocMemCache` es por proceso: hoy corre un solo runserver. Si se pasa a multi-worker, migrar
-  `CACHES` a un backend compartido (los permisos podrían quedar stale hasta 5 min entre workers).
+- `LocMemCache` es por proceso: prod corre con mod_wsgi y, con la config recomendada
+  `processes=2` (ver §3), la caché deja de ser única por servidor —cada worker tiene la suya—,
+  así que los permisos RBAC pueden quedar stale hasta ~5 min entre workers. Si eso molesta,
+  migrar `CACHES` a un backend compartido (Redis/DB).
