@@ -232,7 +232,8 @@ def auditoria_datos(request):
         "recurso": f.recurso,
         "action": f.get_action_display(),
         "action_key": f.action,
-        "target": f"{f.target_type}:{f.target_id}" if f.target_id else f.target_type,
+        "target": (f"{f.target_type}:{f.target_id}" if f.target_id
+                   else (f"DNI {f.dni}" if f.dni else f.target_type)),
         "success": f.success,
         "status": f.response_status,
         "ip": f.ip or "",
