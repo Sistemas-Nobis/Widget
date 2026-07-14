@@ -1107,6 +1107,11 @@ def cotizar_actual(request):
         print(aporte, bonificacion, patologias)
         token = "496ae7b9-0787-482e-bbe2-235279237940"
 
+        # Resumen para el AuditLog (no incluye el token).
+        resumen = {"plan": plan, "gestion": gestion, "ubicacion": ubicacion,
+                   "edades": edades, "aportes": aporte, "bonificaciones": bonificacion,
+                   "patologias": patologias}
+
         def consultar_api():
             url_api = (
                 f"https://cotizador.nobis.com.ar/cotizacion?"
@@ -1124,18 +1129,26 @@ def cotizar_actual(request):
             response = consultar_api()
             if response.status_code != 200:
                 error_data = response.json()
+                registrar(request, action="cotizar", recurso="accion.cotizar", target_type="cotizacion",
+                          response_status=response.status_code, success=False,
+                          error_detail=str(error_data), payload_summary=resumen)
                 return JsonResponse({"error": f"{error_data}"}, status=400)
             else:
                 response_data = response.json()
                 valor_pc = response_data['resultado']['cotizacion']['planes'][0]['primera_cuota']
                 valor_p = response_data['resultado']['cotizacion']['planes'][0]['valor_plan']
 
+                registrar(request, action="cotizar", recurso="accion.cotizar", target_type="cotizacion",
+                          response_status=200, success=True,
+                          payload_summary={**resumen, "primera_cuota": valor_pc, "valor_plan": valor_p})
                 return JsonResponse({
                     "primera_cuota": valor_pc,
                     "valor_plan": valor_p
                 })
-            
+
         except Exception as e:
+            registrar(request, action="cotizar", recurso="accion.cotizar", target_type="cotizacion",
+                      success=False, error_detail=str(e), payload_summary=resumen)
             return JsonResponse({"error": str(e)}, status=500)
 
     return JsonResponse({"error": "Método no permitido"}, status=405)

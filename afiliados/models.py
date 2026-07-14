@@ -7,6 +7,7 @@ class AuditLog(models.Model):
     independiente de si el sistema externo (Gecros, etc.) acepta la identidad del usuario.
     """
     ACTIONS = [
+        ("cotizar", "Cotizar"),
         ("crear_expediente", "Crear expediente"),
         ("subir_archivo", "Subir archivo"),
         ("crear_remito", "Crear remito"),
